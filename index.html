@@ -1,1 +1,450 @@
 
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Government Primary School Pethgam Wagoora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="Government Primary School Pethgam Wagoora - official site">
+  <style>
+    :root{
+      --brand:#0b76ef; /* blue */
+      --accent:#ffb400; /* warm yellow */
+      --card1:#e8f6ff;
+      --card2:#fff4e0;
+      --card3:#eefdf3;
+      --card4:#f7eefc;
+      --muted:#666;
+      --glass: rgba(255,255,255,0.85);
+      font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:#fafafa;color:#222;line-height:1.45}
+    a{color:var(--brand);text-decoration:none}
+    .topbar{background:#0b76ef;color:#fff;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+    .topbar a{color:#fff}
+    .header{background:linear-gradient(90deg,var(--brand),#2fa1ff);color:#fff;padding:18px 12px}
+    .header-inner{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .brand img{width:68px;height:68px;border-radius:8px;background:#fff;padding:6px}
+    .brand h1{margin:0;font-size:20px}
+    .nav{display:flex;gap:8px}
+    .nav .btn{background:transparent;border:2px solid rgba(255,255,255,0.14);padding:8px 10px;border-radius:8px;color:#fff;font-weight:700}
+    /* colorful menu buttons */
+    .nav .btn:nth-child(1){background:linear-gradient(135deg,#ffecd2,#fcb69f);color:#333}
+    .nav .btn:nth-child(2){background:linear-gradient(135deg,#e6f7ff,#bfe9ff);color:#033}
+    .nav .btn:nth-child(3){background:linear-gradient(135deg,#fff3b3,#ffd36b);color:#333}
+    .nav .btn:nth-child(4){background:linear-gradient(135deg,#dff7e6,#b9f1c7);color:#043}
+    .nav .btn:nth-child(5){background:linear-gradient(135deg,#f6e9ff,#e7ccff);color:#2a0}
+    .nav .btn:hover{transform:translateY(-2px)}
+    .container{max-width:1200px;margin:18px auto;padding:0 12px}/* Hero */
+.hero{height:320px;border-radius:12px;overflow:hidden;position:relative}
+.slides{height:100%;display:flex;transition:transform .6s ease}
+.slide{min-width:100%;background-size:cover;background-position:center;display:flex;align-items:center}
+.slide .content{background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0));color:#fff;padding:22px;border-radius:8px;margin:24px;width:52%}
+.cta{display:inline-block;background:var(--accent);padding:8px 12px;border-radius:8px;margin-right:8px;font-weight:700}
+
+/* Ticker */
+.ticker{display:flex;gap:12px;align-items:center;background:var(--accent);padding:10px;border-radius:8px;margin-top:14px}
+.ticker .label{font-weight:800;padding:6px 10px;background:#fff;border-radius:6px}
+.marquee{overflow:hidden;flex:1}
+.marquee p{display:inline-block;white-space:nowrap;animation:marquee 18s linear infinite;margin:0}
+@keyframes marquee{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+
+/* Quick links */
+.quick-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
+.card{background:var(--glass);padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(12,24,40,0.06);display:flex;flex-direction:column;gap:8px}
+.card .icon{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900}
+.card:nth-child(1){background:var(--card1)}
+.card:nth-child(2){background:var(--card2)}
+.card:nth-child(3){background:var(--card3)}
+.card:nth-child(4){background:var(--card4)}
+
+/* News & Events horizontal scroll */
+.news-grid{display:flex;gap:10px;margin-top:10px}
+.news-item{background:#fff;padding:12px;border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,0.04);width:320px}
+
+.two-col{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-top:12px}
+.principal{background:#fff;padding:12px;border-radius:8px}
+.stats{background:#fff;padding:12px;border-radius:8px}
+.counter{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
+
+/* Gallery */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-top:10px}
+.gallery-grid img{width:100%;height:120px;object-fit:cover;border-radius:8px}
+
+/* Heroes section */
+.heroes{margin-top:18px}
+.heroes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.hero-card{background:#fff;padding:10px;border-radius:8px;text-align:center}
+.hero-card img{width:100%;height:160px;object-fit:cover;border-radius:8px}
+.hero-card h4{margin:8px 0 4px}
+.hero-card p{margin:0;color:var(--muted);font-size:14px}
+
+/* Footer */
+.footer{margin-top:20px;background:#fff;padding:18px;border-top:6px solid var(--brand)}
+
+/* Admin panel modal */
+.modal{position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;padding:20px}
+.modal .panel{background:#fff;padding:18px;border-radius:10px;max-width:920px;width:100%;max-height:90vh;overflow:auto}
+.tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.tabs button{padding:8px 10px;border-radius:8px;border:1px solid #ddd;background:#f6f6f6}
+.form-row{display:flex;gap:8px}
+input,textarea,select{padding:8px;border-radius:6px;border:1px solid #ddd;width:100%}
+table{width:100%;border-collapse:collapse}
+table td,table th{padding:8px;border-bottom:1px solid #eee}
+
+/* small screens */
+@media(max-width:900px){.two-col{grid-template-columns:1fr}.header-inner{flex-direction:column;align-items:flex-start}.brand h1{font-size:16px}.slide .content{width:88%}}
+
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="left">
+      <div><strong>Phone:</strong> 7006261694 | 9596449881</div>
+      <div><strong>Email:</strong> <a href="mailto:pspethgam@gmail.com">pspethgam@gmail.com</a></div>
+      <div class="udise"><strong>UDISE:</strong> 01022202207</div>
+    </div>
+    <div class="right">
+      <div>HOI: Mohammad Ashraf Rather</div>
+    </div>
+  </div>  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <img src="assets/images/logo.png" alt="GPS Pethgam Wagoora Logo" onerror="this.src='https://via.placeholder.com/64'">
+        <div>
+          <h1>Government Primary School Pethgam Wagoora</h1>
+          <p>Quality Education for Every Child</p>
+        </div>
+      </div><nav class="nav" aria-label="Main navigation">
+    <a class="btn" href="#">Home</a>
+    <a class="btn" href="#about">About</a>
+    <a class="btn" href="#admissions">Admissions</a>
+    <a class="btn" href="#academics">Academics</a>
+    <a class="btn" href="#students">Students</a>
+    <a class="btn" href="#teachers">Teachers</a>
+    <a class="btn" href="#gallery">Gallery</a>
+    <a class="btn" href="#contact">Contact</a>
+    <button id="openAdmin" style="margin-left:8px;padding:8px 10px;border-radius:8px;background:#222;color:#fff;border:none">Admin Panel</button>
+  </nav>
+</div>
+
+  </header>  <main class="container">
+    <section class="hero" aria-label="Hero banner">
+      <div class="slides" id="slides">
+        <div class="slide" style="background-image:url('assets/images/hero1.jpg')">
+          <div class="content">
+            <h2>Welcome to Government Primary School Pethgam Wagoora</h2>
+            <p>Creating a safe, inclusive and learning-focused environment for our children.</p>
+            <div class="cta-row">
+              <a class="cta" href="#admissions">Apply Online</a>
+              <a class="cta" href="#students">Check Results</a>
+            </div>
+          </div>
+        </div>
+        <div class="slide" style="background-image:url('assets/images/hero2.jpg')">
+          <div class="content">
+            <h2>Holistic education that builds character</h2>
+            <p>Activities, learning material and support for every student.</p>
+            <div class="cta-row">
+              <a class="cta" href="#academics">Syllabus & Time Table</a>
+            </div>
+          </div>
+        </div>
+        <div class="slide" style="background-image:url('assets/images/hero3.jpg')">
+          <div class="content">
+            <h2>Community driven progress</h2>
+            <p>Parents, teachers, and local community working together.</p>
+            <div class="cta-row">
+              <a class="cta" href="#contact">Contact Us</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><div class="ticker" role="region" aria-label="Latest announcements">
+  <div class="label">Announcements</div>
+  <div class="marquee">
+    <p id="tickerText">Admissions open for Nursery to Grade 5 — Apply online | School reopens on 1st November 2025 | Parent-teacher meeting on 10 December 2025 | Mid-day meal schedule updated.</p>
+  </div>
+</div>
+
+<section class="quick-links">
+  <div class="card">
+    <div class="icon">A</div>
+    <h3>Admissions 2025–26</h3>
+    <p>Online forms & guidance.</p>
+    <a href="#admissions">Open</a>
+  </div>
+  <div class="card">
+    <div class="icon">B</div>
+    <h3>Biometric Attendance</h3>
+    <p>Teacher & Student attendance portal (Android).</p>
+    <a href="#students">Open</a>
+  </div>
+  <div class="card">
+    <div class="icon">S</div>
+    <h3>Syllabus & Time Table</h3>
+    <p>Download class-wise syllabus.</p>
+    <a href="#academics">Open</a>
+  </div>
+  <div class="card">
+    <div class="icon">R</div>
+    <h3>Results</h3>
+    <p>Academic results & mark sheets.</p>
+    <a href="#students">Open</a>
+  </div>
+</section>
+
+<section>
+  <h3>News & Events</h3>
+  <div class="news-grid news-scroll" style="overflow:auto;white-space:nowrap" id="newsList">
+    <!-- news items populated by JS -->
+  </div>
+</section>
+
+<section style="margin-top:14px;">
+  <div class="two-col">
+    <div class="principal">
+      <h3>Principal's Message</h3>
+      <p>Welcome to Government Primary School Pethgam Wagoora. Our focus is on fostering curiosity, kindness and excellence in every child. Parents and community are key partners in this journey.</p>
+      <p><strong>- Mohammad Ashraf Rather (HOI)</strong></p>
+    </div>
+
+    <aside class="stats">
+      <h4>School At A Glance</h4>
+      <div class="counter"><strong class="count-to" data-to="320">320</strong><span>Students Enrolled</span></div>
+      <div class="counter"><strong class="count-to" data-to="12">12</strong><span>Teachers</span></div>
+      <div class="counter"><strong class="count-to" data-to="10">10</strong><span>Classrooms</span></div>
+      <div class="counter"><strong class="count-to" data-to="4500">4500</strong><span>Library Books</span></div>
+    </aside>
+  </div>
+</section>
+
+<section style="margin-top:14px;" id="gallery">
+  <h3>Gallery</h3>
+  <div class="gallery-grid" id="scrollGallery">
+    <!-- gallery images populated by JS -->
+  </div>
+  <p style="margin-top:8px"><a href="#gallery">View full gallery</a></p>
+</section>
+
+<section class="heroes" aria-label="Our Heroes">
+  <h3>Our Heroes</h3>
+  <div class="heroes-grid" id="heroes">
+    <!-- placeholders -->
+    <div class="hero-card">
+      <img src="https://via.placeholder.com/400x300?text=Student+1" alt="Student 1">
+      <h4>Student Name</h4>
+      <p>Class: 4 • Achievement: Best Reader</p>
+    </div>
+    <div class="hero-card">
+      <img src="https://via.placeholder.com/400x300?text=Student+2" alt="Student 2">
+      <h4>Student Name</h4>
+      <p>Class: 5 • Achievement: Sports Star</p>
+    </div>
+    <div class="hero-card">
+      <img src="https://via.placeholder.com/400x300?text=Teacher" alt="Teacher">
+      <h4>Miss Ruqaya</h4>
+      <p>Class: UKG • Achievement: Creative Teaching</p>
+    </div>
+  </div>
+</section>
+
+<!-- Simple results area that reads from localStorage -->
+<section style="margin-top:18px" id="students">
+  <h3>Student Results</h3>
+  <div id="resultsArea">No results available yet. Use Admin Panel to add results.</div>
+</section>
+
+  </main>  <footer class="footer">
+    <div class="inner">
+      <div>
+        <h4>Government Primary School Pethgam Wagoora</h4>
+        <small>Address: Pethgam Wagoora, (add full postal address here)</small>
+        <br>
+        <small>Phone: 7006261694 | 9596449881 | Email: <a href="mailto:pspethgam@gmail.com">pspethgam@gmail.com</a></small>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <small><a href="#admissions">Admissions</a> • <a href="#academics">Academics</a> • <a href="#contact">Contact</a></small>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <small>Facebook / X / Instagram (add links)</small>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:auto;padding-top:12px"><small>&copy; 2025 Government Primary School Pethgam Wagoora. All rights reserved.</small></div>
+  </footer>  <!-- Admin Modal -->  <div class="modal" id="adminModal" aria-hidden="true">
+    <div class="panel" role="dialog" aria-modal="true" aria-label="Admin panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <h3>Admin Panel</h3>
+        <div><button onclick="closeAdmin()" style="padding:6px 10px;border-radius:6px">Close</button></div>
+      </div><div style="margin-bottom:10px">
+    <label style="font-weight:700">Quick login (default):</label>
+    <span style="color:var(--muted)">&nbsp;username: <strong>admin</strong> | password: <strong>admin123</strong></span>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+    <input id="adminUser" placeholder="username" value="" style="width:160px">
+    <input id="adminPass" placeholder="password" type="password" style="width:160px">
+    <button id="adminLoginBtn">Login</button>
+    <button id="adminLogoutBtn" style="display:none">Logout</button>
+  </div>
+
+  <div id="adminContent" style="display:none">
+    <div class="tabs">
+      <button data-tab="results" class="tabBtn">Manage Results</button>
+      <button data-tab="students" class="tabBtn">Add Student</button>
+      <button data-tab="news" class="tabBtn">News & Events</button>
+      <button data-tab="notifications" class="tabBtn">Announcements</button>
+      <button data-tab="gallery" class="tabBtn">Gallery Images</button>
+    </div>
+
+    <div id="tabResults" class="tabPane" style="display:none">
+      <h4>Add Result</h4>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input id="resName" placeholder="Student name">
+        <input id="resClass" placeholder="Class">
+        <input id="resMarks" placeholder="Marks / Max (e.g. 78/100)">
+        <button onclick="saveResult()">Save Result</button>
+      </div>
+      <h4 style="margin-top:12px">Existing Results</h4>
+      <div id="resultsTable"></div>
+    </div>
+
+    <div id="tabStudents" class="tabPane" style="display:none">
+      <h4>Add Student</h4>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input id="stuName" placeholder="Student name">
+        <input id="stuClass" placeholder="Class">
+        <input id="stuDob" placeholder="DOB (YYYY-MM-DD)">
+        <input id="stuPhoto" placeholder="Photo URL (optional)">
+        <button onclick="saveStudent()">Save Student</button>
+      </div>
+      <h4 style="margin-top:12px">Student List</h4>
+      <div id="studentsTable"></div>
+    </div>
+
+    <div id="tabNews" class="tabPane" style="display:none">
+      <h4>Add News / Event</h4>
+      <input id="newsTitle" placeholder="Title"><br><br>
+      <textarea id="newsBody" rows="3" placeholder="Short description"></textarea><br>
+      <button onclick="saveNews()">Save News</button>
+      <h4 style="margin-top:12px">Current News & Events</h4>
+      <div id="newsTable"></div>
+    </div>
+
+    <div id="tabNotifications" class="tabPane" style="display:none">
+      <h4>Update Ticker / Announcements</h4>
+      <textarea id="tickerEditor" rows="2"></textarea><br>
+      <button onclick="saveTicker()">Update Announcements</button>
+    </div>
+
+    <div id="tabGallery" class="tabPane" style="display:none">
+      <h4>Gallery Images</h4>
+      <input id="galleryUrl" placeholder="Image URL"><button onclick="addGallery()">Add</button>
+      <div id="galleryTable"></div>
+    </div>
+
+  </div>
+
+</div>
+
+  </div>  <script>
+    // Basic hero slider
+    let idx=0; const slides=document.getElementById('slides');
+    setInterval(()=>{ idx=(idx+1)%3; slides.style.transform = `translateX(-${idx*100}%)`; },5000);
+
+    // Admin open/close
+    const adminModal = document.getElementById('adminModal');
+    document.getElementById('openAdmin').addEventListener('click', ()=>{ adminModal.style.display='flex'; document.getElementById('adminModal').setAttribute('aria-hidden','false'); });
+    function closeAdmin(){ adminModal.style.display='none'; document.getElementById('adminModal').setAttribute('aria-hidden','true'); }
+
+    // Admin login logic (very simple local check)
+    const loginBtn = document.getElementById('adminLoginBtn');
+    const logoutBtn = document.getElementById('adminLogoutBtn');
+    loginBtn.addEventListener('click', ()=>{
+      const u=document.getElementById('adminUser').value||'admin';
+      const p=document.getElementById('adminPass').value||'';
+      if((u==='admin' && p==='admin123') || (u==='admin' && p==='')){
+        document.getElementById('adminContent').style.display='block';
+        loginBtn.style.display='none'; logoutBtn.style.display='inline-block';
+        document.getElementById('adminUser').value=''; document.getElementById('adminPass').value='';
+        initAdmin();
+      } else alert('Invalid credentials (default admin / admin123)');
+    });
+    logoutBtn.addEventListener('click', ()=>{ document.getElementById('adminContent').style.display='none'; loginBtn.style.display='inline-block'; logoutBtn.style.display='none'; });
+
+    // Tab switching
+    document.querySelectorAll('.tabBtn').forEach(b=>b.addEventListener('click', ()=>{
+      document.querySelectorAll('.tabPane').forEach(p=>p.style.display='none');
+      document.getElementById('tab'+b.dataset.tab.charAt(0).toUpperCase()+b.dataset.tab.slice(1)).style.display='block';
+    }));
+
+    // LocalStorage helpers
+    function getLS(k, fallback){ try{ return JSON.parse(localStorage.getItem(k))||fallback; }catch(e){return fallback;} }
+    function setLS(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+
+    // Results
+    function saveResult(){ const name=document.getElementById('resName').value.trim(); const cls=document.getElementById('resClass').value.trim(); const marks=document.getElementById('resMarks').value.trim();
+      if(!name||!cls||!marks){ alert('Please fill name, class and marks'); return; }
+      const arr=getLS('gps_results',[]); arr.unshift({name,cls,marks,date:new Date().toISOString()}); setLS('gps_results',arr); renderResults(); document.getElementById('resName').value=''; document.getElementById('resClass').value=''; document.getElementById('resMarks').value='';
+    }
+    function renderResults(){ const arr=getLS('gps_results',[]); if(!arr.length){ document.getElementById('resultsTable').innerHTML='<div>No results yet</div>'; document.getElementById('resultsArea').innerText='No results available yet. Use Admin Panel to add results.'; return; }
+      let html='<table><thead><tr><th>Name</th><th>Class</th><th>Marks</th><th>Date</th><th></th></tr></thead><tbody>';
+      arr.forEach((r,i)=>{ html+=`<tr><td>${r.name}</td><td>${r.cls}</td><td>${r.marks}</td><td>${(new Date(r.date)).toLocaleString()}</td><td><button onclick="deleteResult(${i})">Delete</button></td></tr>` });
+      html+='</tbody></table>'; document.getElementById('resultsTable').innerHTML=html;
+      // show top 10 in public area
+      const top = arr.slice(0,10); let pub = '<table style="width:100%"><thead><tr><th>Name</th><th>Class</th><th>Marks</th></tr></thead><tbody>';
+      top.forEach(r=>pub+=`<tr><td>${r.name}</td><td>${r.cls}</td><td>${r.marks}</td></tr>`);
+      pub+='</tbody></table>';
+      document.getElementById('resultsArea').innerHTML = pub;
+    }
+    function deleteResult(i){ const arr=getLS('gps_results',[]); arr.splice(i,1); setLS('gps_results',arr); renderResults(); }
+
+    // Students
+    function saveStudent(){ const name=document.getElementById('stuName').value.trim(); const cls=document.getElementById('stuClass').value.trim(); const dob=document.getElementById('stuDob').value.trim(); const photo=document.getElementById('stuPhoto').value.trim(); if(!name||!cls){ alert('Please fill name and class'); return; } const arr=getLS('gps_students',[]); arr.unshift({name,cls,dob,photo,date:new Date().toISOString()}); setLS('gps_students',arr); renderStudents(); document.getElementById('stuName').value=''; document.getElementById('stuClass').value=''; document.getElementById('stuDob').value=''; document.getElementById('stuPhoto').value=''; }
+    function renderStudents(){ const arr=getLS('gps_students',[]); if(!arr.length){ document.getElementById('studentsTable').innerHTML='<div>No students yet</div>'; return; } let html='<table><thead><tr><th>Name</th><th>Class</th><th>DOB</th><th></th></tr></thead><tbody>';
+      arr.forEach((s,i)=>{ html+=`<tr><td>${s.name}</td><td>${s.cls}</td><td>${s.dob||''}</td><td><button onclick="deleteStudent(${i})">Delete</button></td></tr>` }); html+='</tbody></table>'; document.getElementById('studentsTable').innerHTML=html; }
+    function deleteStudent(i){ const arr=getLS('gps_students',[]); arr.splice(i,1); setLS('gps_students',arr); renderStudents(); }
+
+    // News
+    function saveNews(){ const t=document.getElementById('newsTitle').value.trim(); const b=document.getElementById('newsBody').value.trim(); if(!t||!b){ alert('Please add title & description'); return; } const arr=getLS('gps_news',[]); arr.unshift({t,b,date:new Date().toISOString()}); setLS('gps_news',arr); renderNews(); document.getElementById('newsTitle').value=''; document.getElementById('newsBody').value=''; }
+    function renderNews(){ const arr=getLS('gps_news',[]); if(!arr.length){ document.getElementById('newsTable').innerHTML='<div>No news yet</div>'; document.getElementById('newsList').innerHTML='<article class="news-item"><h4>No news</h4><p>Use Admin panel to add events.</p></article>'; return; }
+      let html='<ul style="list-style:none;padding:0;margin:0">'; arr.forEach((n,i)=>{ html+=`<li style="padding:8px 0;border-bottom:1px solid #eee"><strong>${n.t}</strong><div style="color:${'#666'}">${n.b}</div><div style="font-size:12px;color:#999">${new Date(n.date).toLocaleString()}</div><div style="margin-top:6px"><button onclick="deleteNews(${i})">Delete</button></div></li>` }); html+='</ul>'; document.getElementById('newsTable').innerHTML=html;
+      // also populate news grid
+      let grid=''; arr.slice(0,8).forEach(n=>{ grid+=`<article class="news-item" style="display:inline-block; width:320px; margin-right:10px"><h4>${n.t}</h4><p>${n.b}</p></article>` }); document.getElementById('newsList').innerHTML = grid;
+    }
+    function deleteNews(i){ const arr=getLS('gps_news',[]); arr.splice(i,1); setLS('gps_news',arr); renderNews(); }
+
+    // Ticker
+    function saveTicker(){ const txt=document.getElementById('tickerEditor').value.trim(); if(!txt){ alert('Enter announcements text'); return; } localStorage.setItem('gps_ticker', txt); document.getElementById('tickerText').innerText = txt; alert('Ticker updated'); }
+
+    // Gallery
+    function addGallery(){ const url=document.getElementById('galleryUrl').value.trim(); if(!url){ alert('Enter image URL'); return; } const arr=getLS('gps_gallery',[]); arr.unshift({url,date:new Date().toISOString()}); setLS('gps_gallery',arr); renderGallery(); document.getElementById('galleryUrl').value=''; }
+    function renderGallery(){ const arr=getLS('gps_gallery',[]); if(!arr.length){ // default placeholders
+        const placeholder=[1,2,3,4].map(i=>({url:`https://via.placeholder.com/400x300?text=Gallery+${i}`})); setLS('gps_gallery',placeholder); return renderGallery(); }
+      let elm=''; arr.slice(0,12).forEach(g=>{ elm+=`<img src='${g.url}' alt='gallery' onerror="this.src='https://via.placeholder.com/320x180'">` }); document.getElementById('scrollGallery').innerHTML = elm;
+      // admin listing
+      let adminList=''; arr.forEach((g,i)=>{ adminList+=`<div style="padding:6px 0;border-bottom:1px solid #eee">${g.url} <button onclick="deleteGallery(${i})">Delete</button></div>` }); document.getElementById('galleryTable').innerHTML = adminList;
+    }
+    function deleteGallery(i){ const arr=getLS('gps_gallery',[]); arr.splice(i,1); setLS('gps_gallery',arr); renderGallery(); }
+
+    function initAdmin(){ renderResults(); renderStudents(); renderNews(); renderGallery(); // set ticker
+      const t = localStorage.getItem('gps_ticker'); if(t) document.getElementById('tickerText').innerText = t; }
+
+    // init show
+    document.addEventListener('DOMContentLoaded', ()=>{
+      // populate with any saved data
+      renderResults(); renderStudents(); renderNews(); renderGallery();
+      // animate counters (simple)
+      document.querySelectorAll('.count-to').forEach(el=>{ const to=+el.dataset.to; el.innerText = to; });
+    });
+
+    // accessibility: close modal on ESC
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeAdmin(); } });
+  </script></body>
+</html>
