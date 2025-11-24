@@ -215,10 +215,12 @@ table td,table th{padding:8px;border-bottom:1px solid #eee}
 
     <aside class="stats">
       <h4>School At A Glance</h4>
-      <div class="counter"><strong class="count-to" data-to="320">320</strong><span>Students Enrolled</span></div>
-      <div class="counter"><strong class="count-to" data-to="12">12</strong><span>Teachers</span></div>
-      <div class="counter"><strong class="count-to" data-to="10">10</strong><span>Classrooms</span></div>
-      <div class="counter"><strong class="count-to" data-to="4500">4500</strong><span>Library Books</span></div>
+      <div class="counter"><strong class="count-to" data-to="50">50</strong><span>Students Enrolled</span></div>
+      <div class="counter"><strong class="count-to" data-to="3">3</strong><span>Teachers</span></div>
+      <div class="counter"><strong class="count-to" data-to="1">1</strong><span>Aaya</span></div>
+      <div class="counter"><strong class="count-to" data-to="1">1</strong><span>Cook</span></div>
+      <div class="counter"><strong class="count-to" data-to="3">3</strong><span>Classrooms</span></div>
+      <div class="counter"><strong class="count-to" data-to="350">350</strong><span>Library Books</span></div>
     </aside>
   </div>
 </section>
@@ -247,7 +249,7 @@ table td,table th{padding:8px;border-bottom:1px solid #eee}
     </div>
     <div class="hero-card">
       <img src="https://via.placeholder.com/400x300?text=Teacher" alt="Teacher">
-      <h4>Miss Ruqaya</h4>
+      <h4>Mohammad Ashraf Rather</h4>
       <p>Class: UKG • Achievement: Creative Teaching</p>
     </div>
   </div>
@@ -263,7 +265,7 @@ table td,table th{padding:8px;border-bottom:1px solid #eee}
     <div class="inner">
       <div>
         <h4>Government Primary School Pethgam Wagoora</h4>
-        <small>Address: Pethgam Wagoora, (add full postal address here)</small>
+        <small>Address: Pethgam Wagoora, Wagoora Babareshi Road Near ZEO Office Wagoora)</small>
         <br>
         <small>Phone: 7006261694 | 9596449881 | Email: <a href="mailto:pspethgam@gmail.com">pspethgam@gmail.com</a></small>
       </div>
@@ -318,9 +320,18 @@ table td,table th{padding:8px;border-bottom:1px solid #eee}
     <div id="tabStudents" class="tabPane" style="display:none">
       <h4>Add Student</h4>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <input id="stuName" placeholder="Student name">
+        <input id="stuName" placeholder="Student Name">
+        <input id="aadhName" placeholder="Name as per Aadhaar">
+        <input id="fathName" placeholder="Father's Name">
+        <input id="mothName" placeholder="Mother's Name">
+        <input id="contFather" placeholder="Father's Contact">
+        <input id="contMother" placeholder="Mother's Contact">
         <input id="stuClass" placeholder="Class">
         <input id="stuDob" placeholder="DOB (YYYY-MM-DD)">
+        <input id="category" placeholder="Category">
+        <input id="bldGroup" placeholder="Blood Group">
+        <input id="penNumber" placeholder="Student PEN Number">
+        <input id="aparID" placeholder="Student Apaar ID">
         <input id="stuPhoto" placeholder="Photo URL (optional)">
         <button onclick="saveStudent()">Save Student</button>
       </div>
