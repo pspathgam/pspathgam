@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Students - GPS Pethgam Wagoora</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<style>
+body {
+  background: #fffde7;
+  font-family: 'Nunito', sans-serif;
+}
+.section-title {
+  text-align: center;
+  font-weight: 800;
+  color: #f57f17;
+  margin: 30px 0;
+}
+.card {
+  border-radius: 16px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+  padding: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2 class="section-title">Students Record</h2>
+
+  <div class="card">
+
+    <input id="search" class="form-control mb-3" type="text" placeholder="Search student by name or roll...">
+
+    <table class="table table-striped table-bordered">
+      <thead class="table-warning">
+        <tr>
+          <th>Roll No</th>
+          <th>Name</th>
+          <th>Father Name</th>
+          <th>Class</th>
+        </tr>
+      </thead>
+      <tbody id="studentTable">
+
+        <!-- Sample Student -->
+        <tr>
+          <td>01</td>
+          <td>Aarif Ahmad</td>
+          <td>Mushtaq Ahmad</td>
+          <td>5th</td>
+        </tr>
+
+        <!-- Add more students -->
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// search function
+document.getElementById("search").addEventListener("keyup", function () {
+    let value = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#studentTable tr");
+
+    rows.forEach(row => {
+        let text = row.textContent.toLowerCase();
+        row.style.display = text.includes(value) ? "" : "none";
+    });
+});
+</script>
+
+</body>
+</html>
