@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>APAAR ID Consent Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .consent-form-wrapper {
+            max-width: 800px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: white;
+        }
+        .consent-form-image {
+            /* Placeholder for the actual APAAR form image layout */
+            width: 100%;
+            height: 1000px; /* Approximate height of an A4 form */
+            background-image: url('apaar_consent_form_background.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .data-overlay {
+            position: absolute;
+            font-size: 11pt;
+            font-family: 'Times New Roman', serif;
+            font-weight: bold; /* Make inserted data stand out */
+        }
+        /* Specific positions for data based on a standard form layout */
+        #data-parent-name { top: 180px; left: 250px; width: 50%; }
+        #data-student-name { top: 220px; left: 250px; width: 50%; }
+        #data-id-type-number { top: 260px; left: 250px; width: 50%; }
+        #data-place-consent { top: 800px; left: 100px; }
+        #data-date-consent { top: 800px; left: 450px; }
+        #data-head-teacher { top: 900px; right: 50px; text-align: center; font-size: 10pt; }
+
+        @media print {
+            .controls { display: none; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container mt-4 controls shadow-lg 3d-card p-4">
+        <h3 class="text-danger mb-3">APAAR ID Consent Form Data Entry</h3>
+        <form id="apaarConsentForm">
+            <div class="row">
+                <div class="col-md-6 mb-3"><label class="form-label">Parent/Guardian Name:</label><input type="text" id="input-parent-name" class="form-control" required></div>
+                <div class="col-md-6 mb-3"><label class="form-label">Student Name:</label><input type="text" id="input-student-name" class="form-control" required></div>
+                <div class="col-md-6 mb-3"><label class="form-label">Aadhaar/ID Type & Number:</label><input type="text" id="input-id-number" class="form-control" placeholder="e.g., Aadhaar: 1234 5678 9012" required></div>
+                <div class="col-md-3 mb-3"><label class="form-label">Place of Consent:</label><input type="text" id="input-place" class="form-control" value="Wagoora" required></div>
+                <div class="col-md-3 mb-3"><label class="form-label">Date:</label><input type="date" id="input-date" class="form-control" required></div>
+            </div>
+            <button type="submit" class="btn btn-danger 3d-button w-100">Generate APAAR Consent PDF</button>
+        </form>
+    </div>
+
+    <div class="consent-form-wrapper" id="apaarConsentTemplate">
+        <div class="consent-form-image">
+            <div class="data-overlay" id="data-parent-name"></div>
+            <div class="data-overlay" id="data-student-name"></div>
+            <div class="data-overlay" id="data-id-type-number"></div>
+            <div class="data-overlay" id="data-place-consent"></div>
+            <div class="data-overlay" id="data-date-consent"></div>
+            <div class="data-overlay" id="data-head-teacher">
+                Head Teacher: Mohammad Ashraf Rather
+                <br>
+                (Official School Seal)
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        document.getElementById('apaarConsentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // 1. Gather Data
+            const parentName = document.getElementById('input-parent-name').value;
+            const studentName = document.getElementById('input-student-name').value;
+            const idNumber = document.getElementById('input-id-number').value;
+            const place = document.getElementById('input-place').value;
+            const date = document.getElementById('input-date').value;
+
+            // 2. Populate Template Overlays
+            document.getElementById('data-parent-name').textContent = parentName;
+            document.getElementById('data-student-name').textContent = studentName;
+            document.getElementById('data-id-type-number').textContent = idNumber;
+            document.getElementById('data-place-consent').textContent = place;
+            document.getElementById('data-date-consent').textContent = date;
+            
+            // 3. Generate PDF (assuming the 'apaar_consent_form_background.jpg' is present next to this file)
+            // Note: html2canvas will render the background image + the data overlays
+            const templateElement = document.getElementById('apaarConsentTemplate');
+            
+            // Temporarily set a large width/height for accurate image capture
+            templateElement.style.display = 'block'; 
+
+            window.generatePDF('apaarConsentTemplate', `APAAR_Consent_${studentName.replace(/\s/g, '_')}.pdf`);
+            
+            setTimeout(() => {
+                templateElement.style.display = 'none';
+            }, 500); 
+        });
+    </script>
+</body>
+</html>
