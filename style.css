@@ -1,47 +1,245 @@
-
-:root{
-  --brand: #0b76ef;
-  --accent: #ffb703;
-  --muted: #6b7280;
-  --bg: #f8fbff;
-  --card: #ffffff;
-  font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+/* --- 1. CHILD-FRIENDLY THEME --- */
+:root {
+    --color-primary: #007bff; /* Bright Blue */
+    --color-secondary: #ffc107; /* Bright Yellow */
+    --color-success: #28a745; /* Bright Green */
+    --color-dark-blue: #0056b3;
+    --color-dark-yellow: #d39e00;
+    --color-light-bg: #f5f8ff; /* Very light blue/white */
 }
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#111}
-.topbar{background:#072b63;color:#fff;display:flex;justify-content:space-between;padding:6px 12px;font-size:14px}
-.site-header{display:flex;align-items:center;justify-content:space-between;padding:18px 12px;background:linear-gradient(90deg,#fff,#f3f9ff);gap:12px}
-.logo img{width:72px;height:72px;object-fit:contain;border-radius:12px;background:#fff;padding:6px;box-shadow:0 6px 18px rgba(11,118,239,0.12)}
-.site-title{font-weight:900;font-size:20px;letter-spacing:1px}
-.datebox{font-weight:600;color:var(--muted)}
-.main-nav{display:flex;gap:8px;padding:12px;justify-content:center;background:transparent;flex-wrap:wrap}
-.menu-btn{background:linear-gradient(145deg,#ffb703,#ff6a88);border:none;padding:10px 14px;border-radius:12px;color:#fff;font-weight:700;cursor:pointer;box-shadow:0 10px 20px rgba(0,0,0,0.08);transform-style:preserve-3d}
-.menu-btn:hover{transform:translateY(-6px) rotateX(6deg)}
-.announcements{padding:8px 12px;background:#fff;border-top:4px solid #0b76ef}
-.hero{display:flex;gap:20px;padding:18px;align-items:center}
-.hero .slides{flex:1;max-height:280px;overflow:hidden;border-radius:12px}
-.hero .slides img{width:100%;height:280px;object-fit:cover;display:none}
-.hero .slides img.active{display:block}
-.hero-text{flex:1}
-.btn{background:var(--brand);color:#fff;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:700;margin-right:8px;display:inline-block}
-.btn.ghost{background:transparent;color:var(--brand);border:2px solid var(--brand)}
-.principal{display:flex;gap:12px;padding:18px;align-items:center}
-.principal img{width:120px;height:120px;object-fit:cover;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;padding:12px}
-.card{background:var(--card);padding:18px;border-radius:12px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#111;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:18px}
-.gallery{padding:18px}
-.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
-.gallery-grid img{width:100%;height:120px;object-fit:cover;border-radius:8px}
-.staff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;padding:12px}
-.staff-card{background:var(--card);padding:12px;border-radius:10px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
-.staff-card img{width:100%;height:140px;object-fit:cover;border-radius:8px}
-.contact{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px;background:#fff;margin:12px;border-radius:12px}
-.map-placeholder{background:#eef6ff;border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
-.site-footer{padding:18px;text-align:center;background:#072b63;color:#fff;margin-top:18px}
-.small-link{display:inline-block;margin-top:8px;color:var(--brand);text-decoration:none;font-weight:700}
-@media(max-width:800px){
-  .two-col,.contact{grid-template-columns:1fr}
-  .site-header{flex-direction:column;align-items:flex-start}
-  .hero{flex-direction:column}
+
+body {
+    font-family: 'Poppins', sans-serif; /* Modern, readable font */
+    background-color: var(--color-light-bg);
+    overflow-x: hidden; /* Prevent horizontal scroll on animations */
+}
+
+/* --- 2. ANIMATED SOFT BACKGROUND --- */
+.animated-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle, var(--color-light-bg) 10%, rgba(200, 230, 255, 0.5) 70%, rgba(255, 255, 255, 0));
+    animation: soft-pulse 15s infinite alternate ease-in-out;
+}
+
+@keyframes soft-pulse {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+/* --- 3. HEADER DOUBLE-SHADED CARD & CLOCKS --- */
+.header-card {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark-blue) 100%);
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    position: relative;
+    z-index: 10; /* Above the main content */
+}
+
+.main-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.school-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.school-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-secondary);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.digital-time {
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+.date-info {
+    font-size: 0.75rem;
+}
+.live-clocks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', monospace;
+}
+#analog-clock {
+    display: none; /* Hide analog clock on small screens */
+    border: 2px solid white;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+@media (min-width: 992px) {
+    #analog-clock { display: block; }
+    .live-clocks { flex-direction: row; }
+}
+
+/* --- 4. 3D BUTTONS & CARDS --- */
+.3d-card, .3d-button {
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.3d-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transform: perspective(1px) translateZ(0); /* Hardware acceleration */
+}
+
+.3d-card:hover {
+    transform: translateY(-3px) perspective(1px) translateZ(0);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.3d-button {
+    padding: 10px 20px;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 0 var(--color-dark-blue); /* The 3D effect: solid shadow */
+    position: relative;
+    top: 0;
+}
+
+.3d-button:active {
+    box-shadow: 0 1px 0 var(--color-dark-blue);
+    top: 3px;
+}
+
+.3d-button-large {
+    font-size: 1.2rem;
+    box-shadow: 0 6px 0 var(--color-dark-blue);
+}
+.3d-button-large:active {
+    box-shadow: 0 2px 0 var(--color-dark-blue);
+    top: 4px;
+}
+/* Apply 3D button style to nav links */
+.menu-bar .nav-link {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    background-color: transparent;
+    border-radius: 8px;
+    margin: 0 5px;
+    padding: 8px 15px;
+    transition: all 0.2s;
+    box-shadow: 0 3px 0 var(--color-dark-blue); /* Lighter 3D for nav */
+}
+.menu-bar .nav-link:hover, .menu-bar .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 1px 0 var(--color-dark-blue);
+    position: relative;
+    top: 2px;
+}
+.menu-bar {
+    background-color: var(--color-primary);
+}
+
+/* --- 5. ANIMATIONS --- */
+/* Animated Logo */
+.animated-logo {
+    animation: rotate-grow 4s infinite linear;
+}
+@keyframes rotate-grow {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.05); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+/* Animated Hero Section */
+.animated-hero-card {
+    background: linear-gradient(145deg, #e6f0ff, #c8e0ff);
+    animation: float-shadow 3s infinite alternate;
+}
+@keyframes float-shadow {
+    0% { transform: translateY(0px) scale(1); box-shadow: 0 10px 15px rgba(0,0,0,0.2); }
+    100% { transform: translateY(-5px) scale(1.01); box-shadow: 0 15px 25px rgba(0,0,0,0.3); }
+}
+
+/* --- 6. VERTICAL NEWS SCROLLER --- */
+.news-scroller-card {
+    height: 300px;
+    overflow: hidden;
+}
+
+.event-scroller {
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.event-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.event-item:hover {
+    background-color: var(--color-secondary);
+}
+
+/* The actual scrolling animation is handled by JS for better control */
+
+/* --- 7. MISC STYLES --- */
+.footer {
+    background-color: #343a40 !important;
+}
+
+.3d-button-block {
+    width: 100%;
+    margin-bottom: 15px;
+}
+/* Ensure admin link is visually distinct */
+.admin-link {
+    background-color: #dc3545 !important; 
+    box-shadow: 0 3px 0 #a71d2a !important;
+}
+.admin-link:hover {
+    background-color: #c82333 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .header-card {
+        text-align: center !important;
+        padding-top: 15px !important;
+    }
+    .logo-container {
+        justify-content: center;
+    }
+    .live-clocks {
+        margin-top: 10px;
+    }
+    .main-title {
+        font-size: 1.5rem;
+    }
+    .menu-bar .navbar-collapse {
+        text-align: center;
+    }
+}
+
+/* --- 8. ADMIN PANEL STYLES (Basic) --- */
+/* (More complex admin styles would be in a separate admin.css) */
+.admin-dashboard {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
