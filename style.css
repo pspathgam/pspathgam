@@ -9,7 +9,8 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif; /* Modern, readable font */
+    /* FIX: Now uses the imported font */
+    font-family: 'Poppins', sans-serif; 
     background-color: var(--color-light-bg);
     overflow-x: hidden; /* Prevent horizontal scroll on animations */
 }
@@ -55,7 +56,13 @@ body {
 .logo-container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* Changed to flex-start for large screens to better align logo text */
+    justify-content: flex-start; 
+}
+@media (max-width: 991px) {
+    .logo-container {
+        justify-content: center;
+    }
 }
 .school-name {
     font-size: 1.2rem;
@@ -87,7 +94,7 @@ body {
 }
 @media (min-width: 992px) {
     #analog-clock { display: block; }
-    .live-clocks { flex-direction: row; }
+    .live-clocks { flex-direction: row; gap: 10px; } /* Added gap for cleaner desktop layout */
 }
 
 /* --- 4. 3D BUTTONS & CARDS --- */
@@ -98,23 +105,36 @@ body {
 }
 
 .3d-card {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-    transform: perspective(1px) translateZ(0); /* Hardware acceleration */
+    /* Increased shadow slightly for better 3D pop */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.08); 
+    transform: perspective(1px) translateZ(0); 
 }
 
 .3d-card:hover {
-    transform: translateY(-3px) perspective(1px) translateZ(0);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px) perspective(1px) translateZ(0); /* Increased lift on hover */
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 .3d-button {
     padding: 10px 20px;
     font-weight: 600;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 4px 0 var(--color-dark-blue); /* The 3D effect: solid shadow */
+    /* Use a darker shade for a deeper press effect */
+    box-shadow: 0 4px 0 var(--color-dark-blue); 
     position: relative;
     top: 0;
 }
+/* Ensure Bootstrap buttons use the correct dark shadow when not primary */
+.btn-primary.3d-button {
+    box-shadow: 0 4px 0 var(--color-dark-blue);
+}
+.btn-success.3d-button {
+    box-shadow: 0 4px 0 #1e7e34; /* Darker green */
+}
+.btn-outline-primary.3d-button-block {
+    box-shadow: 0 4px 0 rgba(0, 123, 255, 0.5); /* Semi-transparent border shadow */
+}
+
 
 .3d-button:active {
     box-shadow: 0 1px 0 var(--color-dark-blue);
@@ -129,6 +149,7 @@ body {
     box-shadow: 0 2px 0 var(--color-dark-blue);
     top: 4px;
 }
+
 /* Apply 3D button style to nav links */
 .menu-bar .nav-link {
     color: white !important;
@@ -178,9 +199,12 @@ body {
 }
 
 .event-scroller {
+    /* Using Flexbox or padding for better item management within JS scroller */
+    display: flex;
+    flex-direction: column; 
     height: 100%;
-    overflow: hidden;
     position: relative;
+    /* No overflow hidden here, it must be on the parent card for the scroll effect to work */
 }
 
 .event-item {
@@ -189,13 +213,16 @@ body {
     font-size: 0.95rem;
     cursor: pointer;
     transition: background-color 0.3s;
+    flex-shrink: 0; /* Important for JS scrolling */
+}
+
+.event-item:last-child {
+    border-bottom: none;
 }
 
 .event-item:hover {
     background-color: var(--color-secondary);
 }
-
-/* The actual scrolling animation is handled by JS for better control */
 
 /* --- 7. MISC STYLES --- */
 .footer {
@@ -221,9 +248,7 @@ body {
         text-align: center !important;
         padding-top: 15px !important;
     }
-    .logo-container {
-        justify-content: center;
-    }
+    /* Logo container on small screens is centered */
     .live-clocks {
         margin-top: 10px;
     }
@@ -236,10 +261,12 @@ body {
 }
 
 /* --- 8. ADMIN PANEL STYLES (Basic) --- */
-/* (More complex admin styles would be in a separate admin.css) */
 .admin-dashboard {
     background-color: #fff;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+.form-control, .btn {
+    border-radius: 8px; /* Consistent rounding */
 }
