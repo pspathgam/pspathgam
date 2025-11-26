@@ -441,7 +441,36 @@ function closeForm() {
     document.getElementById("formPopup").style.display = "none";
 }
 function submitForm() {
+    let name = document.getElementById("studentName").value;
+    let father = document.getElementById("fatherName").value;
+    let cls = document.getElementById("className").value;
+    let fileInput = document.getElementById("photoUpload");
+
+    // Validation
+    if(name === "" || father === "" || cls === ""){
+        alert("Please fill all required fields!");
+        return;
+    }
+
+    // Save text values locally
+    localStorage.setItem("ad_name", name);
+    localStorage.setItem("ad_father", father);
+    localStorage.setItem("ad_class", cls);
+
+    // Save image locally
+    if(fileInput.files.length > 0){
+        let reader = new FileReader();
+        reader.onload = () => {
+            localStorage.setItem("ad_photo", reader.result);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+    }
+
+    // Show success message
     document.getElementById("successMsg").style.display = "block";
+
+    // Auto scroll to success msg
+    document.getElementById("successMsg").scrollIntoView({behavior:"smooth"});
 }
 
 // ***** Real-Time Clock *****
