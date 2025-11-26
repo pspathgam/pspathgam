@@ -481,6 +481,38 @@ function submitForm() {
     // Auto scroll to success msg
     document.getElementById("successMsg").scrollIntoView({behavior:"smooth"});
 }
+  function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    let pdf = new jsPDF();
+
+    pdf.setFontSize(16);
+    pdf.text("Admission Form – Government Primary School Pethgam Wagoora", 10, 20);
+
+    let y = 40;
+
+    // Loop through fields and print them
+    const fields = [
+        "studentName", "nameAadhaar", "fatherName", "motherName", "residence",
+        "tehsil", "district", "pincode", "fatherContactNumber",
+        "motherContactNumber", "aadhaarNumber", "dob", "dobInWords",
+        "bankAccNo", "bankName", "bankBranch", "ifscCode", "category",
+        "bloodGroup", "classJoining", "penNumbar"
+    ];
+
+    fields.forEach(id => {
+        pdf.setFontSize(12);
+        pdf.text(`${id}: ${localStorage.getItem(id)}`, 10, y);
+        y += 8;
+    });
+
+    // Add Photo
+    let photo = localStorage.getItem("studentPhoto");
+    if (photo) {
+        pdf.addImage(photo, "JPEG", 140, 20, 50, 50);
+    }
+
+    pdf.save("Admission_Form.pdf");
+  }
 
 // ***** Real-Time Clock *****
 function updateClock() {
