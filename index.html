@@ -1,166 +1,169 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>PS Pethgam Wagoora — Government Primary School Pethgam Wagoora</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Primary School Pethgam Wagoora - Official Website</title>
+    <meta name="description" content="Official Website of GPS Pethgam Wagoora. Check admissions, results, MDM reports, and school events.">
+    <meta name="keywords" content="GPS Pethgam, Wagoora, Primary School, Admission, Results, UDISE 01022202207">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit-id.js" crossorigin="anonymous"></script> 
 </head>
-<body>
-  <!-- Top quick info bar -->
-  <div class="topbar">
-    <div class="top-left">UDISE: <strong>XXXXXXXX</strong></div>
-    <div class="top-center">Email: <strong>pspethgamwagoora@gmail.com</strong></div>
-    <div class="top-right">Phone: <strong>600XXXXXXX</strong></div>
-  </div>
+<body class="bg-light-child-theme">
+    <div class="animated-bg-overlay"></div>
 
-  <!-- Header -->
-  <header class="site-header">
-    <div class="logo">
-      <img src="images/logo.png" alt="PS Pethgam Wagoora Logo">
-    </div>
-    <div class="site-title" id="multicolor-title" aria-label="Government Primary School Pethgam Wagoora">
-      <!-- letters inserted by JS for multicolor effect -->
-    </div>
-    <div class="datebox" id="datebox"></div>
-  </header>
+    <header class="sticky-top">
+        <div class="container-fluid header-card shadow-lg p-2">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-4 col-sm-12 text-center text-lg-start">
+                    <div class="logo-container">
+                        <img src="logo.png" alt="School Logo" class="school-logo animated-logo">
+                        <span class="school-name">GPS PETHGAM WAGOORA</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-4 col-sm-12 text-center my-2">
+                    <h1 class="main-title text-white d-none d-md-block">GOVT. PRIMARY SCHOOL PETHGAM WAGOORA</h1>
+                    <p class="tagline mb-0 text-white-50">UDISE: 01022202207 | Excellence in Primary Education</p>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-12 text-center">
+                    <div class="live-clocks text-white">
+                        <div id="digital-clock" class="digital-time"></div>
+                        <canvas id="analog-clock" width="50" height="50" class="me-2"></canvas>
+                        <div id="islamic-date" class="date-info"></div>
+                        <div id="christian-date" class="date-info"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <!-- 3D Menu -->
-  <nav class="main-nav">
-    <button class="menu-btn">Home</button>
-    <button class="menu-btn">About</button>
-    <button class="menu-btn">Staff</button>
-    <button class="menu-btn">Students</button>
-    <button class="menu-btn">Admissions</button>
-    <button class="menu-btn">Academics</button>
-    <button class="menu-btn">Gallery</button>
-    <button class="menu-btn">Contact</button>
-  </nav>
+        <nav class="navbar navbar-expand-lg navbar-dark menu-bar sticky-top shadow-sm">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link active 3d-button" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link 3d-button" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link 3d-button" href="gallery.html">Gallery</a></li>
+                        <li class="nav-item"><a class="nav-link 3d-button" href="admission.html">Admission</a></li>
+                        <li class="nav-item"><a class="nav-link 3d-button" href="results.html">Results</a></li>
+                        <li class="nav-item"><a class="nav-link 3d-button" href="mdm.html">MDM</a></li>
+                        <li class="nav-item"><a class="nav-link 3d-button" href="staff.html">Staff</a></li>
+                        <li class="nav-item"><a class="nav-link 3d-button" href="students.html">Students</a></li>
+                        <li class="nav-item"><a class="nav-link 3d-button" href="downloads.html">Downloads</a></li>
+                        <li class="nav-item"><a class="nav-link 3d-button" href="contact.html">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link 3d-button admin-link" href="admin/login.html">Admin Panel</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-  <!-- Announcements -->
-  <section class="announcements">
-    <marquee behavior="scroll" direction="left" scrollamount="5">Admissions open | FA-1 starts on 10 Dec | Parent-Teacher meeting on 20 Jan | School Closed on Republic Day</marquee>
-  </section>
+    <main class="container my-4">
+        <section class="row hero-section mb-4">
+            <div class="col-lg-9">
+                <div class="hero-content p-4 shadow-lg 3d-card animated-hero-card">
+                    <h2>📚 Shaping Young Minds for a Brighter Future</h2>
+                    <p class="lead">Welcome to Govt. Primary School Pethgam Wagoora. We are committed to providing quality education in a nurturing environment.</p>
+                    <a href="admission.html" class="btn btn-primary 3d-button-large">Enroll Your Child Today!</a>
+                </div>
+            </div>
+            <div class="col-lg-3 mt-4 mt-lg-0">
+                <div class="card shadow-lg 3d-card news-scroller-card">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-bullhorn"></i> **News & Events**
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="eventScroller" class="event-scroller">
+                            <div class="event-item">**01/12:** Winter Vacation announced.</div>
+                            <div class="event-item">**25/11:** Annual Sports Day photos uploaded to Gallery.</div>
+                            <div class="event-item">**20/11:** Last date for Admission Form submission.</div>
+                            <div class="event-item">**New:** MDM Menu updated for the week.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- Hero Slider -->
-  <section class="hero">
-    <div class="slides">
-      <img src="images/hero1.jpg" alt="Hero 1">
-      <img src="images/hero2.jpg" alt="Hero 2">
-      <img src="images/hero3.jpg" alt="Hero 3">
-    </div>
-    <div class="hero-text">
-      <h1>Welcome to PS Pethgam Wagoora</h1>
-      <p>Learning with joy & purpose — dedicated to the holistic development of our students.</p>
-      <div class="hero-ctas">
-        <a class="btn" href="#admissions">Apply Now</a>
-        <a class="btn ghost" href="#results">View Results</a>
-      </div>
-    </div>
-  </section>
+        <section class="row mb-4">
+            <div class="col-lg-8">
+                <div class="card shadow-lg 3d-card welcome-note-card">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-school"></i> **A Warm Welcome**
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">Dear Parents and Guardians,</p>
+                        <p>It is with immense joy that we welcome you to our official school website. This platform is a window into the daily life and achievements of our students. We strive to instill core values, academic excellence, and a love for learning in every child. We encourage you to explore the resources and announcements available here.</p>
+                        <p class="text-end fw-bold">- Head Teacher, Mohammad Ashraf Rather</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="card shadow-lg 3d-card highlights-card">
+                    <div class="card-header bg-warning text-dark">
+                        <i class="fas fa-star"></i> **Quick Highlights**
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Child-centric teaching methods.</li>
+                        <li class="list-group-item">High student-teacher ratio.</li>
+                        <li class="list-group-item">Daily Mid-Day Meal (MDM).</li>
+                        <li class="list-group-item">Focus on digital literacy.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-  <!-- Principal Message -->
-  <section class="principal">
-    <img src="images/principal.jpg" alt="HOI Mohammad Ashraf Rather">
-    <div>
-      <h2>Message from the Head of Institution</h2>
-      <p>Welcome to PS Pethgam Wagoora. Our mission is to provide quality foundational education in a nurturing environment. We focus on academic excellence, character building, and community participation.</p>
-      <a href="#about" class="small-link">Read more</a>
-    </div>
-  </section>
+        <section class="row mb-4">
+            <div class="col-md-6">
+                <div class="card shadow-lg 3d-card mission-card h-100">
+                    <div class="card-header bg-info text-white"><i class="fas fa-flag"></i> **Our Mission**</div>
+                    <div class="card-body">
+                        To provide free, quality primary education that focuses on holistic development, character building, and fundamental literacy and numeracy skills for all children in Pethgam and surrounding areas.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mt-4 mt-md-0">
+                <div class="card shadow-lg 3d-card vision-card h-100">
+                    <div class="card-header bg-danger text-white"><i class="fas fa-eye"></i> **Our Vision**</div>
+                    <div class="card-body">
+                        To become a model Government Primary School known for innovation, community engagement, and producing confident, responsible citizens prepared for secondary education.
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- Quick Links -->
-  <section class="quicklinks">
-    <div class="card-grid">
-      <a class="card" href="#student-corner">Student Corner</a>
-      <a class="card" href="#staff">Staff Corner</a>
-      <a class="card" href="#results">Results</a>
-      <a class="card" href="#mdm">MDM Reports</a>
-      <a class="card" href="#idcards">ID Cards</a>
-      <a class="card" href="#certificates">Certificates</a>
-    </div>
-  </section>
+        <section class="mb-5">
+            <h3 class="text-center mb-4">🚀 Quick Links</h3>
+            <div class="row text-center">
+                <div class="col-6 col-md-3 mb-3"><a href="results.html" class="btn btn-outline-primary 3d-button-block"><i class="fas fa-award"></i> Check Results</a></div>
+                <div class="col-6 col-md-3 mb-3"><a href="downloads.html#bonafide" class="btn btn-outline-success 3d-button-block"><i class="fas fa-file-pdf"></i> Bonafide Request</a></div>
+                <div class="col-6 col-md-3 mb-3"><a href="mdm.html" class="btn btn-outline-warning 3d-button-block"><i class="fas fa-utensils"></i> MDM Menu</a></div>
+                <div class="col-6 col-md-3 mb-3"><a href="gallery.html" class="btn btn-outline-info 3d-button-block"><i class="fas fa-images"></i> School Gallery</a></div>
+            </div>
+        </section>
+    </main>
 
-  <!-- Announcements & Events -->
-  <section class="two-col">
-    <div>
-      <h3>Latest Announcements</h3>
-      <ul class="list">
-        <li>FA-1 Schedule released — check the Students section.</li>
-        <li>Winter Vacation expected from Dec 1 to Feb (tentative).</li>
-        <li>MDM financials updated — download statement.</li>
-      </ul>
-    </div>
-    <div>
-      <h3>Upcoming Events</h3>
-      <ul class="list">
-        <li>Sports Day — Date announced soon.</li>
-        <li>Parent-Teacher Meeting — 20 Jan.</li>
-      </ul>
-    </div>
-  </section>
+    <footer class="footer mt-auto py-4 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; <span id="currentYear"></span> GPS Pethgam Wagoora. All Rights Reserved.</p>
+                    <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Wagoora Babareshi Road Near ZEO Wagoora</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-1"><i class="fas fa-envelope"></i> Email: <a href="mailto:pspethgam@gmail.com" class="text-warning">pspethgam@gmail.com</a></p>
+                    <p class="mb-0"><i class="fas fa-phone"></i> Contact: 7006261694 / 9596449881</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-  <!-- Gallery Preview -->
-  <section class="gallery">
-    <h3>Gallery</h3>
-    <div class="gallery-grid">
-      <img src="images/gallery1.jpg" alt="">
-      <img src="images/gallery2.jpg" alt="">
-      <img src="images/gallery3.jpg" alt="">
-      <img src="images/gallery4.jpg" alt="">
-      <img src="images/gallery5.jpg" alt="">
-      <img src="images/gallery6.jpg" alt="">
-    </div>
-    <a class="small-link" href="#gallery">View Full Gallery</a>
-  </section>
-
-  <!-- Staff Preview -->
-  <section class="staff">
-    <h3>Our Staff</h3>
-    <div class="staff-grid">
-      <div class="staff-card">
-        <img src="images/staff1.jpg" alt="Mohammad Ashraf Rather">
-        <div class="staff-name">Mohammad Ashraf Rather</div>
-        <div class="staff-role">HOI</div>
-      </div>
-      <div class="staff-card">
-        <img src="images/staff2.jpg" alt="Mohammad Iqbal Rather">
-        <div class="staff-name">Mohammad Iqbal Rather</div>
-        <div class="staff-role">Teacher</div>
-      </div>
-      <div class="staff-card">
-        <img src="images/staff3.jpg" alt="Zamrooda Bano">
-        <div class="staff-name">Zamrooda Bano</div>
-        <div class="staff-role">Teacher</div>
-      </div>
-      <div class="staff-card">
-        <img src="images/staff4.jpg" alt="Masrat Begum">
-        <div class="staff-name">Masrat Begum</div>
-        <div class="staff-role">Aaya</div>
-      </div>
-    </div>
-    <a class="small-link" href="#staff">View All Staff</a>
-  </section>
-
-  <!-- Contact & Map -->
-  <section class="contact">
-    <div>
-      <h3>Contact Us</h3>
-      <p><strong>Address:</strong> Pethgam Wagoora, (District), Jammu & Kashmir</p>
-      <p><strong>Phone:</strong> 600XXXXXXX</p>
-      <p><strong>Email:</strong> pspethgamwagoora@gmail.com</p>
-    </div>
-    <div class="map-placeholder">
-      <p>Map placeholder — embed Google Map on your live site.</p>
-    </div>
-  </section>
-
-  <footer class="site-footer">
-    <div>© <span id="year"></span> PS Pethgam Wagoora — All rights reserved.</div>
-    <div>Made with ♥ for PS Pethgam Wagoora</div>
-  </footer>
-
-  <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
