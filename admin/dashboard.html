@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - GPS Pethgam Wagoora Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .sidebar {
+            min-height: 90vh;
+            background: linear-gradient(180deg, var(--color-dark-blue), var(--color-primary));
+            color: white;
+            padding-top: 20px;
+            border-radius: 12px;
+        }
+        .sidebar a {
+            color: #ffc107;
+            padding: 10px 15px;
+            display: block;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .main-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-primary text-white p-3 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center container-fluid">
+            <h4>Admin Dashboard - GPS Pethgam</h4>
+            <button class="btn btn-warning 3d-button" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-lg-2 sidebar shadow-lg">
+                <h6 class="text-white mb-3 text-center">👋 Welcome, Head Teacher</h6>
+                <nav class="nav flex-column">
+                    <a href="#overview" id="menu-overview"><i class="fas fa-tachometer-alt"></i> Overview</a>
+                    <a href="#students" id="menu-students"><i class="fas fa-user-graduate"></i> Manage Students</a>
+                    <a href="#staff" id="menu-staff"><i class="fas fa-users"></i> Manage Staff</a>
+                    <a href="#results" id="menu-results"><i class="fas fa-chalkboard"></i> Marks & Results</a>
+                    <a href="#mdm" id="menu-mdm"><i class="fas fa-utensils"></i> MDM Reporting</a>
+                    <a href="#certificates" id="menu-certificates"><i class="fas fa-file-pdf"></i> Generate Certificates</a>
+                </nav>
+            </div>
+            
+            <div class="col-md-9 col-lg-10 main-content">
+                <div id="content-area" class="admin-dashboard">
+                    <h2 class="text-secondary">Dashboard Overview</h2>
+                    <p>Welcome to the main control panel. Use the sidebar to manage school data, generate reports, and process forms.</p>
+                    <div class="row mt-4">
+                        <div class="col-md-4"><div class="alert alert-primary">Total Students: <span id="stat-students">0</span></div></div>
+                        <div class="col-md-4"><div class="alert alert-success">Total Staff: <span id="stat-staff">0</span></div></div>
+                        <div class="col-md-4"><div class="alert alert-warning">MDM Logs Last Month: <span id="stat-mdm">0</span></div></div>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. SECURITY CHECK
+            const token = sessionStorage.getItem('admin_token');
+            if (!token) {
+                alert('Session expired or unauthorized access. Please log in.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // 2. LOGOUT FUNCTION
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                sessionStorage.removeItem('admin_token');
+                window.location.href = 'login.html';
+            });
+            
+            // 3. STATS LOADING (using script.js loadData)
+            document.getElementById('stat-students').textContent = loadData('students').length;
+            document.getElementById('stat-staff').textContent = loadData('staff').length;
+            document.getElementById('stat-mdm').textContent = loadData('mdm_reports').length;
+
+            // 4. DYNAMIC CONTENT LOADING (Simplified for brevity)
+            const contentArea = document.getElementById('content-area');
+
+            document.getElementById('menu-students').addEventListener('click', (e) => {
+                e.preventDefault();
+                contentArea.innerHTML = `
+                    <h2>👨‍🎓 Manage Students (CRUD)</h2>
+                    <p>Add/Edit/Delete Student Records. Includes Student Promotion and Attendance setup.</p>
+                    <button class="btn btn-primary 3d-button" onclick="alert('Attendance Module (Face-capture Placeholder) Active.')">Start Attendance</button>
+                    <button class="btn btn-success 3d-button" onclick="alert('Export All Student Data to PDF/Excel.')">Export Records</button>
+                `;
+            });
+            
+            document.getElementById('menu-staff').addEventListener('click', (e) => {
+                e.preventDefault();
+                contentArea.innerHTML = `
+                    <h2>🧑‍🏫 Manage Staff</h2>
+                    <p>Add/Edit/Delete Staff Records. Includes photos, qualifications, and joining dates.</p>
+                    <button class="btn btn-success 3d-button" onclick="alert('Generate Staff Statement PDF.')">Generate Staff Statement</button>
+                `;
+            });
+            
+            document.getElementById('menu-results').addEventListener('click', (e) => {
+                e.preventDefault();
+                contentArea.innerHTML = `
+                    <h2>📝 Enter Marks & Generate Cards</h2>
+                    <p>Select class and student to enter marks. Generate printable marks cards on submission.</p>
+                    <button class="btn btn-warning 3d-button" onclick="alert('Marks Card Generator Active.')">Generate Marks Card</button>
+                `;
+            });
+            
+            // NOTE: Certificate and MDM handling will link to the template files
+            document.getElementById('menu-mdm').addEventListener('click', (e) => {
+                e.preventDefault();
+                contentArea.innerHTML = `
+                    <h2>🍲 MDM Management & Reporting</h2>
+                    <p>Manage daily MDM usage and generate monthly expenditure reports.</p>
+                    <a href="../templates/mdm_expenditure.html" class="btn btn-success 3d-button my-3" target="_blank">Generate Monthly MDM Expenditure PDF</a>
+                    `;
+            });
+
+            document.getElementById('menu-certificates').addEventListener('click', (e) => {
+                e.preventDefault();
+                contentArea.innerHTML = `
+                    <h2>📜 Certificate Generation</h2>
+                    <p>Select a student to generate official certificates instantly.</p>
+                    <button class="btn btn-primary 3d-button mt-3" onclick="alert('Roll Statement Generated.')">Generate Roll Statement</button>
+                    <button class="btn btn-info 3d-button mt-3" onclick="alert('Bonafide, DOB, or Duty Certificates can be generated here.')">Generate Selected Certificate</button>
+                `;
+            });
+
+        });
+    </script>
+</body>
+</html>
