@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Admission Form - GPS Pethgam</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .admission-form-container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+        }
+        .pdf-output {
+            display: none; /* Hidden by default, shown for PDF generation */
+            width: 210mm; 
+            min-height: 297mm; 
+            padding: 15mm;
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+            font-size: 11pt;
+            border: 1px solid #000;
+        }
+        .pdf-output table { width: 100%; border-collapse: collapse; }
+        .pdf-output th, .pdf-output td { border: 1px solid #000; padding: 6px; }
+        .form-section-title {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 5px;
+            margin-top: 15px;
+            font-size: 1.1rem;
+        }
+        @media print {
+            .pdf-output { display: block; }
+            .form-container, .controls { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container form-container my-5 shadow-lg 3d-card">
+        <h2 class="text-primary text-center mb-4">Online Admission Form (2025-26)</h2>
+        <form id="onlineAdmissionForm">
+            <div class="form-section-title">1. Student Details</div>
+            <div class="row mt-3">
+                <div class="col-md-6 mb-3"><label class="form-label">Full Name:</label><input type="text" id="s_name" class="form-control" required></div>
+                <div class="col-md-6 mb-3"><label class="form-label">Date of Birth:</label><input type="date" id="s_dob" class="form-control" required></div>
+                <div class="col-md-6 mb-3"><label class="form-label">Gender:</label><select id="s_gender" class="form-select"><option>Male</option><option>Female</option><option>Other</option></select></div>
+                <div class="col-md-6 mb-3"><label class="form-label">Category (SC/ST/OBC/Gen):</label><input type="text" id="s_category" class="form-control"></div>
+                <div class="col-12 mb-3"><label class="form-label">Previous School Name (if applicable):</label><input type="text" id="s_prev_school" class="form-control"></div>
+            </div>
+
+            <div class="form-section-title">2. Parent / Guardian Details</div>
+            <div class="row mt-3">
+                <div class="col-md-6 mb-3"><label class="form-label">Father's Name:</label><input type="text" id="p_father_name" class="form-control" required></div>
+                <div class="col-md-6 mb-3"><label class="form-label">Mother's Name:</label><input type="text" id="p_mother_name" class="form-control" required></div>
+                <div class="col-md-6 mb-3"><label class="form-label">Aadhaar/ID No. (Father):</label><input type="text" id="p_father_aadhaar" class="form-control"></div>
+                <div class="col-md-6 mb-3"><label class="form-label">Contact Number 1 (Primary):</label><input type="tel" id="p_contact1" class="form-control" required></div>
+                <div class="col-md-6 mb-3"><label class="form-label">Contact Number 2 (Secondary):</label><input type="tel" id="p_contact2" class="form-control"></div>
+            </div>
+
+            <div class="form-section-title">3. Permanent Address</div>
+            <div class="mb-3">
+                <label class="form-label">Full Address:</label>
+                <textarea id="p_address" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success 3d-button-large w-100 mt-4">Submit Application & Get Printable Form</button>
+        </form>
+        <p id="submissionMessage" class="mt-3 text-center text-success fw-bold" style="display:none;">Application Submitted! Generating form...</p>
+    </div>
+
+    <div class="pdf-output" id="admissionFormTemplate">
+        <h3 class="text-center text-decoration-underline">APPLICATION FOR PRIMARY SCHOOL ADMISSION</h3>
+        <p class="text-center mb-3 fw-bold">GOVT. PRIMARY SCHOOL PETHGAM WAGOORA</p>
+
+        <div class="form-section-title bg-secondary">A. Student Details</div>
+        <table>
+            <tr><td style="width: 30%;">1. Student's Full Name:</td><td id="pdf-s_name"></td><td style="width: 30%;" rowspan="3">Affix Passport Photo Here</td></tr>
+            <tr><td>2. Date of Birth (DOB):</td><td id="pdf-s_dob"></td></tr>
+            <tr><td>3. Gender:</td><td id="pdf-s_gender"></td></tr>
+            <tr><td>4. Category:</td><td colspan="2" id="pdf-s_category"></td></tr>
+            <tr><td>5. Previous School:</td><td colspan="2" id="pdf-s_prev_school"></td></tr>
+        </table>
+
+        <div class="form-section-title bg-secondary">B. Parent Details</div>
+        <table>
+            <tr><td style="width: 30%;">6. Father's Name:</td><td id="pdf-p_father_name"></td></tr>
+            <tr><td>7. Mother's Name:</td><td id="pdf-p_mother_name"></td></tr>
+            <tr><td>8. Father's Aadhaar/ID:</td><td id="pdf-p_father_aadhaar"></td></tr>
+            <tr><td>9. Contact Numbers:</td><td id="pdf-p_contact"></td></tr>
+        </table>
+
+        <div class="form-section-title bg-secondary">C. Address</div>
+        <table>
+            <tr><td style="width: 20%;">10. Address:</td><td id="pdf-p_address"></td></tr>
+        </table>
+        
+        <p class="mt-4">Declaration by Parent/Guardian:</p>
+        <p style="text-indent: 20px;">I hereby declare that the information provided above is true and correct to the best of my knowledge and belief. I understand that any false information will lead to cancellation of admission.</p>
+
+        <div class="row mt-5">
+            <div class="col-6 text-start">
+                Place: PETHGAM<br>
+                Date: <span id="pdf-date-signed"></span>
+            </div>
+            <div class="col-6 text-end">
+                _________________________<br>
+                Signature of Father/Mother
+            </div>
+        </div>
+        <p class="text-center mt-5">**FOR OFFICE USE ONLY**</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        document.getElementById('onlineAdmissionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 1. Gather Data
+            const data = {
+                s_name: document.getElementById('s_name').value,
+                s_dob: document.getElementById('s_dob').value,
+                s_gender: document.getElementById('s_gender').value,
+                s_category: document.getElementById('s_category').value,
+                s_prev_school: document.getElementById('s_prev_school').value,
+                p_father_name: document.getElementById('p_father_name').value,
+                p_mother_name: document.getElementById('p_mother_name').value,
+                p_father_aadhaar: document.getElementById('p_father_aadhaar').value,
+                p_contact1: document.getElementById('p_contact1').value,
+                p_contact2: document.getElementById('p_contact2').value,
+                p_address: document.getElementById('p_address').value
+            };
+
+            // 2. Populate PDF Template
+            document.getElementById('pdf-s_name').textContent = data.s_name;
+            document.getElementById('pdf-s_dob').textContent = data.s_dob;
+            document.getElementById('pdf-s_gender').textContent = data.s_gender;
+            document.getElementById('pdf-s_category').textContent = data.s_category;
+            document.getElementById('pdf-s_prev_school').textContent = data.s_prev_school;
+            document.getElementById('pdf-p_father_name').textContent = data.p_father_name;
+            document.getElementById('pdf-p_mother_name').textContent = data.p_mother_name;
+            document.getElementById('pdf-p_father_aadhaar').textContent = data.p_father_aadhaar;
+            document.getElementById('pdf-p_contact').textContent = `${data.p_contact1} / ${data.p_contact2}`;
+            document.getElementById('pdf-p_address').textContent = data.p_address;
+            document.getElementById('pdf-date-signed').textContent = new Date().toLocaleDateString();
+
+            // 3. Save Data (Admin Feature: Download Pre-filled submitted admission form)
+            let submittedForms = window.loadData('admission_forms');
+            submittedForms.push(data);
+            window.saveData('admission_forms', submittedForms);
+
+            // 4. Generate PDF
+            document.getElementById('submissionMessage').style.display = 'block';
+            
+            // Temporarily show the PDF output for accurate rendering
+            const pdfOutput = document.getElementById('admissionFormTemplate');
+            pdfOutput.style.display = 'block';
+
+            // Generate the PDF using the global function from script.js
+            window.generatePDF('admissionFormTemplate', `Admission_Form_${data.s_name.replace(/\s/g, '_')}.pdf`);
+
+            // Hide the PDF output again
+            setTimeout(() => {
+                pdfOutput.style.display = 'none';
+                document.getElementById('submissionMessage').style.display = 'none';
+            }, 500); // Small delay to ensure PDF generation starts
+        });
+    </script>
+</body>
+</html>
