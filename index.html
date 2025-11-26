@@ -441,33 +441,42 @@ function closeForm() {
     document.getElementById("formPopup").style.display = "none";
 }
 function submitForm() {
-    let name = document.getElementById("studentName").value;
-    let father = document.getElementById("fatherName").value;
-    let cls = document.getElementById("className").value;
-    let fileInput = document.getElementById("photoUpload");
 
-    // Validation
-    if(name === "" || father === "" || cls === ""){
-        alert("Please fill all required fields!");
-        return;
+    // List of all field IDs
+    const fields = [
+        "studentName", "nameAadhaar", "fatherName", "motherName", "residence",
+        "tehsil", "district", "pincode", "fatherContactNumber",
+        "motherContactNumber", "aadhaarNumber", "dob", "dobInWords",
+        "bankAccNo", "bankName", "bankBranch", "ifscCode", "category",
+        "bloodGroup", "classJoining", "penNumbar"
+    ];
+
+    // Validate all fields
+    for (let id of fields) {
+        if (document.getElementById(id).value.trim() === "") {
+            alert("Please fill all fields before submitting.");
+            return;
+        }
     }
 
-    // Save text values locally
-    localStorage.setItem("ad_name", name);
-    localStorage.setItem("ad_father", father);
-    localStorage.setItem("ad_class", cls);
+    // Save values to localStorage
+    fields.forEach(id => {
+        localStorage.setItem(id, document.getElementById(id).value);
+    });
 
-    // Save image locally
-    if(fileInput.files.length > 0){
+    // Handle Photo Upload
+    let file = document.getElementById("photoUpload").files[0];
+    if (file) {
         let reader = new FileReader();
-        reader.onload = () => {
-            localStorage.setItem("ad_photo", reader.result);
+        reader.onload = function () {
+            localStorage.setItem("studentPhoto", reader.result);
         };
-        reader.readAsDataURL(fileInput.files[0]);
+        reader.readAsDataURL(file);
     }
 
     // Show success message
     document.getElementById("successMsg").style.display = "block";
+};
 
     // Auto scroll to success msg
     document.getElementById("successMsg").scrollIntoView({behavior:"smooth"});
