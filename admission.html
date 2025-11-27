@@ -5,239 +5,241 @@
 <title>Admission Form – Government Primary School Pethgam Wagoora</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght:300;400;700&display=swap" rel="stylesheet">
 
 <style>
-    body{
-        font-family:'Nunito',sans-serif;
-        background:#eef6ff;
-        margin:0;
-        padding:0;
-    }
-    .container{
-        width:95%;
-        max-width:900px;
-        margin:20px auto;
-        background:white;
-        padding:20px;
-        border-radius:10px;
-        box-shadow:0 0 10px rgba(0,0,0,0.15);
-    }
-    h2{
-        text-align:center;
-        margin-bottom:20px;
-        color:#003366;
-    }
-    label{
-        font-weight:700;
-        margin-top:10px;
-        display:block;
-    }
-    input,select{
-        width:100%;
-        padding:10px;
-        border-radius:5px;
-        border:1px solid #ccc;
-        margin-top:5px;
-    }
-    .row{
-        display:flex;
-        gap:10px;
-    }
-    .col{
-        flex:1;
-    }
-    button{
-        width:100%;
-        padding:15px;
-        margin-top:20px;
-        border:none;
-        background:#0077ff;
-        color:white;
-        border-radius:8px;
-        font-size:18px;
-        cursor:pointer;
-        font-weight:700;
-    }
-    button:hover{
-        background:#0059c9;
-    }
-    #generatedForm{
-        display:none;
-    }
+body{
+    font-family:'Nunito',sans-serif;
+    background:#e7f2ff;
+    margin:0; padding:0;
+}
+.container{
+    width:95%; max-width:900px;
+    margin:20px auto;
+    background:#fff;
+    padding:20px; border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+h2{
+    text-align:center;
+    color:#003366;
+    margin-bottom:10px;
+}
+label{font-weight:700; display:block; margin-top:10px;}
+input,select{
+    width:100%; padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px; margin-top:5px;
+}
+.row{display:flex; gap:10px;}
+.col{flex:1;}
+button{
+    width:100%; padding:14px;
+    font-size:18px;
+    border:none;
+    border-radius:8px;
+    margin-top:20px;
+    font-weight:700;
+    cursor:pointer;
+}
+#submitBtn{background:#0059c9; color:white;}
+#pdfBtn{background:#00831d; color:white;}
+
+#certificatesBox{
+    border:2px solid #003366;
+    padding:10px; margin-top:20px;
+    border-radius:8px; background:#f4faff;
+}
+
+#generatedPDF{
+    display:none;
+    padding:20px;
+}
+h3{margin:5px 0; color:#003366;}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h2>ADMISSION FORM<br>Government Primary School Pethgam Wagoora</h2>
 
-    <form id="admissionForm">
+<h2>ADMISSION FORM<br>Government Primary School Pethgam Wagoora</h2>
 
-        <label>Student First Name</label>
-        <input type="text" id="s_first">
+<form id="admissionForm">
 
-        <label>Middle Name</label>
-        <input type="text" id="s_middle">
+    <!-- STUDENT DETAILS -->
+    <label>Student First Name</label>
+    <input type="text" id="s_first" required>
 
-        <label>Last Name</label>
-        <input type="text" id="s_last">
+    <label>Middle Name</label>
+    <input type="text" id="s_middle">
 
-        <label>Name as per Aadhaar</label>
-        <input type="text" id="aadhaar_name">
+    <label>Last Name</label>
+    <input type="text" id="s_last" required>
 
-        <label>Father's Name</label>
-        <input type="text" id="father_name">
+    <label>Name as per Aadhaar</label>
+    <input type="text" id="aadhaar_name" required>
 
-        <label>Mother's Name</label>
-        <input type="text" id="mother_name">
+    <label>Father's Name</label>
+    <input type="text" id="father_name" required>
 
-        <label>Residence</label>
-        <input type="text" id="residence">
+    <label>Mother's Name</label>
+    <input type="text" id="mother_name" required>
 
-        <div class="row">
-            <div class="col">
-                <label>Tehsil</label>
-                <input type="text" id="tehsil">
-            </div>
-            <div class="col">
-                <label>District</label>
-                <input type="text" id="district">
-            </div>
+    <label>Residence</label>
+    <input type="text" id="residence" required>
+
+    <div class="row">
+        <div class="col">
+            <label>Tehsil</label>
+            <input type="text" id="tehsil" required>
         </div>
-
-        <div class="row">
-            <div class="col">
-                <label>Father Contact No.</label>
-                <input type="text" id="fcontact">
-            </div>
-            <div class="col">
-                <label>Mother Contact No.</label>
-                <input type="text" id="mcontact">
-            </div>
+        <div class="col">
+            <label>District</label>
+            <input type="text" id="district" required>
         </div>
+    </div>
 
-        <label>Aadhaar Number</label>
-        <input type="text" id="aadhaar">
+    <div class="row">
+        <div class="col">
+            <label>Father Contact</label>
+            <input type="text" id="fcontact" required>
+        </div>
+        <div class="col">
+            <label>Mother Contact</label>
+            <input type="text" id="mcontact" required>
+        </div>
+    </div>
 
-        <label>Date of Birth</label>
-        <input type="date" id="dob">
+    <label>Aadhaar Number</label>
+    <input type="text" id="aadhaar" required>
 
-        <label>Bank Account Number</label>
-        <input type="text" id="bank_account">
+    <label>Date of Birth</label>
+    <input type="date" id="dob" required>
 
-        <label>Bank Name</label>
-        <input type="text" id="bank_name">
+    <label>Bank Account Number</label>
+    <input type="text" id="bank_account">
 
-        <label>Bank Branch</label>
-        <input type="text" id="bank_branch">
+    <label>Bank Name</label>
+    <input type="text" id="bank_name">
 
-        <label>IFSC Code</label>
-        <input type="text" id="ifsc">
+    <label>Bank Branch</label>
+    <input type="text" id="bank_branch">
 
-        <label>Category</label>
-        <select id="category">
-            <option>GENERAL</option>
-            <option>OBC</option>
-            <option>SC</option>
-            <option>ST</option>
-        </select>
+    <label>IFSC Code</label>
+    <input type="text" id="ifsc">
 
-        <label>Blood Group</label>
-        <select id="blood">
-            <option>A+</option>
-            <option>A-</option>
-            <option>B+</option>
-            <option>B-</option>
-            <option>O+</option>
-            <option>O-</option>
-            <option>AB+</option>
-            <option>AB-</option>
-        </select>
+    <label>Category</label>
+    <select id="category" required>
+        <option>GENERAL</option>
+        <option>OBC</option>
+        <option>SC</option>
+        <option>ST</option>
+    </select>
 
-        <label>Ration Card Number</label>
-        <input type="text" id="ration">
+    <label>Blood Group</label>
+    <select id="blood" required>
+        <option>A+</option><option>A-</option>
+        <option>B+</option><option>B-</option>
+        <option>O+</option><option>O-</option>
+        <option>AB+</option><option>AB-</option>
+    </select>
 
-        <label>Class Joining</label>
-        <input type="text" id="class_join">
+    <label>Ration Card Number</label>
+    <input type="text" id="ration" required>
 
-        <label>PEN Number (If Transferring)</label>
-        <input type="text" id="pen">
+    <label>Class Joining</label>
+    <input type="text" id="class_join" required>
 
-        <button type="button" onclick="generatePDF()">Download Filled PDF</button>
-    </form>
+    <label>PEN Number (If Transferring)</label>
+    <input type="text" id="pen">
+
+    <!-- CERTIFICATES FOOTER (MANDATORY) -->
+    <div id="certificatesBox">
+        <h3>Mandatory Certificates (Upload or Enter Details)</h3>
+
+        <label>Birth Certificate Number</label>
+        <input type="text" id="birth_cert" required>
+
+        <label>Ration Card / Domicile / Residence Certificate Number</label>
+        <input type="text" id="domicile" required>
+
+        <label>Transfer Certificate Number (if applicable)</label>
+        <input type="text" id="tc_no">
+    </div>
+
+    <button type="button" id="submitBtn" onclick="validateAndGenerate()">SUBMIT & GENERATE PDF</button>
+
+</form>
+
 </div>
 
-<!-- Hidden Printable PDF Layout -->
-<div id="generatedForm">
-    <h2>Admission Form (Pre-Filled)</h2>
+<!-- HIDDEN PRINT CONTENT -->
+<div id="generatedPDF">
+    <h2>Admission Form – Pre-Filled Copy</h2>
     <div id="pdfContent"></div>
+
+    <h3>Certificates Attached</h3>
+    <div id="pdfCertificates"></div>
 </div>
 
-<!-- PDF Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
+function validateAndGenerate(){
+    let requiredFields = [
+        's_first','s_last','aadhaar_name','father_name','mother_name',
+        'residence','tehsil','district','fcontact','mcontact',
+        'aadhaar','dob','category','blood','ration','class_join',
+        'birth_cert','domicile'
+    ];
+
+    for(let id of requiredFields){
+        if(document.getElementById(id).value.trim()===""){
+            alert("⚠ Please fill all mandatory fields & certificates.");
+            return;
+        }
+    }
+
+    generatePDF();
+}
+
 function generatePDF(){
-    const data = {
-        s_first: s_first.value,
-        s_middle: s_middle.value,
-        s_last: s_last.value,
-        aadhaar_name: aadhaar_name.value,
-        father_name: father_name.value,
-        mother_name: mother_name.value,
-        residence: residence.value,
-        tehsil: tehsil.value,
-        district: district.value,
-        fcontact: fcontact.value,
-        mcontact: mcontact.value,
-        aadhaar: aadhaar.value,
-        dob: dob.value,
-        bank_account: bank_account.value,
-        bank_name: bank_name.value,
-        bank_branch: bank_branch.value,
-        ifsc: ifsc.value,
-        category: category.value,
-        blood: blood.value,
-        ration: ration.value,
-        class_join: class_join.value,
-        pen: pen.value
-    };
+    const f = id => document.getElementById(id).value;
 
     document.getElementById("pdfContent").innerHTML = `
         <h3>Student Details</h3>
-        <p><b>Name:</b> ${data.s_first} ${data.s_middle} ${data.s_last}</p>
-        <p><b>Aadhaar Name:</b> ${data.aadhaar_name}</p>
-        <p><b>Father:</b> ${data.father_name}</p>
-        <p><b>Mother:</b> ${data.mother_name}</p>
-        <p><b>Residence:</b> ${data.residence}</p>
-        <p><b>Tehsil:</b> ${data.tehsil} | <b>District:</b> ${data.district}</p>
-        <p><b>Father Contact:</b> ${data.fcontact}</p>
-        <p><b>Mother Contact:</b> ${data.mcontact}</p>
-        <p><b>Aadhaar:</b> ${data.aadhaar}</p>
-        <p><b>DOB:</b> ${data.dob}</p>
-        <p><b>Bank:</b> ${data.bank_name} (${data.bank_branch})</p>
-        <p><b>Account:</b> ${data.bank_account}</p>
-        <p><b>IFSC:</b> ${data.ifsc}</p>
-        <p><b>Category:</b> ${data.category}</p>
-        <p><b>Blood Group:</b> ${data.blood}</p>
-        <p><b>Ration Card:</b> ${data.ration}</p>
-        <p><b>Class Joining:</b> ${data.class_join}</p>
-        <p><b>PEN No:</b> ${data.pen}</p>
+        <p><b>Name:</b> ${f('s_first')} ${f('s_middle')} ${f('s_last')}</p>
+        <p><b>Name as per Aadhaar:</b> ${f('aadhaar_name')}</p>
+        <p><b>Father:</b> ${f('father_name')}</p>
+        <p><b>Mother:</b> ${f('mother_name')}</p>
+        <p><b>Residence:</b> ${f('residence')}</p>
+        <p><b>Tehsil:</b> ${f('tehsil')} | <b>District:</b> ${f('district')}</p>
+        <p><b>Contacts:</b> Father: ${f('fcontact')}, Mother: ${f('mcontact')}</p>
+        <p><b>Aadhaar:</b> ${f('aadhaar')}</p>
+        <p><b>DOB:</b> ${f('dob')}</p>
+        <p><b>Bank:</b> ${f('bank_name')} – ${f('bank_branch')}</p>
+        <p><b>Account No:</b> ${f('bank_account')} | <b>IFSC:</b> ${f('ifsc')}</p>
+        <p><b>Category:</b> ${f('category')} | <b>Blood Group:</b> ${f('blood')}</p>
+        <p><b>Ration Card:</b> ${f('ration')}</p>
+        <p><b>Class Joining:</b> ${f('class_join')}</p>
+        <p><b>PEN Number:</b> ${f('pen')}</p>
     `;
 
-    const element = document.getElementById("generatedForm");
+    document.getElementById("pdfCertificates").innerHTML = `
+        <p><b>Birth Certificate No.:</b> ${f('birth_cert')}</p>
+        <p><b>Residence/Domicile Certificate No.:</b> ${f('domicile')}</p>
+        <p><b>Transfer Certificate No.:</b> ${f('tc_no')}</p>
+    `;
 
-    html2pdf().from(element).set({
-        margin: 10,
-        filename: `Admission_Form_${data.s_first}.pdf`,
-        html2canvas: { scale: 2 },
-        jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+    html2pdf().from(document.getElementById("generatedPDF")).set({
+        margin:10,
+        filename:`Admission_Form_${f('s_first')}.pdf`,
+        html2canvas:{scale:2},
+        jsPDF:{unit:'mm', format:'a4', orientation:'portrait'}
     }).save();
 }
 </script>
 
 </body>
-</html>
+</html>      
