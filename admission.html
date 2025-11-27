@@ -1,108 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GPS Pethgam Wagoora – Admission Form</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS Pethgam Wagoora Admission Portal</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, addDoc, onSnapshot, collection, query, serverTimestamp, orderBy, updateDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-<!-- jsPDF + html2canvas -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        // Global Firebase variables accessible to the main script
+        window.db = null;
+        window.auth = null;
+        window.userId = null;
+        window.appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f2f9ff;
-        margin: 0;
-        padding: 20px;
-    }
+        // Function to display global errors and hide the spinner's animation
+        function displayGlobalError(message, isFatal = false) {
+            const spinnerDiv = document.getElementById('loading-spinner');
+            const spinnerSvg = spinnerDiv.querySelector('svg');
+            const messageP = spinnerDiv.querySelector('p');
 
-    .form-container {
-        width: 90%;
-        max-width: 900px;
-        background: #fff;
-        padding: 25px;
-        margin: auto;
-        border-radius: 10px;
-        box-shadow: 0 0 10px #cce3ff;
-    }
+            if (spinnerSvg) {
+                spinnerSvg.classList.remove('animate-spin');
+                spinnerSvg.classList.add('hidden');
+            }
+            
+            messageP.innerHTML = `<span class="text-xl font-bold ${isFatal ? 'text-red-600' : 'text-yellow-600'}">${isFatal ? 'FATAL ERROR' : 'Warning'}</span><br>${message}`;
+            spinnerDiv.classList.remove('text-indigo-600');
+        }
 
-    h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        color: #004aad;
-    }
+        // Firebase Initialization and Authentication
+        async function initializeFirebase() {
+            let firebaseConfig = {};
+            let token = null;
 
-    label {
-        font-weight: bold;
-        display: block;
-        margin-top: 10px;
-    }
+            try {
+                // 1. Check for Config
+                if (typeof __firebase_config === 'undefined' || !__firebase_config) {
+                     throw new Error("Missing Firebase Configuration. The variable '__firebase_config' is not defined in the environment.");
+                }
+                
+                // 2. Parse Config
+                try {
+                    firebaseConfig = JSON.parse(__firebase_config);
+                } catch (e) {
+                    throw new Error("Could not parse Firebase configuration string. It may be malformed JSON.");
+                }
+                
+                if (Object.keys(firebaseConfig).length === 0 || !firebaseConfig.apiKey) {
+                    throw new Error("Firebase configuration is empty or missing 'apiKey'. Cannot connect to Firestore.");
+                }
 
-    input, select, textarea {
-        width: 100%;
-        padding: 8px;
-        margin-top: 4px;
-        border: 1px solid #b5d0f5;
-        border-radius: 5px;
-    }
+                // 3. Get Auth Token
+                token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-    .section-title {
-        font-size: 18px;
-        color: #004aad;
-        margin-top: 25px;
-        border-bottom: 2px solid #004aad;
-        padding-bottom: 5px;
-    }
+                // setLogLevel('debug'); // Enable for detailed console logging
 
-    .footer {
-        margin-top: 25px;
-        padding: 15px;
-        border: 2px solid #000;
-        border-radius: 8px;
-        background: #f7fbff;
-    }
+                // 4. Initialize App and Services
+                const app = initializeApp(firebaseConfig);
+                window.db = getFirestore(app);
+                window.auth = getAuth(app);
 
-    .btn {
-        background: #007bff;
-        color: #fff;
-        border: none;
-        margin-top: 20px;
-        padding: 12px 25px;
-        font-size: 16px;
-        border-radius: 8px;
-        cursor: pointer;
-    }
+                // 5. Sign in logic
+                if (token) {
+                    console.log("Attempting sign-in with custom token...");
+                    await signInWithCustomToken(window.auth, token);
+                } else {
+                    console.log("Attempting anonymous sign-in...");
+                    await signInAnonymously(window.auth);
+                }
 
-    .btn:hover {
-        background: #0056b3;
-    }
+                // 6. Wait for Auth State Change to confirm user ID is set
+                onAuthStateChanged(window.auth, (user) => {
+                    if (user) {
+                        window.userId = user.uid;
+                        console.log("Firebase initialized and user signed in:", window.userId);
+                        
+                        // Proceed only after successful auth
+                        window.setupRealtimeListeners(); 
+                        document.getElementById('loading-spinner').classList.add('hidden');
+                        document.getElementById('main-content').classList.remove('hidden');
+                    } else {
+                        displayGlobalError("Authentication listener failed to confirm user. Please try reloading.", true);
+                    }
+                });
 
-    .checkbox-section {
-        margin-top: 15px;
-        padding: 10px;
-        border: 2px solid #004aad;
-        border-radius: 8px;
-        background: #eef6ff;
-    }
-</style>
+            } catch (error) {
+                console.error("Critical Error initializing Firebase:", error);
+                displayGlobalError(`Initialization stopped: ${error.message}`, true);
+            }
+        }
+        
+        // This is the main entry point to start the setup
+        initializeFirebase();
+
+        // Expose Firebase functions globally for use by inline script
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.query = query;
+        window.onSnapshot = onSnapshot;
+        window.updateDoc = updateDoc;
+        window.doc = doc;
+        window.serverTimestamp = serverTimestamp;
+        window.orderBy = orderBy;
+    </script>
+
+    <style>
+        /* Custom styles & Inter Font */
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+        input:focus, select:focus, textarea:focus { border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); outline: none; }
+        
+        /* Two-Page Print Styling */
+        @media print {
+            .no-print, .register-view-container { display: none !important; }
+            .print-area { box-shadow: none !important; padding: 0 !important; margin: 0 !important; max-width: none !important; }
+            .form-section { break-inside: avoid-page; }
+            /* Force Office Use section to new page */
+            .for-office-use-section { page-break-before: always; }
+            h2, h3, h4 { color: #000 !important; -webkit-print-color-adjust: exact; color-adjust: exact; }
+            .for-office-use { background-color: #f0f0f0 !important; -webkit-print-color-adjust: exact; color-adjust: exact; }
+            .header-print-only { display: flex !important; }
+        }
+        .header-print-only { display: none; } /* Hide header on screen */
+    </style>
 </head>
+<body class="p-4 sm:p-6 lg:p-8">
 
-<body>
+    <!-- Loading Spinner / Error Display -->
+    <div id="loading-spinner" class="text-center p-20 text-indigo-600 font-semibold">
+        <svg class="animate-spin h-8 w-8 text-indigo-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="mt-4">Initializing application and connecting to database...</p>
+    </div>
 
-<div class="form-container" id="formArea">
+    <!-- Main Content (Hidden until Firebase is ready) -->
+    <div id="main-content" class="hidden max-w-5xl mx-auto space-y-8">
+        
+        <!-- Header for Printing -->
+        <header class="header-print-only justify-center items-center p-4 border-b-2 border-gray-400 mb-8">
+            <svg class="h-10 w-10 text-indigo-700 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.057v-6.057zM11.921 15.069v6.104a10.155 10.155 0 01-2.885-2.029l-3.322 1.651M2.799 8.087l4.372 2.45m0 0l4.372 2.45m4.372 2.45l4.372 2.45" />
+            </svg>
+            <div>
+                <h2 class="text-2xl font-extrabold text-gray-900">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h2>
+                <p class="text-sm text-gray-600">Wagoora Babareshi Road Near Zonal Education Office Wagoora | UDISE Code: 01022202207</p>
+            </div>
+        </header>
 
-    <h2>Government Primary School Pethgam Wagoora <br> Admission Form</h2>
+        <!-- Control Panel (Hidden in print) -->
+        <div class="no-print bg-white p-6 rounded-xl shadow-lg border border-indigo-100">
+            <div class="grid md:grid-cols-3 gap-4 items-end">
+                <div class="md:col-span-2">
+                    <h4 class="text-lg font-bold text-indigo-800 mb-2">Pre-fill & PDF Generation Tool</h4>
+                    <p class="text-sm text-gray-600 mb-3">Select the details to pre-populate the form (e.g., for Admin added records) and click 'Generate PDF'.</p>
+                    <div class="grid sm:grid-cols-3 gap-3">
+                        <select id="prefill_class" class="p-2 border rounded-lg bg-gray-50">
+                            <option value="">Class (Optional)</option>
+                            <option value="Pre Primary 3">Pre Primary 3</option>
+                            <option value="Pre-Primary 2">Pre-Primary 2</option>
+                            <option value="Balvatika">Balvatika</option>
+                            <option value="1st">1st</option>
+                            <option value="5th">5th</option>
+                        </select>
+                        <select id="prefill_blood" class="p-2 border rounded-lg bg-gray-50">
+                            <option value="">Blood Group (Optional)</option>
+                            <option>A+</option><option>B+</option><option>O+</option><option>AB+</option>
+                            <option>A-</option><option>B-</option><option>O-</option><option>AB-</option>
+                        </select>
+                        <select id="prefill_category" class="p-2 border rounded-lg bg-gray-50">
+                            <option value="">Category (Optional)</option>
+                            <option>GENERAL</option><option>OBC</option><option>SC</option><option>ST</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex flex-col space-y-3 md:col-span-1">
+                    <button onclick="generatePreFilledForm()" class="py-2 px-4 rounded-lg shadow-md text-white bg-blue-600 hover:bg-blue-700 transition">
+                        Generate & Download Pre-filled Admission Form
+                    </button>
+                    <button onclick="toggleView()" id="toggle-view-button" class="py-2 px-4 rounded-lg shadow-md text-indigo-800 bg-indigo-200 hover:bg-indigo-300 transition">
+                        View Admission Register (Records)
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admission Form View (Initially shown) -->
+        <div id="form-view-container" class="bg-white p-6 sm:p-8 lg:p-10 rounded-2xl shadow-2xl print-area border border-gray-200">
+            <header class="text-center mb-8">
+                <h2 class="text-3xl font-extrabold text-indigo-700 mb-1">ADMISSION FORM</h2>
+                <h3 class="text-lg font-medium text-gray-600">Government Primary School Pethgam Wagoora</h3>
+            </header>
 
-    <div class="section-title">Student Details</div>
+            <form id="admissionForm" class="space-y-8" onsubmit="handleFormSubmission(event)">
+                
+                <!-- I. STUDENT DETAILS (Form Section 1) -->
+                <section class="space-y-6 form-section">
+                    <h4 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">I. Student Details</h4>
 
-    <label>Admission No. (To be allotted by school later):</label>
-    <input type="text" placeholder="(Left blank intentionally)" disabled>
+                    <!-- Names -->
+                    <div class="grid gap-6 sm:grid-cols-3">
+                        <div>
+                            <label for="s_first" class="block text-sm font-medium text-gray-700">Student First Name *</label>
+                            <input type="text" id="s_first" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label for="s_middle" class="block text-sm font-medium text-gray-700">Middle Name</label>
+                            <input type="text" id="s_middle" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label for="s_last" class="block text-sm font-medium text-gray-700">Last Name *</label>
+                            <input type="text" id="s_last" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
 
-    <label>Student Name</label>
-    <input type="text" id="sname">
+                    <!-- Aadhaar/DOB/Class -->
+                    <div class="grid gap-6 sm:grid-cols-3">
+                        <div>
+                            <label for="aadhaar_name" class="block text-sm font-medium text-gray-700">Name as per Aadhaar *</label>
+                            <input type="text" id="aadhaar_name" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label for="aadhaar" class="block text-sm font-medium text-gray-700">Aadhaar Number *</label>
+                            <input type="text" id="aadhaar" required inputmode="numeric" pattern="[0-9]{12}" title="Aadhaar must be 12 digits" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth *</label>
+                            <input type="date" id="dob" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
 
-    <label>Date of Birth</label>
+                    <!-- Category/Blood/Ration/Class Joining -->
+                    <div class="grid gap-6 sm:grid-cols-4">
+                        <div>
+                            <label for="category" class="block text-sm font-medium text-gray-700">Category *</label>
+                            <select id="category" required class="mt-1 block w-full p-3 border border-gray-300 bg-white rounded-lg">
+                                <option value="">Select Category</option>
+                                <option>GENERAL</option>
+                                <option>OBC</option>
+                                <option>SC</option>
+                                <option>ST</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="blood" class="block text-sm font-medium text-gray-700">Blood Group *</label>
+                            <select id="blood" required class="mt-1 block w-full p-3 border border-gray-300 bg-white rounded-lg">
+                                <option value="">Select Group</option>
+                                <option>A+</option><option>A-</option>
+                                <option>B+</option><option>B-</option>
+                                <option>O+</option><option>O-</option>
+                                <option>AB+</option><option>AB-</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="ration" class="block text-sm font-medium text-gray-700">Ration Card Number *</label>
+                            <input type="text" id="ration" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label for="class_join" class="block text-sm font-medium text-gray-700">Class Joining *</label>
+                            <select id="class_join" required class="mt-1 block w-full p-3 border border-gray-300 bg-white rounded-lg">
+                                <option value="">Select Class</option>
+                                <option value="Pre Primary 3">Pre Primary 3</option>
+                                <option value="Pre-Primary 2">Pre-Primary 2</option>
+                                <option value="Balvatika">Balvatika</option>
+                                <option value="1st">1st</option>
+                                <option value="2nd">2nd</option>
+                                <option value="3rd">3rd</option>
+                                <option value="4th">4th</option>
+                                <option value="5th">5th</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Parents Names and Contacts -->
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <div>
+                            <label for="father_name" class="block text-sm font-medium text-gray-700">Father's Name *</label>
+                            <input type="text" id="father_name" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label for="mother_name" class="block text-sm font-medium text-gray-700">Mother's Name *</label>
+                            <input type="text" id="mother_name" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label for="fcontact" class="block text-sm font-medium text-gray-700">Father Contact *</label>
+                            <input type="tel" id="fcontact" required inputmode="tel" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label for="mcontact" class="block text-sm font-medium text-gray-700">Mother Contact *</label>
+                            <input type="tel" id="mcontact" required inputmode="tel" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div>
+                        <label for="residence" class="block text-sm font-medium text-gray-700">Residence (Full Address) *</label>
+                        <input type="text" id="residence" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                    </div>
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <div>
+                            <label for="tehsil" class="block text-sm font-medium text-gray-700">Tehsil *</label>
+                            <input type="text" id="tehsil" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label for="district" class="block text-sm font-medium text-gray-700">District *</label>
+                            <input type="text" id="district" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- II. BANK DETAILS (Form Section 2) -->
+                <section class="space-y-6 form-section">
+                    <h4 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">II. Bank Details (For Scholarships/Grants)</h4>
+                    
+                    <div>
+                        <label for="bank_account" class="block text-sm font-medium text-gray-700">Bank Account Number</label>
+                        <input type="text" id="bank_account" inputmode="numeric" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
+                    </div>
+                    
+                    <div class="grid gap-6 sm:grid-cols-3">
+                        <div>
+                            <label for="bank_name" class="block text-sm font-medium text-gray-700">Bank Name</label>
+                            <input type="text" id="bank_name" class    <label>Date of Birth</label>
     <input type="date" id="dob">
 
     <label>Gender</label>
