@@ -4,270 +4,154 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPS Pethgam Wagoora Admission Portal</title>
-    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, addDoc, onSnapshot, collection, query, serverTimestamp, orderBy, updateDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Global Firebase variables accessible to the main script
-        window.db = null;
-        window.auth = null;
-        window.userId = null;
-        window.appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-        // Function to display global errors and hide the spinner's animation
-        function displayGlobalError(message, isFatal = false) {
-            const spinnerDiv = document.getElementById('loading-spinner');
-            const spinnerSvg = spinnerDiv.querySelector('svg');
-            const messageP = spinnerDiv.querySelector('p');
-
-            if (spinnerSvg) {
-                spinnerSvg.classList.remove('animate-spin');
-                spinnerSvg.classList.add('hidden');
-            }
-            
-            messageP.innerHTML = `<span class="text-xl font-bold ${isFatal ? 'text-red-600' : 'text-yellow-600'}">${isFatal ? 'FATAL ERROR' : 'Warning'}</span><br>${message}`;
-            spinnerDiv.classList.remove('text-indigo-600');
-        }
-
-        // Firebase Initialization and Authentication
-        async function initializeFirebase() {
-            let firebaseConfig = {};
-            let token = null;
-
-            try {
-                // 1. Check for Config
-                if (typeof __firebase_config === 'undefined' || !__firebase_config) {
-                     throw new Error("Missing Firebase Configuration. The variable '__firebase_config' is not defined in the environment.");
-                }
-                
-                // 2. Parse Config
-                try {
-                    firebaseConfig = JSON.parse(__firebase_config);
-                } catch (e) {
-                    throw new Error("Could not parse Firebase configuration string. It may be malformed JSON.");
-                }
-                
-                if (Object.keys(firebaseConfig).length === 0 || !firebaseConfig.apiKey) {
-                    throw new Error("Firebase configuration is empty or missing 'apiKey'. Cannot connect to Firestore.");
-                }
-
-                // 3. Get Auth Token
-                token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-                // setLogLevel('debug'); // Enable for detailed console logging
-
-                // 4. Initialize App and Services
-                const app = initializeApp(firebaseConfig);
-                window.db = getFirestore(app);
-                window.auth = getAuth(app);
-
-                // 5. Sign in logic
-                if (token) {
-                    console.log("Attempting sign-in with custom token...");
-                    await signInWithCustomToken(window.auth, token);
-                } else {
-                    console.log("Attempting anonymous sign-in...");
-                    await signInAnonymously(window.auth);
-                }
-
-                // 6. Wait for Auth State Change to confirm user ID is set
-                onAuthStateChanged(window.auth, (user) => {
-                    if (user) {
-                        window.userId = user.uid;
-                        console.log("Firebase initialized and user signed in:", window.userId);
-                        
-                        // Proceed only after successful auth
-                        window.setupRealtimeListeners(); 
-                        document.getElementById('loading-spinner').classList.add('hidden');
-                        document.getElementById('main-content').classList.remove('hidden');
-                    } else {
-                        displayGlobalError("Authentication listener failed to confirm user. Please try reloading.", true);
-                    }
-                });
-
-            } catch (error) {
-                console.error("Critical Error initializing Firebase:", error);
-                displayGlobalError(`Initialization stopped: ${error.message}`, true);
-            }
-        }
-        
-        // This is the main entry point to start the setup
-        initializeFirebase();
-
-        // Expose Firebase functions globally for use by inline script
-        window.addDoc = addDoc;
-        window.collection = collection;
-        window.query = query;
-        window.onSnapshot = onSnapshot;
-        window.updateDoc = updateDoc;
-        window.doc = doc;
-        window.serverTimestamp = serverTimestamp;
-        window.orderBy = orderBy;
-    </script>
-
     <style>
-        /* Custom styles & Inter Font */
         body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
         input:focus, select:focus, textarea:focus { border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); outline: none; }
         
-        /* Two-Page Print Styling */
+        /* Print Styles */
         @media print {
             .no-print, .register-view-container { display: none !important; }
             .print-area { box-shadow: none !important; padding: 0 !important; margin: 0 !important; max-width: none !important; }
             .form-section { break-inside: avoid-page; }
-            /* Force Office Use section to new page */
             .for-office-use-section { page-break-before: always; }
             h2, h3, h4 { color: #000 !important; -webkit-print-color-adjust: exact; color-adjust: exact; }
             .for-office-use { background-color: #f0f0f0 !important; -webkit-print-color-adjust: exact; color-adjust: exact; }
-            .header-print-only { display: flex !important; }
+            .header-content { border-bottom: 2px solid #000 !important; padding-bottom: 1rem; }
+            .logo-img { display: block !important; }
+            /* Ensure the uploaded photo is visible and framed */
+            #photo-box-display { border: 2px solid black !important; background-color: white !important; padding: 0; }
+            #photo-box-display img { display: block !important; width: 100% !important; height: 100% !important; object-fit: cover; }
+            .photo-upload-container { display: none !important; } /* Hide the upload button when printing */
         }
-        .header-print-only { display: none; } /* Hide header on screen */
+        
+        /* Photo display box for both online and print */
+        #photo-box-display {
+            border: 4px dashed #9ca3af;
+            height: 120px; /* Standard passport photo height */
+            width: 100%;
+            max-width: 120px; /* Ensure a proper ratio */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+            background-color: #f9fafb;
+            margin-left: auto;
+            overflow: hidden; /* To handle image fitting */
+        }
+
+        #photo-box-display img {
+            display: none; /* Hidden until an image is loaded */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Container for the upload button (online only) */
+        .photo-upload-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
     </style>
 </head>
 <body class="p-4 sm:p-6 lg:p-8">
 
     <!-- Loading Spinner / Error Display -->
     <div id="loading-spinner" class="text-center p-20 text-indigo-600 font-semibold">
-        <svg class="animate-spin h-8 w-8 text-indigo-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg class="animate-spin h-8 w-8 text-indigo-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <p class="mt-4">Initializing application and connecting to database...</p>
+        <p class="mt-4" id="loading-message">Initializing application and connecting to database...</p>
     </div>
 
-    <!-- Main Content (Hidden until Firebase is ready) -->
+    <!-- Main Content -->
     <div id="main-content" class="hidden max-w-5xl mx-auto space-y-8">
         
-        <!-- Header for Printing -->
-        <header class="header-print-only justify-center items-center p-4 border-b-2 border-gray-400 mb-8">
-            <svg class="h-10 w-10 text-indigo-700 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.057v-6.057zM11.921 15.069v6.104a10.155 10.155 0 01-2.885-2.029l-3.322 1.651M2.799 8.087l4.372 2.45m0 0l4.372 2.45m4.372 2.45l4.372 2.45" />
-            </svg>
-            <div>
-                <h2 class="text-2xl font-extrabold text-gray-900">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h2>
-                <p class="text-sm text-gray-600">Wagoora Babareshi Road Near Zonal Education Office Wagoora | UDISE Code: 01022202207</p>
-            </div>
-        </header>
-
-        <!-- Control Panel (Hidden in print) -->
-        <div class="no-print bg-white p-6 rounded-xl shadow-lg border border-indigo-100">
-            <div class="grid md:grid-cols-3 gap-4 items-end">
-                <div class="md:col-span-2">
-                    <h4 class="text-lg font-bold text-indigo-800 mb-2">Pre-fill & PDF Generation Tool</h4>
-                    <p class="text-sm text-gray-600 mb-3">Select the details to pre-populate the form (e.g., for Admin added records) and click 'Generate PDF'.</p>
-                    <div class="grid sm:grid-cols-3 gap-3">
-                        <select id="prefill_class" class="p-2 border rounded-lg bg-gray-50">
-                            <option value="">Class (Optional)</option>
-                            <option value="Pre Primary 3">Pre Primary 3</option>
-                            <option value="Pre-Primary 2">Pre-Primary 2</option>
-                            <option value="Balvatika">Balvatika</option>
-                            <option value="1st">1st</option>
-                            <option value="5th">5th</option>
-                        </select>
-                        <select id="prefill_blood" class="p-2 border rounded-lg bg-gray-50">
-                            <option value="">Blood Group (Optional)</option>
-                            <option>A+</option><option>B+</option><option>O+</option><option>AB+</option>
-                            <option>A-</option><option>B-</option><option>O-</option><option>AB-</option>
-                        </select>
-                        <select id="prefill_category" class="p-2 border rounded-lg bg-gray-50">
-                            <option value="">Category (Optional)</option>
-                            <option>GENERAL</option><option>OBC</option><option>SC</option><option>ST</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="flex flex-col space-y-3 md:col-span-1">
-                    <button onclick="generatePreFilledForm()" class="py-2 px-4 rounded-lg shadow-md text-white bg-blue-600 hover:bg-blue-700 transition">
-                        Generate & Download Pre-filled Admission Form
-                    </button>
-                    <button onclick="toggleView()" id="toggle-view-button" class="py-2 px-4 rounded-lg shadow-md text-indigo-800 bg-indigo-200 hover:bg-indigo-300 transition">
-                        View Admission Register (Records)
-                    </button>
-                </div>
-            </div>
+        <!-- Control for Register View Only -->
+        <div class="no-print bg-white p-4 rounded-xl shadow-lg border border-indigo-100 flex justify-end">
+            <button onclick="window.toggleView()" id="toggle-view-button" class="py-2 px-4 rounded-lg shadow-md text-indigo-800 bg-indigo-200 hover:bg-indigo-300 transition font-semibold">
+                View Admission Register (Records)
+            </button>
         </div>
         
-        <!-- Admission Form View (Initially shown) -->
+        <!-- Admission Form View -->
         <div id="form-view-container" class="bg-white p-6 sm:p-8 lg:p-10 rounded-2xl shadow-2xl print-area border border-gray-200">
-            <header class="text-center mb-8">
-                <h2 class="text-3xl font-extrabold text-indigo-700 mb-1">ADMISSION FORM</h2>
-                <h3 class="text-lg font-medium text-gray-600">Government Primary School Pethgam Wagoora</h3>
+            <header class="text-center mb-8 flex flex-col sm:flex-row justify-center items-center header-content">
+                <!-- Logo -->
+                <img 
+                    src="https://placehold.co/60x60/4f46e5/ffffff?text=GPS" 
+                    alt="School Logo" 
+                    class="h-14 w-14 object-cover rounded-full mr-0 sm:mr-4 mb-3 sm:mb-0 logo-img"
+                    onerror="this.onerror=null;this.src='https://placehold.co/60x60/4f46e5/ffffff?text=GPS';"
+                >
+                
+                <div class="text-center">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-indigo-700 mb-1">ADMISSION FORM</h2>
+                    <h3 class="text-lg font-medium text-gray-600">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
+                    <p class="text-xs text-gray-500 mt-1">Wagoora Babareshi Road Near Zonal Education Office Wagoora | UDISE Code: 01022202207</p>
+                </div>
             </header>
 
-            <form id="admissionForm" class="space-y-8" onsubmit="handleFormSubmission(event)">
+            <form id="admissionForm" class="space-y-8">
                 
-                <!-- I. STUDENT DETAILS (Form Section 1) -->
                 <section class="space-y-6 form-section">
                     <h4 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">I. Student Details</h4>
 
-                    <!-- Names -->
-                    <div class="grid gap-6 sm:grid-cols-3">
-                        <div>
-                            <label for="s_first" class="block text-sm font-medium text-gray-700">Student First Name *</label>
-                            <input type="text" id="s_first" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label for="s_middle" class="block text-sm font-medium text-gray-700">Middle Name</label>
-                            <input type="text" id="s_middle" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label for="s_last" class="block text-sm font-medium text-gray-700">Last Name *</label>
-                            <input type="text" id="s_last" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                    </div>
-
-                    <!-- Aadhaar/DOB/Class -->
-                    <div class="grid gap-6 sm:grid-cols-3">
-                        <div>
-                            <label for="aadhaar_name" class="block text-sm font-medium text-gray-700">Name as per Aadhaar *</label>
-                            <input type="text" id="aadhaar_name" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label for="aadhaar" class="block text-sm font-medium text-gray-700">Aadhaar Number *</label>
-                            <input type="text" id="aadhaar" required inputmode="numeric" pattern="[0-9]{12}" title="Aadhaar must be 12 digits" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth *</label>
-                            <input type="date" id="dob" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                    </div>
-
-                    <!-- Category/Blood/Ration/Class Joining -->
                     <div class="grid gap-6 sm:grid-cols-4">
-                        <div>
+                        <!-- Photo Upload & Display -->
+                        <div class="sm:col-span-1 flex flex-col items-center justify-start row-span-3 order-last sm:order-none space-y-3">
+                            <div id="photo-box-display" class="rounded-lg shadow-inner">
+                                <img id="student-photo-preview" src="" alt="Student Photo Preview" class="hidden">
+                                <span id="photo-text">Photo (1.5" x 1.5")</span>
+                            </div>
+                            <div class="photo-upload-container no-print w-full max-w-xs">
+                                <label for="photo-upload" class="cursor-pointer bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold py-2 px-3 rounded-lg shadow-md transition duration-150 ease-in-out block text-center w-full">
+                                    Upload Student Photo
+                                </label>
+                                <input type="file" id="photo-upload" accept="image/*" class="hidden" onchange="window.handlePhotoUpload(event)">
+                            </div>
+                            <input type="hidden" id="photo-base64"> <!-- Hidden field to store Base64 data -->
+                        </div>
+
+                        <!-- First Row -->
+                        <div class="sm:col-span-1"><label for="s_first" class="block text-sm font-medium text-gray-700">Student First Name *</label><input type="text" id="s_first" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                        <div class="sm:col-span-1"><label for="s_middle" class="block text-sm font-medium text-gray-700">Middle Name</label><input type="text" id="s_middle" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                        <div class="sm:col-span-1"><label for="s_last" class="block text-sm font-medium text-gray-700">Last Name *</label><input type="text" id="s_last" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                        
+                        <!-- Second Row -->
+                        <div class="sm:col-span-1"><label for="aadhaar_name" class="block text-sm font-medium text-gray-700">Name as per Aadhaar *</label><input type="text" id="aadhaar_name" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                        <div class="sm:col-span-1"><label for="aadhaar" class="block text-sm font-medium text-gray-700">Aadhaar Number *</label><input type="text" id="aadhaar" required inputmode="numeric" pattern="[0-9]{12}" title="Aadhaar must be 12 digits" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                        <div class="sm:col-span-1"><label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth *</label><input type="date" id="dob" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                        
+                        <!-- Third Row -->
+                        <div class="sm:col-span-1">
                             <label for="category" class="block text-sm font-medium text-gray-700">Category *</label>
                             <select id="category" required class="mt-1 block w-full p-3 border border-gray-300 bg-white rounded-lg">
-                                <option value="">Select Category</option>
-                                <option>GENERAL</option>
-                                <option>OBC</option>
-                                <option>SC</option>
-                                <option>ST</option>
+                                <option value="">Select Category</option><option>GENERAL</option><option>OBC</option><option>SC</option><option>ST</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="sm:col-span-1">
                             <label for="blood" class="block text-sm font-medium text-gray-700">Blood Group *</label>
                             <select id="blood" required class="mt-1 block w-full p-3 border border-gray-300 bg-white rounded-lg">
-                                <option value="">Select Group</option>
-                                <option>A+</option><option>A-</option>
-                                <option>B+</option><option>B-</option>
-                                <option>O+</option><option>O-</option>
-                                <option>AB+</option><option>AB-</option>
+                                <option value="">Select Group</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
                             </select>
                         </div>
-                        <div>
-                            <label for="ration" class="block text-sm font-medium text-gray-700">Ration Card Number *</label>
-                            <input type="text" id="ration" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
+                        <div class="sm:col-span-1"><label for="ration" class="block text-sm font-medium text-gray-700">Ration Card Number *</label><input type="text" id="ration" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                    </div>
+
+                    <!-- Fourth Row - below photo section -->
+                    <div class="grid gap-6 sm:grid-cols-4">
+                        <div class="sm:col-span-1">
                             <label for="class_join" class="block text-sm font-medium text-gray-700">Class Joining *</label>
                             <select id="class_join" required class="mt-1 block w-full p-3 border border-gray-300 bg-white rounded-lg">
                                 <option value="">Select Class</option>
                                 <option value="Pre Primary 3">Pre Primary 3</option>
-                                <option value="Pre-Primary 2">Pre-Primary 2</option>
+                                <option value="Pre Primary 2">Pre Primary 2</option>
                                 <option value="Balvatika">Balvatika</option>
                                 <option value="1st">1st</option>
                                 <option value="2nd">2nd</option>
@@ -276,137 +160,93 @@
                                 <option value="5th">5th</option>
                             </select>
                         </div>
+                        <div class="sm:col-span-1"><label for="father_name" class="block text-sm font-medium text-gray-700">Father's Name *</label><input type="text" id="father_name" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                        <div class="sm:col-span-1"><label for="mother_name" class="block text-sm font-medium text-gray-700">Mother's Name *</label><input type="text" id="mother_name" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                        <div class="sm:col-span-1"></div> <!-- Empty spacer -->
                     </div>
 
-                    <!-- Parents Names and Contacts -->
                     <div class="grid gap-6 sm:grid-cols-2">
-                        <div>
-                            <label for="father_name" class="block text-sm font-medium text-gray-700">Father's Name *</label>
-                            <input type="text" id="father_name" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label for="mother_name" class="block text-sm font-medium text-gray-700">Mother's Name *</label>
-                            <input type="text" id="mother_name" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label for="fcontact" class="block text-sm font-medium text-gray-700">Father Contact *</label>
-                            <input type="tel" id="fcontact" required inputmode="tel" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label for="mcontact" class="block text-sm font-medium text-gray-700">Mother Contact *</label>
-                            <input type="tel" id="mcontact" required inputmode="tel" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
+                        <div><label for="fcontact" class="block text-sm font-medium text-gray-700">Father Contact *</label><input type="tel" id="fcontact" required inputmode="tel" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                        <div><label for="mcontact" class="block text-sm font-medium text-gray-700">Mother Contact *</label><input type="tel" id="mcontact" required inputmode="tel" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
                     </div>
 
-                    <!-- Address -->
-                    <div>
-                        <label for="residence" class="block text-sm font-medium text-gray-700">Residence (Full Address) *</label>
-                        <input type="text" id="residence" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                    </div>
+                    <div><label for="residence" class="block text-sm font-medium text-gray-700">Residence (Full Address) *</label><input type="text" id="residence" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
                     <div class="grid gap-6 sm:grid-cols-2">
-                        <div>
-                            <label for="tehsil" class="block text-sm font-medium text-gray-700">Tehsil *</label>
-                            <input type="text" id="tehsil" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label for="district" class="block text-sm font-medium text-gray-700">District *</label>
-                            <input type="text" id="district" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
+                        <div><label for="tehsil" class="block text-sm font-medium text-gray-700">Tehsil *</label><input type="text" id="tehsil" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                        <div><label for="district" class="block text-sm font-medium text-gray-700">District *</label><input type="text" id="district" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
                     </div>
                 </section>
                 
-                <!-- II. BANK DETAILS (Form Section 2) -->
                 <section class="space-y-6 form-section">
-                    <h4 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">II. Bank Details (For Scholarships/Grants)</h4>
+                    <h4 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">II. Bank Details</h4>
                     
-                    <div>
-                        <label for="bank_account" class="block text-sm font-medium text-gray-700">Bank Account Number</label>
-                        <input type="text" id="bank_account" inputmode="numeric" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg">
-                    </div>
+                    <div><label for="bank_account" class="block text-sm font-medium text-gray-700">Bank Account Number</label><input type="text" id="bank_account" inputmode="numeric" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
                     
                     <div class="grid gap-6 sm:grid-cols-3">
-                        <div>
-                            <label for="bank_name" class="block text-sm font-medium text-gray-700">Bank Name</label>
-                            <input type="text" id="bank_name" class    <label>Date of Birth</label>
-    <input type="date" id="dob">
+                        <div><label for="bank_name" class="block text-sm font-medium text-gray-700">Bank Name</label><input type="text" id="bank_name" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                        <div><label for="ifsc" class="block text-sm font-medium text-gray-700">IFSC Code</label><input type="text" id="ifsc" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg uppercase"></div>
+                    </div>
+                    
+                    <div><label for="pen" class="block text-sm font-medium text-gray-700">PEN Number (If Transferring)</label><input type="text" id="pen" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"></div>
+                </section>
+                
+                <section class="space-y-6 border border-red-200 p-6 rounded-xl bg-red-50 form-section">
+                    <h4 class="text-xl font-semibold text-red-800 border-b pb-2 mb-4">III. Parent's Declaration</h4>
+                    
+                    <!-- UPDATED DECLARATION TEXT START -->
+                    <p class="text-sm text-gray-700">
+                        I do hereby declare that the above information provided by me is true to the best of my knowledge and belief. 
+                        I further declare that I will abide by the rules and regulations laid down by the school and the department 
+                        from time to time and I will co-operate with the institution for the betterment of my ward and institution 
+                        under rules when sought. I hereby declare that as the Parent of above mentioned student am giving my consent 
+                        to provide the AADHAAR for the demographic authentication of the student.
+                    </p>
+                    <!-- UPDATED DECLARATION TEXT END -->
 
-    <label>Gender</label>
-    <select id="gender">
-        <option value="">Select</option>
-        <option>Male</option>
-        <option>Female</option>
-        <option>Other</option>
-    </select>
+                    <div class="space-y-3">
+                        <div class="flex items-center"><input id="declare_info" name="declaration" type="checkbox" required class="h-4 w-4 text-indigo-600 border-gray-300 rounded"><label for="declare_info" class="ml-3 text-sm font-medium text-gray-700">I confirm and consent to the above declaration. *</label></div>
+                        <div class="flex items-center"><input id="declare_rules" name="declaration" type="checkbox" required class="h-4 w-4 text-indigo-600 border-gray-300 rounded"><label for="declare_rules" class="ml-3 text-sm font-medium text-gray-700">I agree to abide by the school rules. *</label></div>
+                    </div>
 
-    <label>Aadhaar Number</label>
-    <input type="text" id="aadhaar">
+                    <div class="grid grid-cols-2 gap-6 pt-4">
+                        <div><label for="declaration_date" class="block text-sm font-medium text-gray-700">Date</label><input type="date" id="declaration_date" class="mt-1 block w-full p-3 border-b border-gray-400 bg-transparent rounded-none" required></div>
+                        <div><label for="parent_signature" class="block text-sm font-medium text-gray-700">Parent/Guardian Full Name (Signature Placeholder)</label><input type="text" id="parent_signature" class="mt-1 block w-full p-3 border-b border-gray-400 bg-transparent rounded-none" required placeholder="Type Name as Signature"></div>
+                    </div>
+                </section>
 
-    <label>Father's Name</label>
-    <input type="text" id="fname">
+                <!-- SUBMIT AND DOWNLOAD BUTTONS -->
+                <div class="no-print">
+                    <button type="submit" id="submit-button" class="w-full py-4 px-6 rounded-lg shadow-xl text-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out">
+                        Final Online Application Submission
+                    </button>
+                    <!-- Button for printing pre-filled form (using browser native print-to-PDF) -->
+                    <button type="button" onclick="window.print()" class="w-full mt-4 py-3 px-6 rounded-lg shadow-md text-lg font-bold text-green-700 border border-green-700 bg-green-50 hover:bg-green-100 transition duration-150 ease-in-out">
+                        Print/Save Pre-filled Form (as PDF)
+                    </button>
+                </div>
+                
+                <div id="message-box" class="hidden p-4 mt-4 text-sm rounded-lg border-2" role="alert"></div>
 
-    <label>Mother's Name</label>
-    <input type="text" id="mname">
+                <!-- FOR OFFICE USE ONLY -->
+                <section class="space-y-6 p-6 sm:p-8 rounded-xl border-4 border-dashed border-gray-300 bg-gray-100 for-office-use for-office-use-section form-section">
+                    <h4 class="text-xl font-extrabold text-gray-900 border-b-4 border-gray-400 pb-2 mb-4 text-center tracking-wider">V. FOR OFFICE USE ONLY</h4>
+                    
+                    <div class="grid gap-6 sm:grid-cols-3">
+                        <div><label for="admission_number" class="block text-sm font-medium text-gray-700">Admission Number</label><input type="text" id="admission_number" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg bg-white"></div>
+                        <div><label for="date_admission" class="block text-sm font-medium text-gray-700">Date of Admission Granted</label><input type="date" id="date_admission" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg bg-white"></div>
+                        <div><label for="verified_by" class="block text-sm font-medium text-gray-700">Verified By</label><input type="text" id="verified_by" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg bg-white"></div>
+                    </div>
 
-    <label>Address</label>
-    <textarea id="address" rows="3"></textarea>
-
-
-    <!-- FOOTER DECLARATION SECTION -->
-    <div class="section-title">Mandatory Declarations</div>
-
-    <div class="footer">
-        <strong>Parents Declaration:</strong><br><br>
-        I do hereby declare that the above information provided by me is true to the best of my knowledge and belief.
-        I further declare that I will abide by the rules and regulations laid down by the school and the department
-        from time to time and I will co-operate with the institution for the betterment of my ward and institution
-        under rules when sought. I hereby declare that as the Parent of above mentioned student I am giving my consent
-        to provide the AADHAAR for the demographic authentication of the student.
-        <br><br>
-
-        <strong>For Office Use Only:</strong><br><br>
-        The Student is admitted to Class ______ under Admission No. ______ today, on ______ / 20___.
-        All required documents, including the Birth Certificate, Residence Proof, and Transfer Certificate
-        (if applicable), have been duly verified and found satisfactory.
-        <br><br>
-
-        <strong>Signature of Parent __________________________</strong><br>
-        <strong>Signature of Admission Incharge __________________</strong><br>
-        <strong>Signature of Headmaster _________________________</strong>
-    </div>
-
-    <div class="checkbox-section">
-        <label>
-            <input type="checkbox" id="confirmCheck">  
-            I confirm that all information is correct and I accept all declarations.
-        </label>
-    </div>
-
-    <button class="btn" onclick="generatePDF()">Submit & Generate PDF</button>
-
-</div>
-
-
-<script>
-function generatePDF() {
-    if (!document.getElementById("confirmCheck").checked) {
-        alert("You must tick the declaration checkbox before submission!");
-        return;
-    }
-
-    const form = document.getElementById("formArea");
-
-    html2canvas(form, { scale: 2 }).then(canvas => {
-        const imgData = canvas.toDataURL("image/jpeg", 1.0);
-
-        const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-        const width = pdf.internal.pageSize.getWidth();
-        const height = (canvas.height * width) / canvas.width;
-
-        pdf.addImage(imgData, 'JPEG', 0, 0, width, height);
-        pdf.save("Admission_Form_GPS_Pethgam_Wagoora.pdf");
-    });
-}
-</script>
-
-</body>
-</html>        
+                    <div>
+                        <label for="documents_submitted" class="block text-sm font-medium text-gray-700">Documents Submitted (Checklist)</label>
+                        <textarea id="documents_submitted" rows="4" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg bg-white">
+- Birth Certificate: Yes / No
+- Aadhaar Copy: Yes / No
+- Ration Card Copy: Yes / No
+- Previous School TC: Yes / No
+                        </textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-6 pt-4 border-t border-gray-300">
+                         <div><p class="text-sm font-medium text-gray-700 mb-2">Signature of Admin Incharge:</p><div class="h-12 border-b border-gray-500 bg-white"></div></div>
+                        <div><p class="text-sm font-medium text-gray-700 mb-2">
