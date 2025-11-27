@@ -92,38 +92,96 @@
 
 <div class="form-container" id="formArea">
 
-    <h2>Government Primary School Pethgam Wagoora <br> Admission Form</h2>
+    <h2>ADMISSION FORM<br>Government Primary School Pethgam Wagoora</h2>
 
-    <div class="section-title">Student Details</div>
+<form id="admissionForm">
 
-    <label>Admission No. (To be allotted by school later):</label>
-    <input type="text" placeholder="(Left blank intentionally)" disabled>
+    <!-- STUDENT DETAILS -->
+    <label>Student First Name</label>
+    <input type="text" id="s_first" required>
 
-    <label>Student Name</label>
-    <input type="text" id="sname">
+    <label>Middle Name</label>
+    <input type="text" id="s_middle">
 
-    <label>Date of Birth</label>
-    <input type="date" id="dob">
+    <label>Last Name</label>
+    <input type="text" id="s_last" required>
 
-    <label>Gender</label>
-    <select id="gender">
-        <option value="">Select</option>
-        <option>Male</option>
-        <option>Female</option>
-        <option>Other</option>
-    </select>
-
-    <label>Aadhaar Number</label>
-    <input type="text" id="aadhaar">
+    <label>Name as per Aadhaar</label>
+    <input type="text" id="aadhaar_name" required>
 
     <label>Father's Name</label>
-    <input type="text" id="fname">
+    <input type="text" id="father_name" required>
 
     <label>Mother's Name</label>
-    <input type="text" id="mname">
+    <input type="text" id="mother_name" required>
 
-    <label>Address</label>
-    <textarea id="address" rows="3"></textarea>
+    <label>Residence</label>
+    <input type="text" id="residence" required>
+
+    <div class="row">
+        <div class="col">
+            <label>Tehsil</label>
+            <input type="text" id="tehsil" required>
+        </div>
+        <div class="col">
+            <label>District</label>
+            <input type="text" id="district" required>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label>Father Contact</label>
+            <input type="text" id="fcontact" required>
+        </div>
+        <div class="col">
+            <label>Mother Contact</label>
+            <input type="text" id="mcontact" required>
+        </div>
+    </div>
+
+    <label>Aadhaar Number</label>
+    <input type="text" id="aadhaar" required>
+
+    <label>Date of Birth</label>
+    <input type="date" id="dob" required>
+
+    <label>Bank Account Number</label>
+    <input type="text" id="bank_account">
+
+    <label>Bank Name</label>
+    <input type="text" id="bank_name">
+
+    <label>Bank Branch</label>
+    <input type="text" id="bank_branch">
+
+    <label>IFSC Code</label>
+    <input type="text" id="ifsc">
+
+    <label>Category</label>
+    <select id="category" required>
+        <option>GENERAL</option>
+        <option>OBC</option>
+        <option>SC</option>
+        <option>ST</option>
+    </select>
+
+    <label>Blood Group</label>
+    <select id="blood" required>
+        <option>A+</option><option>A-</option>
+        <option>B+</option><option>B-</option>
+        <option>O+</option><option>O-</option>
+        <option>AB+</option><option>AB-</option>
+    </select>
+
+    <label>Ration Card Number</label>
+    <input type="text" id="ration" required>
+
+    <label>Class Joining</label>
+    <input type="text" id="class_join" required>
+
+    <label>PEN Number (If Transferring)</label>
+    <input type="text" id="pen">
 
 
     <!-- PARENT DECLARATION BOX -->
