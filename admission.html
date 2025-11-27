@@ -92,96 +92,38 @@
 
 <div class="form-container" id="formArea">
 
-    <h2>ADMISSION FORM<br>Government Primary School Pethgam Wagoora</h2>
+    <h2>Government Primary School Pethgam Wagoora <br> Admission Form</h2>
 
-<form id="admissionForm">
+    <div class="section-title">Student Details</div>
 
-    <!-- STUDENT DETAILS -->
-    <label>Student First Name</label>
-    <input type="text" id="s_first" required>
+    <label>Admission No. (To be allotted by school later):</label>
+    <input type="text" placeholder="(Left blank intentionally)" disabled>
 
-    <label>Middle Name</label>
-    <input type="text" id="s_middle">
-
-    <label>Last Name</label>
-    <input type="text" id="s_last" required>
-
-    <label>Name as per Aadhaar</label>
-    <input type="text" id="aadhaar_name" required>
-
-    <label>Father's Name</label>
-    <input type="text" id="father_name" required>
-
-    <label>Mother's Name</label>
-    <input type="text" id="mother_name" required>
-
-    <label>Residence</label>
-    <input type="text" id="residence" required>
-
-    <div class="row">
-        <div class="col">
-            <label>Tehsil</label>
-            <input type="text" id="tehsil" required>
-        </div>
-        <div class="col">
-            <label>District</label>
-            <input type="text" id="district" required>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col">
-            <label>Father Contact</label>
-            <input type="text" id="fcontact" required>
-        </div>
-        <div class="col">
-            <label>Mother Contact</label>
-            <input type="text" id="mcontact" required>
-        </div>
-    </div>
-
-    <label>Aadhaar Number</label>
-    <input type="text" id="aadhaar" required>
+    <label>Student Name</label>
+    <input type="text" id="sname">
 
     <label>Date of Birth</label>
-    <input type="date" id="dob" required>
+    <input type="date" id="dob">
 
-    <label>Bank Account Number</label>
-    <input type="text" id="bank_account">
-
-    <label>Bank Name</label>
-    <input type="text" id="bank_name">
-
-    <label>Bank Branch</label>
-    <input type="text" id="bank_branch">
-
-    <label>IFSC Code</label>
-    <input type="text" id="ifsc">
-
-    <label>Category</label>
-    <select id="category" required>
-        <option>GENERAL</option>
-        <option>OBC</option>
-        <option>SC</option>
-        <option>ST</option>
+    <label>Gender</label>
+    <select id="gender">
+        <option value="">Select</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
     </select>
 
-    <label>Blood Group</label>
-    <select id="blood" required>
-        <option>A+</option><option>A-</option>
-        <option>B+</option><option>B-</option>
-        <option>O+</option><option>O-</option>
-        <option>AB+</option><option>AB-</option>
-    </select>
+    <label>Aadhaar Number</label>
+    <input type="text" id="aadhaar">
 
-    <label>Ration Card Number</label>
-    <input type="text" id="ration" required>
+    <label>Father's Name</label>
+    <input type="text" id="fname">
 
-    <label>Class Joining</label>
-    <input type="text" id="class_join" required>
+    <label>Mother's Name</label>
+    <input type="text" id="mname">
 
-    <label>PEN Number (If Transferring)</label>
-    <input type="text" id="pen">
+    <label>Address</label>
+    <textarea id="address" rows="3"></textarea>
 
 
     <!-- PARENT DECLARATION BOX -->
@@ -223,138 +165,28 @@
 </div>
 
 
-<h2>ADMISSION FORM<br>Government Primary School Pethgam Wagoora</h2>
+<script>
+function generatePDF() {
+    if (!document.getElementById("confirmCheck").checked) {
+        alert("You must tick the declaration checkbox before submission!");
+        return;
+    }
 
-<form id="admissionForm">
+    const form = document.getElementById("formArea");
 
-    <!-- STUDENT DETAILS -->
-    <label>Student First Name</label>
-    <label>Student First Name</label>
-    <input type="text" id="s_first" required>
+    html2canvas(form, { scale: 2 }).then(canvas => {
+        const imgData = canvas.toDataURL("image/jpeg", 1.0);
 
-    <label>Middle Name</label>
-    <input type="text" id="s_middle">
+        const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+        const width = pdf.internal.pageSize.getWidth();
+        const height = (canvas.height * width) / canvas.width;
 
-    <label>Last Name</label>
-    <input type="text" id="s_last" required>
+        pdf.addImage(imgData, 'JPEG', 0, 0, width, height);
+        pdf.save("Admission_Form_GPS_Pethgam_Wagoora.pdf");
+    });
+}
+</script>
 
-    <label>Name as per Aadhaar</label>
-    <input type="text" id="aadhaar_name" required>
-
-    <label>Father's Name</label>
-    <input type="text" id="father_name" required>
-
-    <label>Mother's Name</label>
-    <input type="text" id="mother_name" required>
-
-    <label>Residence</label>
-    <input type="text" id="residence" required>
-
-    <div class="row">
-        <div class="col">
-            <label>Tehsil</label>
-            <input type="text" id="tehsil" required>
-        </div>
-        <div class="col">
-            <label>District</label>
-            <input type="text" id="district" required>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col">
-            <label>Father Contact</label>
-            <input type="text" id="fcontact" required>
-        </div>
-        <div class="col">
-            <label>Mother Contact</label>
-            <input type="text" id="mcontact" required>
-        </div>
-    </div>
-
-    <label>Aadhaar Number</label>
-    <input type="text" id="aadhaar" required>
-
-    <label>Date of Birth</label>
-    <input type="date" id="dob" required>
-
-    <label>Bank Account Number</label>
-    <input type="text" id="bank_account">
-
-    <label>Bank Name</label>
-    <input type="text" id="bank_name">
-
-    <label>Bank Branch</label>
-    <input type="text" id="bank_branch">
-
-    <label>IFSC Code</label>
-    <input type="text" id="ifsc">
-
-    <label>Category</label>
-    <select id="category" required>
-        <option>GENERAL</option>
-        <option>OBC</option>
-        <option>SC</option>
-        <option>ST</option>
-    </select>
-
-    <label>Blood Group</label>
-    <select id="blood" required>
-        <option>A+</option><option>A-</option>
-        <option>B+</option><option>B-</option>
-        <option>O+</option><option>O-</option>
-        <option>AB+</option><option>AB-</option>
-    </select>
-
-    <label>Ration Card Number</label>
-    <input type="text" id="ration" required>
-
-    <label>Class Joining</label>
-    <input type="text" id="class_join" required>
-
-    <label>PEN Number (If Transferring)</label>
-    <input type="text" id="pen">
-
-
-    <!-- PARENT DECLARATION BOX -->
-    <div class="section-title">Parents Declaration</div>
-
-    <div class="box">
-        I do hereby declare that the above information provided by me is true to the best of my knowledge and belief.
-        I further declare that I will abide by the rules and regulations laid down by the school and the department
-        from time to time and I will co-operate with the institution for the betterment of my ward and institution
-        under rules when sought. I hereby declare that as the Parent of above mentioned student I am giving my consent
-        to provide the AADHAAR for the demographic authentication of the student.
-        <br><br>
-        <strong>Signature of Parent __________________________</strong>
-    </div>
-    <!-- OFFICE USE ONLY BOX (SEPARATE NOW) -->
-    <div class="section-title">For Office Use Only</div>
-
-    <div class="box">
-        The Student is admitted to Class ______ under Admission No. ______ today, on ______ / 20___.
-        All required documents, including the Birth Certificate, Residence Proof, and Transfer Certificate
-        (if applicable), have been duly verified and found satisfactory.
-        <br><br>
-        <strong>Signature of Admission Incharge __________________</strong><br>
-        <strong>Signature of Headmaster _________________________</strong>
-    </div>
-
-
-    <div class="checkbox-section">
-        <label>
-            <input type="checkbox" id="confirmCheck">  
-            I confirm that all information is correct and I accept all declarations.
-        </label>
-    </div>
 </body>
-</html>  
-
-
-
-
-
-
-
-
-
+</html>
+            
