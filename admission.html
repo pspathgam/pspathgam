@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Admission Register - Government Primary School Pethgam Wagoora</title>
+<title>Admission Management - GPS Pethgam Wagoora</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-    /* EXISTING CSS */
     body{
         font-family: Arial, sans-serif;
         background:#eef7ff;
@@ -21,6 +20,7 @@
         display:flex;
         gap:10px;
         margin-bottom:20px;
+        justify-content: center;
     }
 
     /* 3D LOOKING BUTTONS */
@@ -35,9 +35,24 @@
         box-shadow:0px 4px 0px #064a97;
         transition:0.1s;
     }
+    .tab-buttons button:hover:not(.active) {
+        background: #0066cc;
+    }
+    .tab-buttons button.active {
+        background: #004d99;
+        box-shadow:0px 2px 0px #064a97;
+    }
     .tab-buttons button:active{
         box-shadow:0px 1px 0px #064a97;
         transform:translateY(3px);
+    }
+
+    /* Tab Content Styling */
+    .tab-content {
+        display: none;
+    }
+    .tab-content.active {
+        display: block;
     }
 
     /* --- LOGO AND HEADER STYLES --- */
@@ -47,6 +62,8 @@
         justify-content: center; 
         margin-bottom: 20px;
         text-align: center;
+        border-bottom: 2px solid #ccc;
+        padding-bottom: 15px;
     }
 
     .school-logo {
@@ -71,21 +88,21 @@
         margin-top:0;
         margin-bottom: 5px; 
         font-size: 24px;
+        color: #0b76ef;
     }
     .header-text p {
         margin: 0;
-        font-size: 16px;
+        font-size: 12px;
         color: #555;
     }
     /* -------------------------------- */
-
 
     .container{
         background:white;
         padding:20px;
         border-radius:8px;
         box-shadow:0px 0px 10px #bcd4ff;
-        max-width:800px;
+        max-width:850px; /* Increased width for better field layout */
         margin:auto;
     }
 
@@ -95,12 +112,29 @@
         font-weight:bold;
     }
 
+    /* Grid for multi-part names and contacts */
+    .form-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 10px;
+    }
+    .form-group {
+        flex: 1;
+        min-width: 0;
+    }
+    .form-group label {
+        margin-top: 0;
+        font-size: 14px;
+        font-weight: normal;
+    }
+    
     input, select{
         width:100%;
         padding:8px;
         margin-top:5px;
         border-radius:4px;
         border:1px solid #999;
+        box-sizing: border-box;
     }
 
     textarea{
@@ -110,35 +144,18 @@
         border:1px solid #999;
         padding:8px;
         margin-top:5px;
+        box-sizing: border-box;
     }
 
-    /* --- PDF BUTTON STYLES (NEW) --- */
-    .action-buttons {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
-        justify-content: center;
-    }
-    .pdf-btn {
-        background:#dc3545; /* Red color for Download */
-        color:white;
-        padding:10px 15px;
-        border:none;
-        border-radius:6px;
+    .section-title{
+        font-size:18px;
+        margin-top:25px;
         font-weight:bold;
-        cursor:pointer;
-        box-shadow:0px 4px 0px #970617;
-        transition:0.1s;
-        font-size: 16px;
-        flex-grow: 1;
-        max-width: 300px;
+        text-decoration:underline;
+        color: #0b76ef;
     }
-    .pdf-btn:active{
-        box-shadow:0px 1px 0px #970617;
-        transform:translateY(3px);
-    }
-    /* -------------------------------- */
 
+    /* Download/Submit Buttons */
     .submit-btn{
         background:#28a745;
         color:white;
@@ -157,253 +174,6 @@
         box-shadow:0px 1px 0px #0c6c25;
         transform:translateY(3px);
     }
-
-    .section-title{
-        font-size:18px;
-        margin-top:25px;
-        font-weight:bold;
-        text-decoration:underline;
-    }
-
-    .office-use-box{
-        background:#fff;
-        border:2px dashed #0066cc;
-        padding:20px;
-        max-width:800px;
-        margin:25px auto;
-        border-radius:8px;
-    }
-</style>
-
-</head>
-<body>
-
-<div class="tab-buttons">
-    <button>Admission Register</button>
-    <button>Student List</button>
-    <button>Search Student</button>
-</div>
-
-<div class="container" id="admissionFormContainer"> 
-    <div class="header-content">
-        <div class="school-logo">
-            [School Logo Image Here]
-        </div>
-        <div class="header-text">
-            <h2><b>ADMISSION REGISTER</b></h2>
-            <p>Government Primary School Pethgam Wagoora</p>
-        </div>
-    </div>
-    <form id="admissionForm">
-
-        <label>Admission No. (To be allotted by School)</label>
-        <input type="text" placeholder="Leave Blank – To be filled by Office" disabled>
-        
-        <label>Student Full Name</label>
-        <input type="text" name="studentname" required>
-
-        <label>Father's Name</label>
-        <input type="text" name="fathername" required>
-
-        <label>Mother's Name</label>
-        <input type="text" name="mothername" required>
-
-        <label>Date of Birth</label>
-        <input type="date" name="dob" required>
-
-        <label>Aadhaar Number</label>
-        <input type="text" name="aadhaar" maxlength="12">
-
-        <label>Gender</label>
-        <select name="gender" required>
-            <option value="">Select</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-        </select>
-        
-        <label>Blood Group</label>
-        <select name="bloodgroup">
-            <option value="">Select Blood Group</option>
-            <option>A+</option>
-            <option>A-</option>
-            <option>B+</option>
-            <option>B-</option>
-            <option>AB+</option>
-            <option>AB-</option>
-            <option>O+</option>
-            <option>O-</option>
-            <option>Unknown</option>
-        </select>
-
-        <label>Class for Admission</label>
-        <select name="class" required>
-            <option value="">Select Class</option>
-            <option>Nursery</option>
-            <option>LKG</option>
-            <option>UKG</option>
-            <option>1st</option>
-            <option>2nd</option>
-            <option>3rd</option>
-            <option>4th</option>
-            <option>5th</option>
-        </select>
-
-        <label>Residential Address</label>
-        <textarea name="address" required></textarea>
-
-        <label>Mobile Number</label>
-        <input type="text" name="mobile" required>
-
-        <p class="section-title">Parents Declaration</p>
-
-        <p style="text-align:justify;">
-            I do hereby declare that the above information provided by me is true to the best of my knowledge and belief. 
-            I further declare that I will abide by the rules and regulations laid down by the school and the department from 
-            time to time and I will co-operate with the institution for the betterment of my ward and institution under rules 
-            when sought. I hereby declare that as the Parent of above mentioned student I am giving my consent to provide 
-            the AADHAAR for the demographic authentication of the student.
-        </p>
-
-        <label>
-            <input type="checkbox" id="agree" required>
-            I agree to the above declaration.
-        </label>
-
-        <button type="submit" class="submit-btn">Submit Admission Form</button>
-
-    </form>
-
-</div>
-
-<div class="office-use-box" id="officeUseBox">
-    <h3 style="text-align:center; margin-top:0;">OFFICE USE ONLY</h3>
-
-    <label>Admission No. Allotted</label>
-    <input type="text" placeholder="To be filled by Office">
-
-    <label>Class Admitted To</label>
-    <input type="text">
-
-    <label>Date of Admission</label>
-    <input type="date">
-
-    <p style="margin-top:15px;font-weight:bold;">
-        The Student is admitted on __________________.  
-        All required documents, including the Birth Certificate, Residence Proof, and Transfer Certificate (if applicable),  
-        have been verified and found satisfactory.
-    </p>
-
-    <br>
-    <label>Signature of Parent</label>
-    <input type="text">
-
-    <label>Signature of Admission Incharge</label>
-    <input type="text">
-
-    <label>Signature of Headmaster</label>
-    <input type="text">
-</div>
-
-<div class="container" style="margin-top: 20px;">
-    <p style="text-align: center; font-weight: bold; margin-bottom: 10px;">Download Options</p>
-    <div class="action-buttons">
-        <button id="downloadForm" class="pdf-btn" data-target="admissionFormContainer">Generate & Download PDF Form</button>
-        <button id="downloadRegister" class="pdf-btn" data-target="officeUseBox">Generate & Download PDF Register</button>
-    </div>
-</div>
-
-<script>
-    // Initialize jsPDF
-    const { jsPDF } = window.jspdf;
-
-    document.getElementById("admissionForm").addEventListener("submit", function(e){
-        e.preventDefault();
-        alert("Form Submitted Successfully! Data saved and ready for PDF generation.");
-        // In a real app, you would send data to a server here.
-    });
-
-    /**
-     * Function to capture an HTML element, convert it to an image, and save it as a PDF,
-     * ensuring optimal A4 sheet fit and handling multi-page content.
-     */
-    function generatePDF(elementId, fileName) {
-        const element = document.getElementById(elementId);
-
-        // Temporarily remove 'disabled' attribute to capture placeholder text
-        const disabledInput = element.querySelector('input[disabled]');
-        let isDisabledRemoved = false;
-        if (disabledInput) {
-            disabledInput.removeAttribute('disabled');
-            isDisabledRemoved = true;
-        }
-
-        // Use a high scale for better quality in the final PDF
-        html2canvas(element, { 
-            scale: 3, 
-            allowTaint: true,
-            useCORS: true 
-        }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4'); 
-
-            // **A4 Dimensions in mm**
-            const pdfWidth = 210; 
-            const pdfHeight = 297; 
-            
-            // Calculate image height based on canvas aspect ratio and PDF width
-            const imgHeight = canvas.height * pdfWidth / canvas.width;
-            
-            let heightLeft = imgHeight;
-            let position = 0;
-
-            // Add first page
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-            heightLeft -= pdfHeight;
-
-            // Handle multi-page content
-            while (heightLeft >= 0) {
-                position = heightLeft - imgHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-                heightLeft -= pdfHeight;
-            }
-
-            pdf.save(fileName);
-        }).finally(() => {
-            // Re-add the disabled attribute after capture
-            if (isDisabledRemoved && disabledInput) {
-                disabledInput.setAttribute('disabled', 'disabled');
-            }
-        });
-    }
-
-    // Event Listener for PDF Form Download
-    document.getElementById("downloadForm").addEventListener("click", function(){
-        const targetId = this.getAttribute('data-target');
-        generatePDF(targetId, 'Admission_Form.pdf');
-    });
-
-    // Event Listener for PDF Register Download
-    document.getElementById("downloadRegister").addEventListener("click", function(){
-        const targetId = this.getAttribute('data-target');
-        generatePDF(targetId, 'Admission_Register_Record.pdf');
-    });
-</script>
-
-</body>
-</html>
-
-    textarea{
-        width:100%;
-        height:100px;
-        border-radius:4px;
-        border:1px solid #999;
-        padding:8px;
-        margin-top:5px;
-    }
-
-    /* --- PDF BUTTON STYLES (NEW) --- */
     .action-buttons {
         display: flex;
         gap: 10px;
@@ -411,7 +181,7 @@
         justify-content: center;
     }
     .pdf-btn {
-        background:#dc3545; /* Red color for Download */
+        background:#dc3545;
         color:white;
         padding:10px 15px;
         border:none;
@@ -422,47 +192,46 @@
         transition:0.1s;
         font-size: 16px;
         flex-grow: 1;
-        max-width: 300px;
+        max-width: 380px;
     }
     .pdf-btn:active{
         box-shadow:0px 1px 0px #970617;
         transform:translateY(3px);
     }
-    /* -------------------------------- */
 
-    .submit-btn{
-        background:#28a745;
-        color:white;
-        padding:12px;
-        border:none;
-        border-radius:6px;
-        width:100%;
-        font-size:18px;
-        margin-top:20px;
-        cursor:pointer;
-        font-weight:bold;
-        box-shadow:0px 4px 0px #0c6c25;
-        transition:0.1s;
-    }
-    .submit-btn:active{
-        box-shadow:0px 1px 0px #0c6c25;
-        transform:translateY(3px);
-    }
-
-    .section-title{
-        font-size:18px;
-        margin-top:25px;
-        font-weight:bold;
-        text-decoration:underline;
-    }
-
+    /* OFFICE USE BOX */
     .office-use-box{
         background:#fff;
         border:2px dashed #0066cc;
         padding:20px;
-        max-width:800px;
+        max-width:850px;
         margin:25px auto;
         border-radius:8px;
+    }
+
+    /* Register Table Styling */
+    .register-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+    .register-table th, .register-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    .register-table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        position: sticky;
+        top: 0;
+    }
+    .register-table img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 4px;
     }
 </style>
 
@@ -470,217 +239,338 @@
 <body>
 
 <div class="tab-buttons">
-    <button>Admission Register</button>
-    <button>Student List</button>
-    <button>Search Student</button>
+    <button class="active" onclick="showTab('admissionFormTab', this)">Admission Form</button>
+    <button onclick="showTab('admissionRegisterTab', this)">Admission Register</button>
+    <button onclick="alert('Search functionality coming soon!')">Search Student</button>
 </div>
 
-<div class="container" id="admissionFormContainer"> 
-    <div class="header-content">
-        <div class="school-logo">
-            [School Logo Image Here]
+<div id="admissionFormTab" class="tab-content active">
+    
+    <div class="container" id="admissionFormContainer"> 
+        
+        <div class="header-content">
+            <div class="school-logo">
+                [Logo]
+            </div>
+            <div class="header-text">
+                <h2>GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h2>
+                <p>Wagoora Babareshhi Road Near Zonal Education Office Wagoora<br>
+                **Email ID: psspethgam@gmail.com. UDISECode: 01022202207**</p>
+            </div>
         </div>
-        <div class="header-text">
-            <h2><b>ADMISSION REGISTER</b></h2>
-            <p>Government Primary School Pethgam Wagoora</p>
+        
+        <h3 style="text-align:center;">ADMISSION FORM</h3>
+
+        <form id="admissionForm">
+
+            <label>Students Name</label>
+            <div class="form-row">
+                <div class="form-group"><input type="text" name="sname_first" required><label>First Name</label></div>
+                <div class="form-group"><input type="text" name="sname_middle"><label>Middle Name</label></div>
+                <div class="form-group"><input type="text" name="sname_last" required><label>Last Name</label></div>
+            </div>
+
+            <label>Name As Per Aadhaar</label>
+            <div class="form-row">
+                <div class="form-group"><input type="text" name="aname_first"><label>First Name</label></div>
+                <div class="form-group"><input type="text" name="aname_middle"><label>Middle Name</label></div>
+                <div class="form-group"><input type="text" name="aname_last"><label>Last Name</label></div>
+            </div>
+
+            <label>Father's Name</label>
+            <div class="form-row">
+                <div class="form-group"><input type="text" name="fname_first" required><label>First Name</label></div>
+                <div class="form-group"><input type="text" name="fname_middle"><label>Middle Name</label></div>
+                <div class="form-group"><input type="text" name="fname_last" required><label>Last Name</label></div>
+            </div>
+
+            <label>Mother's Name</label>
+            <div class="form-row">
+                <div class="form-group"><input type="text" name="mname_first" required><label>First Name</label></div>
+                <div class="form-group"><input type="text" name="mname_middle"><label>Middle Name</label></div>
+                <div class="form-group"><input type="text" name="mname_last" required><label>Last Name</label></div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Residence</label>
+                    <input type="text" name="residence" required>
+                </div>
+                <div class="form-group">
+                    <label>District</label>
+                    <input type="text" name="district" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Father's Contact Number</label>
+                    <input type="text" name="fcontact" required>
+                </div>
+                <div class="form-group">
+                    <label>Mother's Contact Number</label>
+                    <input type="text" name="mcontact">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Aadhaar Number</label>
+                    <input type="text" name="aadhaar" maxlength="12">
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth (in figures)</label>
+                    <input type="date" name="dob" required>
+                </div>
+            </div>
+            <label>Date of Birth in Words</label>
+            <input type="text" name="dob_words">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Bank Account Number</label>
+                    <input type="text" name="bank_account">
+                </div>
+                <div class="form-group">
+                    <label>Bank Name</label>
+                    <input type="text" name="bank_name">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Bank Branch</label>
+                    <input type="text" name="bank_branch">
+                </div>
+                <div class="form-group">
+                    <label>IFSC Code</label>
+                    <input type="text" name="ifsc_code">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category">
+                        <option>SC</option>
+                        <option>ST</option>
+                        <option>OBC</option>
+                        <option>GENERAL</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Blood Group</label>
+                    <select name="bloodgroup">
+                        <option value="">Select</option>
+                        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                        <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ration Card Number</label>
+                    <input type="text" name="ration_no">
+                </div>
+                <div class="form-group">
+                    <label>Ration Card Type</label>
+                    <input type="text" name="ration_type">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Class Joining</label>
+                    <select name="class" required>
+                        <option value="">Select Class</option>
+                        <option>Nursery</option><option>LKG</option><option>UKG</option>
+                        <option>1st</option><option>2nd</option><option>3rd</option>
+                        <option>4th</option><option>5th</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>PEN Number for Transferring Students</label>
+                    <input type="text" name="pen_number">
+                </div>
+            </div>
+
+            <label>Student Photo</label>
+            <input type="file" name="student_photo" accept="image/*">
+            
+            <p class="section-title">Parents Declaration</p>
+            <p style="text-align:justify; font-size:14px;">
+                I do hereby declare that the above information provided by me is true to the best of my knowledge and belief. 
+                I further declare that I will abide by the rules and regulations laid down by the school and the department from 
+                time to time and I will co-operate with the institution for the betterment of my ward and institution under rules 
+                when sought. I hereby declare that as the Parent of above mentioned student I am giving my consent to provide 
+                the AADHAAR for the demographic authentication of the student.
+            </p>
+
+            <label style="margin-top: 15px;">
+                <input type="checkbox" id="agree" required>
+                I agree to the above declaration.
+            </label>
+
+            <button type="submit" class="submit-btn">Submit Admission Form & Proceed to APAAR</button>
+        </form>
+
+        <div class="office-use-box" id="officeUseBox" style="margin-top: 25px;">
+            <h3 style="text-align:center; margin-top:0;">OFFICE USE ONLY</h3>
+            <label>Admission No. Allotted</label>
+            <input type="text" name="allotted_adm_no" placeholder="To be filled by Office">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Class Admitted To</label>
+                    <input type="text" name="admitted_class">
+                </div>
+                <div class="form-group">
+                    <label>Date of Admission</label>
+                    <input type="date" name="admission_date">
+                </div>
+            </div>
+
+            <p style="margin-top:15px;font-weight:bold; font-size:14px;">
+                The Student is admitted to Class <span style="text-decoration: underline;">________</span> under Admission No. <span style="text-decoration: underline;">________</span> on <span style="text-decoration: underline;">________</span>. 
+                All required documents, including the Birth Certificate, Residence Proof, and Transfer Certificate (if applicable), 
+                have been duly verified and found satisfactory.
+            </p>
+
+            <div class="form-row" style="margin-top: 30px;">
+                <div class="form-group"><input type="text"><label>Signature of Parent</label></div>
+                <div class="form-group"><input type="text"><label>Sig. Of Adm. Incharge</label></div>
+                <div class="form-group"><input type="text"><label>Sig. Of Headmaster</label></div>
+            </div>
         </div>
     </div>
-    <form id="admissionForm">
 
-        <label>Admission No. (To be allotted by School)</label>
-        <input type="text" placeholder="Leave Blank – To be filled by Office" disabled>
-        
-        <label>Student Full Name</label>
-        <input type="text" name="studentname" required>
+    <div class="container" style="margin-top: 20px;">
+        <p style="text-align: center; font-weight: bold; margin-bottom: 10px;">Download Options (Use after Submission)</p>
+        <div class="action-buttons">
+            <button id="downloadForm" class="pdf-btn" data-target="admissionFormContainer">Generate & Download PDF Admission Form (Pre-filled)</button>
+            <button id="downloadRegister" class="pdf-btn" data-target="officeUseBox">Generate & Download PDF Register Record</button>
+        </div>
+    </div>
+</div>
 
-        <label>Father's Name</label>
-        <input type="text" name="fathername" required>
-
-        <label>Mother's Name</label>
-        <input type="text" name="mothername" required>
-
-        <label>Date of Birth</label>
-        <input type="date" name="dob" required>
-
-        <label>Aadhaar Number</label>
-        <input type="text" name="aadhaar" maxlength="12">
-
-        <label>Gender</label>
-        <select name="gender" required>
-            <option value="">Select</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-        </select>
-        
-        <label>Blood Group</label>
-        <select name="bloodgroup">
-            <option value="">Select Blood Group</option>
-            <option>A+</option>
-            <option>A-</option>
-            <option>B+</option>
-            <option>B-</option>
-            <option>AB+</option>
-            <option>AB-</option>
-            <option>O+</option>
-            <option>O-</option>
-            <option>Unknown</option>
-        </select>
-
-        <label>Class for Admission</label>
-        <select name="class" required>
-            <option value="">Select Class</option>
-            <option>Nursery</option>
-            <option>LKG</option>
-            <option>UKG</option>
-            <option>1st</option>
-            <option>2nd</option>
-            <option>3rd</option>
-            <option>4th</option>
-            <option>5th</option>
-        </select>
-
-        <label>Residential Address</label>
-        <textarea name="address" required></textarea>
-
-        <label>Mobile Number</label>
-        <input type="text" name="mobile" required>
-
-        <p class="section-title">Parents Declaration</p>
-
-        <p style="text-align:justify;">
-            I do hereby declare that the above information provided by me is true to the best of my knowledge and belief. 
-            I further declare that I will abide by the rules and regulations laid down by the school and the department from 
-            time to time and I will co-operate with the institution for the betterment of my ward and institution under rules 
-            when sought. I hereby declare that as the Parent of above mentioned student I am giving my consent to provide 
-            the AADHAAR for the demographic authentication of the student.
+<div id="admissionRegisterTab" class="tab-content">
+    <div class="container">
+        <h3 style="text-align:center;">ADMITTED STUDENT REGISTER</h3>
+        <p style="font-weight: bold;">Filter by Status: 
+            <select id="statusFilter" onchange="filterRegister()">
+                <option value="All">All</option>
+                <option value="Admitted">Admitted</option>
+                <option value="In Progress">In Progress</option>
+            </select>
         </p>
 
-        <label>
-            <input type="checkbox" id="agree" required>
-            I agree to the above declaration.
-        </label>
-
-        <button type="submit" class="submit-btn">Submit Admission Form</button>
-
-    </form>
-
-</div>
-
-<div class="office-use-box" id="officeUseBox">
-    <h3 style="text-align:center; margin-top:0;">OFFICE USE ONLY</h3>
-
-    <label>Admission No. Allotted</label>
-    <input type="text" placeholder="To be filled by Office">
-
-    <label>Class Admitted To</label>
-    <input type="text">
-
-    <label>Date of Admission</label>
-    <input type="date">
-
-    <p style="margin-top:15px;font-weight:bold;">
-        The Student is admitted on __________________.  
-        All required documents, including the Birth Certificate, Residence Proof, and Transfer Certificate (if applicable),  
-        have been verified and found satisfactory.
-    </p>
-
-    <br>
-    <label>Signature of Parent</label>
-    <input type="text">
-
-    <label>Signature of Admission Incharge</label>
-    <input type="text">
-
-    <label>Signature of Headmaster</label>
-    <input type="text">
-</div>
-
-<div class="container" style="margin-top: 20px;">
-    <p style="text-align: center; font-weight: bold; margin-bottom: 10px;">Download Options</p>
-    <div class="action-buttons">
-        <button id="downloadForm" class="pdf-btn" data-target="admissionFormContainer">Generate & Download PDF Form</button>
-        <button id="downloadRegister" class="pdf-btn" data-target="officeUseBox">Generate & Download PDF Register</button>
+        <div style="max-height: 500px; overflow-y: auto;">
+            <table class="register-table">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Date of Admission</th>
+                        <th>Student Name</th>
+                        <th>DOB</th>
+                        <th>Father's Name</th>
+                        <th>Mother's Name</th>
+                        <th>Parents Contact</th>
+                        <th>Parents Profession</th>
+                        <th>Status of Admission</th>
+                        <th>Photo</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody id="registerBody">
+                    <tr data-status="Admitted">
+                        <td>1</td>
+                        <td>2025-07-01</td>
+                        <td>Ayesha Bhat</td>
+                        <td>2019-01-15</td>
+                        <td>Ghulam Mohd Bhat</td>
+                        <td>Zehra Begum</td>
+                        <td>9876543210</td>
+                        <td>Teacher</td>
+                        <td>Admitted</td>
+                        <td>[Image Placeholder]</td>
+                        <td>TC received.</td>
+                    </tr>
+                    <tr data-status="In Progress">
+                        <td>2</td>
+                        <td></td>
+                        <td>Danish Lone</td>
+                        <td>2020-05-20</td>
+                        <td>Abdul Ahad Lone</td>
+                        <td>Fatima Jan</td>
+                        <td>9988776655</td>
+                        <td>Farmer</td>
+                        <td>In Progress</td>
+                        <td>[Image Placeholder]</td>
+                        <td>Aadhaar verification pending.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
+
 <script>
-    // Initialize jsPDF
     const { jsPDF } = window.jspdf;
+    let admittedStudents = []; // Array to hold submitted form data
 
-    document.getElementById("admissionForm").addEventListener("submit", function(e){
-        e.preventDefault();
-        alert("Form Submitted Successfully! Data saved and ready for PDF generation.");
-        // In a real app, you would send data to a server here.
-    });
-
-    /**
-     * Function to capture an HTML element, convert it to an image, and save it as a PDF,
-     * ensuring optimal A4 sheet fit and handling multi-page content.
-     */
-    function generatePDF(elementId, fileName) {
-        const element = document.getElementById(elementId);
-
-        // Temporarily remove 'disabled' attribute to capture placeholder text
-        const disabledInput = element.querySelector('input[disabled]');
-        let isDisabledRemoved = false;
-        if (disabledInput) {
-            disabledInput.removeAttribute('disabled');
-            isDisabledRemoved = true;
-        }
-
-        // Use a high scale for better quality in the final PDF
-        html2canvas(element, { 
-            scale: 3, 
-            allowTaint: true,
-            useCORS: true 
-        }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4'); 
-
-            // **A4 Dimensions in mm**
-            const pdfWidth = 210; 
-            const pdfHeight = 297; 
-            
-            // Calculate image height based on canvas aspect ratio and PDF width
-            const imgHeight = canvas.height * pdfWidth / canvas.width;
-            
-            let heightLeft = imgHeight;
-            let position = 0;
-
-            // Add first page
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-            heightLeft -= pdfHeight;
-
-            // Handle multi-page content
-            while (heightLeft >= 0) {
-                position = heightLeft - imgHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-                heightLeft -= pdfHeight;
-            }
-
-            pdf.save(fileName);
-        }).finally(() => {
-            // Re-add the disabled attribute after capture
-            if (isDisabledRemoved && disabledInput) {
-                disabledInput.setAttribute('disabled', 'disabled');
-            }
+    function showTab(tabId, button) {
+        // Hide all tab content
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
         });
+        // Remove active class from all buttons
+        document.querySelectorAll('.tab-buttons button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Show the selected tab and set button to active
+        document.getElementById(tabId).classList.add('active');
+        button.classList.add('active');
     }
 
-    // Event Listener for PDF Form Download
-    document.getElementById("downloadForm").addEventListener("click", function(){
-        const targetId = this.getAttribute('data-target');
-        generatePDF(targetId, 'Admission_Form.pdf');
-    });
+    // Function to extract form data for the PDF (to make it pre-filled)
+    function extractFormDataForPDF(formId) {
+        const form = document.getElementById(formId);
+        const data = {};
+        const elements = form.querySelectorAll('input, select, textarea');
 
-    // Event Listener for PDF Register Download
-    document.getElementById("downloadRegister").addEventListener("click", function(){
-        const targetId = this.getAttribute('data-target');
-        generatePDF(targetId, 'Admission_Register_Record.pdf');
-    });
-</script>
+        elements.forEach(element => {
+            if (element.name && element.name !== 'agree') {
+                if (element.type === 'checkbox') {
+                    data[element.name] = element.checked ? 'Yes' : 'No';
+                } else if (element.type === 'file') {
+                    // Skip file inputs or handle them if needed, here we skip.
+                } else {
+                    data[element.name] = element.value;
+                }
+            }
+        });
+        return data;
+    }
+    
+    // Function to populate a temporary, non-input form for PDF generation (PRE-FILLED PDF)
+    function createPreFilledContent(elementId, formData) {
+        const originalElement = document.getElementById(elementId);
+        const clone = originalElement.cloneNode(true);
+        clone.id = 'tempPdfContent';
+        clone.style.maxWidth = '210mm'; // Ensure PDF content fits max A4 width
+        clone.style.padding = '10mm';
+        
+        // Remove buttons and scripts from the clone
+        clone.querySelector('button.submit-btn')?.remove();
+       
 
-</body>
-</html>
+
+
+
+
+
+
+                
+            
+                                    0, 
