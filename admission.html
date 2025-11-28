@@ -73,10 +73,6 @@
         width:100%; padding:8px; margin-top:5px; border-radius:4px;
         border:1px solid #999; box-sizing: border-box;
     }
-    textarea{
-        width:100%; height:100px; border-radius:4px; border:1px solid #999;
-        padding:8px; margin-top:5px; box-sizing: border-box;
-    }
     .section-title{
         font-size:18px; margin-top:25px; font-weight:bold; 
         text-decoration:underline; color: #0b76ef;
@@ -97,36 +93,74 @@
         box-shadow:0px 4px 0px #970617; transition:0.1s; font-size: 16px;
         flex-grow: 1; max-width: 250px;
     }
-    /* --- PDF TEMPLATE STYLES (Specific to APAAR/Print Layout) --- */
+    /* --- TEMPLATE STYLES for PDF Print (Issue 2 FIX) --- */
     .apaar-form-template, .print-form-template {
-        max-width: 210mm; 
+        max-width: 210mm; /* A4 width standard */
         margin: 0 auto; 
-        padding: 10mm;
+        padding: 15mm 10mm; /* Padding for print margins */
         box-sizing: border-box;
         background: white;
+        font-family: Arial, sans-serif;
     }
-    .apaar-form-template { font-size: 12px; line-height: 1.6; }
-    .apaar-form-template h3 { text-align: center; font-size: 14px; }
-    .signature-line {
-        display: flex; justify-content: space-between; margin-top: 40px;
-        border-top: 1px solid #000; padding-top: 5px;
+    .print-form-template {
+        border: 1px solid #000; /* Outer border for document look */
+        font-size: 12px;
+        line-height: 1.4;
     }
-    .fill-in-line {
-        border-bottom: 1px solid #000; display: inline-block; min-width: 200px;
-        padding: 0 5px; text-align: center;
+    .print-box {
+        border: 1px solid #000;
+        padding: 5px;
+        margin-bottom: 5px;
+        display: flex;
+        flex-wrap: wrap;
     }
-    .fill-static-line {
-        border-bottom: 1px solid #000; display: block; margin-top: 5px; padding: 2px 0;
-        font-weight: bold; font-size: 13px;
+    .print-field {
+        display: flex;
+        align-items: flex-end;
+        padding: 2px 0;
     }
-    .print-form-template .form-row {
-        margin-bottom: 5px; 
+    .print-label {
+        font-weight: bold;
+        white-space: nowrap;
+        margin-right: 5px;
+        font-size: 11px;
     }
-    .print-form-template label {
-        margin-top: 5px; font-weight: normal; font-size: 11px;
+    .print-value {
+        flex-grow: 1;
+        border-bottom: 1px dashed #000;
+        min-width: 50px;
+        padding: 0 5px;
+        font-size: 13px;
     }
-    .print-form-template input, .print-form-template select, .print-form-template textarea {
-        border: 1px solid #ccc; /* Ensure borders are visible for print simulation */
+    .print-row-group {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .print-col-50 {
+        width: 48%;
+    }
+    .print-col-33 {
+        width: 32%;
+    }
+    .print-col-70 {
+        width: 70%;
+    }
+    .print-col-30 {
+        width: 28%;
+    }
+    .signature-area {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        font-size: 10px;
+        width: 100%;
+    }
+    .signature-box {
+        width: 30%;
+        text-align: center;
+        border-top: 1px solid #000;
+        padding-top: 5px;
     }
 </style>
 
@@ -161,6 +195,7 @@
                 <div class="form-group"><input type="text" name="sname_middle"><label>Middle Name</label></div>
                 <div class="form-group"><input type="text" name="sname_last" required><label>Last Name</label></div>
             </div>
+
             <label>Name As Per Aadhaar</label>
             <div class="form-row">
                 <div class="form-group"><input type="text" name="aname_first"><label>First Name</label></div>
@@ -286,7 +321,7 @@
     <div class="container" style="margin-top: 20px;">
         <p style="text-align: center; font-weight: bold; margin-bottom: 10px;">Download Options (Use after Submission)</p>
         <div class="action-buttons">
-            <button id="downloadForm" class="pdf-btn" data-target="admissionFormContainer">Download PDF Form</button>
+            <button id="downloadForm" class="pdf-btn" data-target="printFormTemplate">Download Printable Admission Form (Hard Copy)</button>
             <button id="downloadRegister" class="pdf-btn" data-target="officeUseBox">Download PDF Register Record</button>
             <button id="downloadApaar" class="pdf-btn">Download APAAR Form</button>
         </div>
@@ -319,40 +354,141 @@
     </div>
 </div>
 
-<div id="apaarTemplate" class="apaar-form-template" style="display: none;">
+<div id="printFormTemplate" class="print-form-template" style="display: none;">
+    <div class="header-content" style="border-bottom: none; padding-bottom: 5px;">
+        <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
+        <div class="header-text" style="text-align: center;">
+            <h3 style="color: #000; margin-bottom: 0; font-size: 16px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
+            <p style="font-size: 10px;">Wagoora Babareshhi Road Near Zonal Education Office Wagoora. UDISE Code: 01022202207</p>
+        </div>
+    </div>
+    <h3 style="text-align:center; margin-top:0; font-size: 18px;">ADMISSION FORM</h3>
+    
+    <div class="print-box">
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-33"><span class="print-label">Students Name:</span><span class="print-value" data-field="sname_first"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="sname_middle"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="sname_last"></span></div>
+            <span style="width: 100%; display: flex; justify-content: space-around; font-size: 9px; margin-top: 2px;"><span>First Name</span><span>Middle Name</span><span>Last Name</span></span>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-33"><span class="print-label">Name As Per Aadhaar:</span><span class="print-value" data-field="aname_first"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="aname_middle"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="aname_last"></span></div>
+            <span style="width: 100%; display: flex; justify-content: space-around; font-size: 9px; margin-top: 2px;"><span>First Name</span><span>Middle Name</span><span>Last Name</span></span>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-33"><span class="print-label">Father's Name:</span><span class="print-value" data-field="fname_first"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="fname_middle"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="fname_last"></span></div>
+            <span style="width: 100%; display: flex; justify-content: space-around; font-size: 9px; margin-top: 2px;"><span>First Name</span><span>Middle Name</span><span>Last Name</span></span>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-33"><span class="print-label">Mother's Name:</span><span class="print-value" data-field="mname_first"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="mname_middle"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="mname_last"></span></div>
+            <span style="width: 100%; display: flex; justify-content: space-around; font-size: 9px; margin-top: 2px;"><span>First Name</span><span>Middle Name</span><span>Last Name</span></span>
+        </div>
+    </div>
+
+    <div class="print-box">
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-50"><span class="print-label">Residence:</span><span class="print-value" data-field="residence"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">District:</span><span class="print-value" data-field="district"></span></div>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-50"><span class="print-label">Father's Contact Number:</span><span class="print-value" data-field="fcontact"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Mother's Contact Number:</span><span class="print-value" data-field="mcontact"></span></div>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-50"><span class="print-label">Aadhaar Number:</span><span class="print-value" data-field="aadhaar"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Date of Birth (in figures):</span><span class="print-value" data-field="dob"></span></div>
+        </div>
+        <div class="print-field" style="width: 100%; margin-bottom: 10px;"><span class="print-label">Date of Birth in Words:</span><span class="print-value" data-field="dob_words"></span></div>
+    </div>
+
+    <div class="print-box">
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-50"><span class="print-label">Bank Account Number:</span><span class="print-value" data-field="bank_account"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Bank Name:</span><span class="print-value" data-field="bank_name"></span></div>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-50"><span class="print-label">Bank Branch:</span><span class="print-value" data-field="bank_branch"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">IFSC Code:</span><span class="print-value" data-field="ifsc_code"></span></div>
+        </div>
+    </div>
+
+    <div class="print-box">
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-50"><span class="print-label">Category:</span><span class="print-value" data-field="category" style="width: auto;"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Blood Group:</span><span class="print-value" data-field="bloodgroup" style="width: auto;"></span></div>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-50"><span class="print-label">Ration Card Number:</span><span class="print-value" data-field="ration_no"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Ration Card Type:</span><span class="print-value" data-field="ration_type"></span></div>
+        </div>
+    </div>
+    
+    <div class="print-box">
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-50"><span class="print-label">Class Joining:</span><span class="print-value" data-field="class"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">PEN Number for Transferring Students:</span><span class="print-value" data-field="pen_number"></span></div>
+        </div>
+    </div>
+
+    <h4 style="margin-top: 15px; margin-bottom: 5px; text-decoration: underline;">Parents Declaration</h4>
+    <p style="text-align:justify; font-size:11px;">
+        I do hereby declare that the above information provided by me is true to the best of my knowledge and belief. 
+        I further declare that I will abide by the rules and regulations laid down by the school and the department from 
+        time to time and I will co-operate with the institution for the betterment of my ward and institution under rules 
+        when sought. I hereby declare that as the Parent of above mentioned student I am giving my consent to provide 
+        the AADHAAR for the demographic authentication of the student. (Agreed: <span data-field="agree" style="font-weight: bold;"></span>)
+    </p>
+
+    <h4 style="margin-top: 15px; margin-bottom: 5px; text-decoration: underline;">For Office Use Only</h4>
+    <p style="font-size: 11px;">The Student is admitted to Class <span class="print-value" style="min-width: 50px;">________</span> under Admission No. <span class="print-value" style="min-width: 50px;">________</span> on <span class="print-value" style="min-width: 70px;">________</span>. 
+        All required documents, including the Birth Certificate, Residence Proof, and Transfer Certificate (if applicable), have been duly verified and found satisfactory.</p>
+
+
+    <div class="signature-area">
+        <div class="signature-box">Signature of Parent</div>
+        <div class="signature-box">Sig. Of Adm. Incharge</div>
+        <div class="signature-box">Sig. Of Headmaster</div>
+    </div>
+
+</div>
+
+
+<div id="apaarTemplate" class="apaar-form-template" style="display: none; border: 1px solid #000;">
     <div class="header-content" style="border-bottom: none;">
         <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
         <div class="header-text" style="text-align: center;">
-            <h3 style="color: #000; margin-bottom: 0;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
+            <h3 style="color: #000; margin-bottom: 0; font-size: 14px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
             <p style="font-size: 10px;">Wagoora Babareshhi Road Near Zonal Education Office Wagoora. UDISE Code: 01022202207</p>
         </div>
     </div>
     <h3 style="margin-top: 10px;">Consent by Father/Mother/Legal Guardian of Student for APAAR ID Generation</h3>
-    <p>Consent by Father/Mother/Legal Guardian of <span class="fill-in-line" data-field="sname_full">...</span> as the <span class="fill-in-line" data-field="fname_full">...</span> (Father / Mother / Legal Guardian) of <span class="fill-in-line" data-field="aadhaar">...</span> (Aadhaar / PAN / EPIC Voter ID / Driving License / Passport) and identity Proof Number <span class="fill-in-line" data-field="aadhaar">...</span> voluntarily give my consent to share his/her Aadhaar Number and demographic information issued by UIDAI with Ministry of Education for the sole purpose of creation of APAAR ID and opening of DIGILOCKER account of my child for the following intents and purposes.</p>
-    <p>I understand that my APAAR ID may be used for limited purposes as may be notified by Ministry of Education from time-to-time for educational and related activities. Further I am also aware that my personal identifiable information (Name, Address, Age, Date of Birth, Gender and Photograph) may be made available to entities engaged in various educational activities such as UDISE+ database, scholarships, maintenance academic records, other stakeholders like Educational Institutions and recruitment agencies.</p>
-    <p>I authorise Ministry of Education to use my Aadhaar number for performing Aadhaar based authentication with UIDAI as per provision of the Aadhaar (Targeted Delivery of Financial and Other Subsidies, Benefits, and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of "Yes" with Ministry of Education upon successful authentication.</p>
-    <p>I understand that the information shared by me shall be kept **Confidential** and shall not be divulged to any third party except as may be required by law.</p>
-    <p>I understand that I can withdraw my consent for all or any of the purposes at any time by and on withdrawal of my consent, the processing of my shared information will stop, however, any personal data already been processed shall remain unaffected on such withdrawal of consent.</p>
+    <p style="font-size: 11px;">Consent by Father/Mother/Legal Guardian of <span class="print-value" style="min-width: 200px;" data-field="sname_full">...</span> as the <span class="print-value" style="min-width: 100px;" data-field="fname_full">...</span> (Father / Mother / Legal Guardian) of <span class="print-value" style="min-width: 50px;">...</span> (Aadhaar / PAN / EPIC Voter ID / Driving License / Passport) and identity Proof Number <span class="print-value" style="min-width: 100px;" data-field="aadhaar">...</span> voluntarily give my consent to share his/her Aadhaar Number and demographic information issued by UIDAI with Ministry of Education for the sole purpose of creation of APAAR ID and opening of DIGILOCKER account of my child for the following intents and purposes.</p>
+    <p style="font-size: 11px;">I understand that my APAAR ID may be used for limited purposes as may be notified by Ministry of Education from time-to-time for educational and related activities. Further I am also aware that my personal identifiable information (Name, Address, Age, Date of Birth, Gender and Photograph) may be made available to entities engaged in various educational activities such as UDISE+ database, scholarships, maintenance academic records, other stakeholders like Educational Institutions and recruitment agencies.</p>
+    <p style="font-size: 11px;">I authorise Ministry of Education to use my Aadhaar number for performing Aadhaar based authentication with UIDAI as per provision of the Aadhaar (Targeted Delivery of Financial and Other Subsidies, Benefits, and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of "Yes" with Ministry of Education upon successful authentication.</p>
+    <p style="font-size: 11px;">I understand that the information shared by me shall be kept **Confidential** and shall not be divulged to any third party except as may be required by law.</p>
+    <p style="font-size: 11px;">I understand that I can withdraw my consent for all or any of the purposes at any time by and on withdrawal of my consent, the processing of my shared information will stop, however, any personal data already been processed shall remain unaffected on such withdrawal of consent.</p>
 
-    <div style="display: flex; justify-content: space-between; margin-top: 30px;">
-        <div>Place of Physical Consent: <span class="fill-in-line" data-field="district">...</span></div>
-        <div>Signature or Parent Guardian: <span class="fill-in-line" style="min-width: 150px;"></span></div>
+    <div style="display: flex; justify-content: space-between; margin-top: 30px; font-size: 11px;">
+        <div>Place of Physical Consent: <span class="print-value" style="min-width: 150px;" data-field="district">...</span></div>
+        <div>Signature or Parent Guardian: <span class="print-value" style="min-width: 150px;"></span></div>
     </div>
-    <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-        <div>Date of Physical Consent: <span class="fill-in-line">...</span></div>
+    <div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 11px;">
+        <div>Date of Physical Consent: <span class="print-value" style="min-width: 150px;">...</span></div>
         <div></div>
     </div>
     
     <p style="text-align: center; margin: 20px 0; font-weight: bold;">********************Consent by Head of the School********************</p>
-    <p>I **Mohmad Ashraf Rather** as Head of the School or any authorized teacher/staff hereby declare that the Father/Mother/Legal Guardian of <span class="fill-in-line" data-field="sname_full">...</span> as mentioned above has given the Consent for Providing AADHAAR to create APAAR ID, opening of DIGILOCKER Account and Identity Verification in UDISE Plus Date:</p>
+    <p style="font-size: 11px;">I **Mohmad Ashraf Rather** as Head of the School or any authorized teacher/staff hereby declare that the Father/Mother/Legal Guardian of <span class="print-value" style="min-width: 200px;" data-field="sname_full">...</span> as mentioned above has given the Consent for Providing AADHAAR to create APAAR ID, opening of DIGILOCKER Account and Identity Verification in UDISE Plus Date:</p>
 
-    <div style="display: flex; justify-content: space-between; margin-top: 30px;">
-        <div style="border-bottom: 1px solid #000; padding-top: 5px; min-width: 100px;"></div>
-        <div style="border-bottom: 1px solid #000; padding-top: 5px; min-width: 150px;">Signature of HoI</div>
-    </div>
-    <div style="display: flex; justify-content: space-between; font-size: 10px;">
-        <div>Date</div>
-        <div></div>
+    <div style="display: flex; justify-content: space-between; margin-top: 30px; font-size: 11px;">
+        <div style="padding-top: 5px; min-width: 100px;">Date: <span class="print-value" style="min-width: 100px;"></span></div>
+        <div style="border-top: 1px solid #000; padding-top: 5px; min-width: 150px; text-align: center;">Signature of HoI</div>
     </div>
 </div>
 
@@ -380,7 +516,7 @@
                 if (element.type === 'checkbox') {
                     data[element.name] = element.checked ? 'Yes' : 'No';
                 } else if (element.type === 'file') {
-                    data[element.name] = 'File uploaded'; // Placeholder
+                    data[element.name] = 'File uploaded'; 
                 } else if (element.tagName === 'SELECT' && element.options[element.selectedIndex]) {
                     data[element.name] = element.options[element.selectedIndex].text;
                 } else {
@@ -388,106 +524,59 @@
                 }
             }
         });
-        data['agree'] = form.querySelector('#agree') ? form.querySelector('#agree').checked : false;
-        // Concatenated fields for easy APAAR filling
-        data['sname_full'] = `${data.sname_first} ${data.sname_middle || ''} ${data.sname_last}`.trim().replace(/\s+/g, ' ');
-        data['fname_full'] = `${data.fname_first} ${data.fname_middle || ''} ${data.fname_last}`.trim().replace(/\s+/g, ' ');
+        data['agree'] = form.querySelector('#agree') ? (form.querySelector('#agree').checked ? 'Agreed' : 'Not Agreed') : 'N/A';
+        // Concatenated fields
+        data['sname_full'] = `${data.sname_first || ''} ${data.sname_middle || ''} ${data.sname_last || ''}`.trim().replace(/\s+/g, ' ');
+        data['fname_full'] = `${data.fname_first || ''} ${data.fname_middle || ''} ${data.fname_last || ''}`.trim().replace(/\s+/g, ' ');
 
         return data;
     }
     
-    // --- PDF Template Creation FIX ---
-    // Creates a static HTML copy that looks like the original form for A4 print.
-    function createPrintableContent(elementId, formData, isForm) {
+    // --- PDF Template Creation FIX (Issue 2) ---
+    // Creates a static HTML copy that mimics the form layout using static text and borders.
+    function createPrintableContent(elementId, formData) {
         const originalElement = document.getElementById(elementId);
-        let clone;
+        const clone = originalElement.cloneNode(true);
+        clone.id = 'tempPdfContent_' + elementId;
+        clone.style.display = 'block'; // Ensure it's visible for canvas capture
 
-        if (isForm) {
-            // FIX 1: Clone and remove interactive elements for clean print copy
-            clone = originalElement.cloneNode(true);
-            clone.id = 'tempPdfContent';
-            
-            // Remove interactive parts from the clone
-            clone.querySelector('button.submit-btn')?.remove();
-            clone.querySelector('.action-buttons')?.remove();
-            clone.querySelector('input[type="file"]')?.remove();
-            
-            // Populate data into the input fields of the clone (which will be visible in PDF)
-            const inputs = clone.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                const name = input.name;
-                const value = formData[name] || '';
+        // Fill in the static lines with form data
+        clone.querySelectorAll('[data-field]').forEach(span => {
+            const fieldName = span.getAttribute('data-field');
+            span.textContent = formData[fieldName] || '____________________'; 
+        });
 
-                if (input.tagName === 'SELECT') {
-                    // Set the selected option text
-                    input.value = Object.keys(input.options).find(key => input.options[key].text === value) || value;
-                    input.style.backgroundColor = '#f0f0f0'; // Visual cue for filled data
-                } else if (input.type === 'checkbox') {
-                    input.checked = formData.agree;
-                    input.disabled = true;
-                } else {
-                    input.value = value;
-                    input.readOnly = true;
-                    input.style.backgroundColor = '#f0f0f0';
-                }
-            });
-
-            document.body.appendChild(clone);
-            return clone;
-
-        } else if (elementId === 'apaarTemplate') {
-            // FIX 2: APAAR template filling
-            clone = originalElement.cloneNode(true);
-            clone.id = 'tempApaarContent';
-            
-            // Fill in the static lines with form data
-            clone.querySelectorAll('[data-field]').forEach(span => {
-                const fieldName = span.getAttribute('data-field');
-                span.textContent = formData[fieldName] || 'N/A';
-            });
-            document.body.appendChild(clone);
-            return clone;
-
-        } else {
-            // For Office Use Box (Register Record)
-            return originalElement;
-        }
+        document.body.appendChild(clone);
+        return clone;
     }
 
 
     /**
-     * FIX: Generates PDF with correct A4 scaling and template selection.
+     * Generates PDF with correct A4 scaling and template selection.
      */
     function generatePDF(elementId, fileName) {
-        if (elementId === 'admissionFormContainer' && admittedStudents.length === 0) {
-            alert("Error: Please submit the Admission Form first before attempting to download the pre-filled PDF.");
+        if (admittedStudents.length === 0) {
+            alert("Error: Please submit the Admission Form first before attempting to download any pre-filled forms.");
             return;
         }
 
-        const formId = 'admissionForm';
-        const formData = admittedStudents.length > 0 ? admittedStudents[admittedStudents.length - 1].raw_data : extractFormDataForPDF(formId);
+        const formData = admittedStudents[admittedStudents.length - 1].raw_data;
         
         let elementToCapture;
         
-        if (elementId === 'admissionFormContainer') {
-            // FIX 3: Use the printable clone for the admission form
-            elementToCapture = createPrintableContent(elementId, formData, true);
-        } else if (elementId === 'apaarTemplate') {
-            // FIX 4: Use the filled APAAR template
-            elementToCapture = createPrintableContent(elementId, formData, false);
-        }
-         else {
-            // Office Use Box/Register Record
+        if (elementId === 'printFormTemplate' || elementId === 'apaarTemplate') {
+            elementToCapture = createPrintableContent(elementId, formData);
+        } else {
+            // For Office Use Box/Register Record (original structure is fine)
             elementToCapture = document.getElementById(elementId);
         }
 
         html2canvas(elementToCapture, { 
-            scale: 3, // High scale for better print quality
+            scale: 3, 
             allowTaint: true,
             useCORS: true 
         }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
-            // FIX 5: A4 Dimensions confirmed
             const pdf = new jsPDF('p', 'mm', 'a4'); 
 
             const pdfWidth = 210; 
@@ -503,8 +592,8 @@
             heightLeft -= pdfHeight;
 
             // Handle multi-page content
-            while (heightLeft >= 0) {
-                position = heightLeft - pdfHeight; // Corrected calculation for next page position
+            while (heightLeft > 0) {
+                position = heightLeft - imgHeight; 
                 pdf.addPage();
                 pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
                 heightLeft -= pdfHeight;
@@ -513,21 +602,18 @@
             pdf.save(fileName);
         }).finally(() => {
             // Clean up the temporary content
-            if (elementToCapture && (elementToCapture.id === 'tempPdfContent' || elementToCapture.id === 'tempApaarContent')) {
+            if (elementToCapture && elementToCapture.id.startsWith('tempPdfContent_')) {
                 elementToCapture.remove();
             }
         });
     }
 
-    // --- Submission Logic ---
+    // --- Submission Logic (Issue 1 FIX: Proceed to Register/Downloads) ---
     document.getElementById("admissionForm").addEventListener("submit", function(e){
         e.preventDefault();
         
         const form = e.target;
         const formData = extractFormDataForPDF(form.id);
-
-        // APAAR Form Simulation FIX
-        alert(`Admission Form Submitted. Data temporarily saved.\n\nSimulating Redirection to APAAR ID Generation Consent Form.\n\n***(The APAAR Form is now available for download via the dedicated button.)***`);
         
         // Prepare data for Register 
         const date = new Date().toISOString().slice(0, 10);
@@ -537,7 +623,7 @@
             studentName: formData.sname_full,
             dob: formData.dob,
             fatherName: formData.fname_full,
-            motherName: `${formData.mname_first} ${formData.mname_last}`, // Re-used for brevity in register
+            motherName: `${formData.mname_first} ${formData.mname_last}`, 
             parentsContact: formData.fcontact,
             parentsProfession: 'N/A', 
             status: 'In Progress', 
@@ -549,7 +635,12 @@
         admittedStudents.push(newRecord);
         updateRegisterTable();
         
-        alert(`Data saved successfully! Student: ${newRecord.studentName} added to the Admission Register. You can now download all PDF forms.`);
+        // FIX: Instead of alerting a simulation, switch to the Register tab
+        // and notify the user to use the download buttons.
+        alert(`Admission Form submitted successfully. Student: ${newRecord.studentName} added to the Admission Register.\n\nAPAAR Form is now generated and ready for download via the "Download APAAR Form" button.`);
+        
+        // FIX: Switch to the Admission Register tab after submission
+        showTab('admissionRegisterTab', document.querySelector('.tab-buttons button:nth-child(2)'));
 
         form.reset();
     });
@@ -610,19 +701,14 @@
 
     // --- PDF Event Listeners FIX ---
     document.getElementById("downloadForm").addEventListener("click", function(){
-        generatePDF('admissionFormContainer', 'Admission_Form_Printable.pdf');
+        generatePDF('printFormTemplate', 'Admission_Form_Hard_Copy.pdf');
     });
 
     document.getElementById("downloadRegister").addEventListener("click", function(){
         generatePDF('officeUseBox', 'Admission_Register_Record.pdf');
     });
     
-    // FIX 6: New APAAR Download Button Handler
     document.getElementById("downloadApaar").addEventListener("click", function(){
-        if (admittedStudents.length === 0) {
-            alert("Error: Please submit the Admission Form first before downloading the APAAR consent form.");
-            return;
-        }
         generatePDF('apaarTemplate', 'APAAR_Consent_Form.pdf');
     });
 
@@ -634,4 +720,13 @@
 
 </body>
 </html>
-                                      
+
+
+
+
+
+
+
+
+
+             
