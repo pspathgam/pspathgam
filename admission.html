@@ -1,6 +1,3 @@
-That's a comprehensive set of improvements! To address all six points while maintaining the existing code structure, I've made significant refinements to the HTML templates, CSS, and the core JavaScript functions, especially around PDF generation, form handling, and the Admission Register functionality.
-Here is the updated and final code with all issues resolved.
-💻 Complete Code: admissions.html (Final Version with Enhanced Functionality)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,7 +51,7 @@ Here is the updated and final code with all issues resolved.
         max-width:850px; 
         margin:auto;
     }
-    /* --- HEADER STYLES --- */
+    /* --- HEADER STYLES (Screen) --- */
     .header-content {
         display: flex; align-items: center; justify-content: center; 
         margin-bottom: 20px; text-align: center; border-bottom: 2px solid #ccc;
@@ -105,11 +102,11 @@ Here is the updated and final code with all issues resolved.
         box-shadow:0px 4px 0px #970617; transition:0.1s; font-size: 16px;
         flex-grow: 1; max-width: 250px;
     }
-    /* --- TEMPLATE STYLES for PDF Print (Issue 2, 3, 4 FIX) --- */
+    /* --- TEMPLATE STYLES for PDF Print (FIXES) --- */
     .apaar-form-template, .print-form-template {
         max-width: 210mm; 
         margin: 0 auto; 
-        padding: 5mm 10mm; /* Issue 2 FIX: Decreased margin for more space */
+        padding: 5mm; /* FIX: Decreased margin for more space */
         box-sizing: border-box;
         background: white;
         font-family: Arial, sans-serif;
@@ -119,6 +116,23 @@ Here is the updated and final code with all issues resolved.
         font-size: 12px;
         line-height: 1.4;
     }
+    /* FIX: PDF Header Styling */
+    .pdf-header-content {
+        display: flex; align-items: center; justify-content: center; 
+        margin-bottom: 5px; /* FIX: Reduced space before title */
+        text-align: center; border-bottom: 2px solid #ccc;
+        padding-bottom: 5px;
+    }
+    .pdf-header-content h3 {
+        color: #000; 
+        margin-bottom: 0; 
+        font-size: 14px; /* FIX: Decreased font size for single line */
+        white-space: nowrap; /* Keep header on one line */
+    }
+    .pdf-header-content p {
+        margin: 0; 
+        font-size: 9px; 
+    }
     .print-box {
         border: 1px solid #000;
         padding: 5px;
@@ -126,51 +140,13 @@ Here is the updated and final code with all issues resolved.
         display: flex;
         flex-wrap: wrap;
     }
-    .print-field {
-        display: flex;
-        align-items: flex-end;
-        padding: 2px 0;
-    }
-    .print-label {
-        font-weight: bold;
-        white-space: nowrap;
-        margin-right: 5px;
-        font-size: 11px;
-    }
-    .print-value {
-        flex-grow: 1;
-        border-bottom: 1px dashed #000;
-        min-width: 50px;
-        padding: 0 5px;
-        font-size: 13px;
-    }
-    .print-row-group {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    }
-    .print-col-33 { width: 32%; }
-    .print-col-50 { width: 48%; }
-    .signature-area {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 30px;
-        font-size: 10px;
-        width: 100%;
-    }
-    .signature-box {
-        width: 30%;
-        text-align: center;
-        border-top: 1px solid #000;
-        padding-top: 5px;
-    }
     /* Page break for printing */
     .page-break {
         page-break-before: always;
     }
     /* Register Table Styles */
     .register-table th, .register-table td {
-        white-space: nowrap; /* Prevent wrapping in register actions */
+        white-space: nowrap; 
     }
     .register-table .action-btn {
         padding: 4px 8px;
@@ -188,7 +164,7 @@ Here is the updated and final code with all issues resolved.
 </head>
 <body>
 
-<div class="tab-buttons">
+<div class="tab-buttons print-exclude"> 
     <button class="active" onclick="showTab('admissionFormTab', this)">Admission Form</button>
     <button onclick="showTab('admissionRegisterTab', this)">Admission Register</button>
     <button onclick="alert('Search functionality coming soon!')">Search Student</button>
@@ -198,7 +174,8 @@ Here is the updated and final code with all issues resolved.
     
     <div class="container" id="admissionFormContainer"> 
         
-        <div class="header-content" style="margin-top: 5px;"> <div class="school-logo"> [Logo] </div>
+        <div class="header-content" style="margin-top: 5px;"> 
+            <div class="school-logo"> [Logo] </div>
             <div class="header-text">
                 <h2>GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h2>
                 <p>Wagoora Babareshhi Road Near Zonal Education Office Wagoora<br>
@@ -221,38 +198,32 @@ Here is the updated and final code with all issues resolved.
                 <div class="form-group"><input type="text" name="aname_middle"><label>Middle Name</label></div>
                 <div class="form-group"><input type="text" name="aname_last"><label>Last Name</label></div>
             </div>
-
             <label>Father's Name</label>
             <div class="form-row">
                 <div class="form-group"><input type="text" name="fname_first" required><label>First Name</label></div>
                 <div class="form-group"><input type="text" name="fname_middle"><label>Middle Name</label></div>
                 <div class="form-group"><input type="text" name="fname_last" required><label>Last Name</label></div>
             </div>
-
             <label>Mother's Name</label>
             <div class="form-row">
                 <div class="form-group"><input type="text" name="mname_first" required><label>First Name</label></div>
                 <div class="form-group"><input type="text" name="mname_middle"><label>Middle Name</label></div>
                 <div class="form-group"><input type="text" name="mname_last" required><label>Last Name</label></div>
             </div>
-            
             <div class="form-row">
                 <div class="form-group"><label>Residence</label><input type="text" name="residence" required></div>
                 <div class="form-group"><label>District</label><input type="text" name="district" required></div>
             </div>
-            
             <div class="form-row">
                 <div class="form-group"><label>Father's Contact Number</label><input type="text" name="fcontact" required></div>
                 <div class="form-group"><label>Mother's Contact Number</label><input type="text" name="mcontact"></div>
             </div>
-
             <div class="form-row">
                 <div class="form-group"><label>Aadhaar Number</label><input type="text" name="aadhaar" maxlength="12"></div>
                 <div class="form-group"><label>Date of Birth (in figures)</label><input type="date" name="dob" required></div>
             </div>
             <label>Date of Birth in Words</label>
             <input type="text" name="dob_words">
-
             <div class="form-row">
                 <div class="form-group"><label>Bank Account Number</label><input type="text" name="bank_account"></div>
                 <div class="form-group"><label>Bank Name</label><input type="text" name="bank_name"></div>
@@ -261,7 +232,6 @@ Here is the updated and final code with all issues resolved.
                 <div class="form-group"><label>Bank Branch</label><input type="text" name="bank_branch"></div>
                 <div class="form-group"><label>IFSC Code</label><input type="text" name="ifsc_code"></div>
             </div>
-
             <div class="form-row">
                 <div class="form-group">
                     <label>Category</label>
@@ -281,7 +251,6 @@ Here is the updated and final code with all issues resolved.
                 <div class="form-group"><label>Ration Card Number</label><input type="text" name="ration_no"></div>
                 <div class="form-group"><label>Ration Card Type</label><input type="text" name="ration_type"></div>
             </div>
-
             <div class="form-row">
                 <div class="form-group">
                     <label>Class Joining</label>
@@ -292,7 +261,6 @@ Here is the updated and final code with all issues resolved.
                 </div>
                 <div class="form-group"><label>PEN Number for Transferring Students</label><input type="text" name="pen_number"></div>
             </div>
-
             <label>Student Photo</label>
             <input type="file" name="student_photo" accept="image/*">
             
@@ -304,7 +272,6 @@ Here is the updated and final code with all issues resolved.
                 when sought. I hereby declare that as the Parent of above mentioned student I am giving my consent to provide 
                 the AADHAAR for the demographic authentication of the student.
             </p>
-
             <label style="margin-top: 15px;">
                 <input type="checkbox" id="agree" required>
                 I agree to the above declaration.
@@ -340,7 +307,7 @@ Here is the updated and final code with all issues resolved.
         </div>
     </div>
 
-    <div class="container" style="margin-top: 20px;">
+    <div class="container print-exclude" style="margin-top: 20px;">
         <p style="text-align: center; font-weight: bold; margin-bottom: 10px;">Download Options (Use after successful data submission)</p>
         <div class="action-buttons">
             <button id="downloadForm" class="pdf-btn" data-target="printFormTemplate">Download Printable Admission Form (Hard Copy)</button>
@@ -377,11 +344,11 @@ Here is the updated and final code with all issues resolved.
 </div>
 
 <div id="printFormTemplate" class="print-form-template" style="display: none;">
-    <div class="header-content" style="border-bottom: none; padding-bottom: 5px; margin-top: 0;"> 
+    <div class="pdf-header-content" style="border-bottom: none; padding-bottom: 5px; margin-top: 0;"> 
         <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
-        <div class="header-text" style="text-align: center;">
-            <h3 style="color: #000; margin-bottom: 0; font-size: 16px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
-            <p style="font-size: 10px;">Wagoora Babareshhi Road Near Zonal Education Office Wagoora. UDISE Code: 01022202207</p>
+        <div class="header-text" style="text-align: center; padding-top: 5px;">
+            <h3 style="margin-bottom: 2px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
+            <p style="font-size: 9px;">Wagoora Babareshi Road Near ZEO Office Wagoora<br> UDISE CODE 01022202207 Email: pspethgam@gmail.com</p>
         </div>
     </div>
     <h3 style="text-align:center; margin-top:0; font-size: 18px;">ADMISSION FORM</h3>
@@ -480,22 +447,23 @@ Here is the updated and final code with all issues resolved.
 
 
 <div id="apaarTemplate" class="apaar-form-template" style="display: none; border: 1px solid #000;">
-    <div class="header-content" style="border-bottom: none; margin-top: 0;">
+    <div class="pdf-header-content" style="border-bottom: none; margin-top: 0;">
         <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
-        <div class="header-text" style="text-align: center;">
-            <h3 style="color: #000; margin-bottom: 0; font-size: 14px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
-            <p style="font-size: 10px;">Wagoora Babareshhi Road Near Zonal Education Office Wagoora. UDISE Code: 01022202207</p>
+        <div class="header-text" style="text-align: center; padding-top: 5px;">
+            <h3 style="margin-bottom: 2px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
+            <p style="font-size: 9px;">Wagoora Babareshi Road Near ZEO Office Wagoora<br> UDISE CODE 01022202207 Email: pspethgam@gmail.com</p>
         </div>
     </div>
+
     <h3 style="margin-top: 10px;">Consent by Father/Mother/Legal Guardian of Student for APAAR ID Generation</h3>
-    <p style="font-size: 11px;">Consent by Father/Mother/Legal Guardian of <span class="print-value" style="min-width: 200px;" data-field="sname_full">...</span> as the <span class="print-value" style="min-width: 100px;" data-field="fname_full">...</span> (Father / Mother / Legal Guardian) of <span class="print-value" style="min-width: 50px;">...</span> (Aadhaar / PAN / EPIC Voter ID / Driving License / Passport) and identity Proof Number <span class="print-value" style="min-width: 100px;" data-field="aadhaar">...</span> voluntarily give my consent to share his/her Aadhaar Number and demographic information issued by UIDAI with Ministry of Education for the sole purpose of creation of APAAR ID and opening of DIGILOCKER account of my child for the following intents and purposes.</p>
+    <p style="font-size: 11px;">Consent by Father/Mother/Legal Guardian of <span class="print-value" data-field="sname_full">...</span> as the <span class="print-value" data-field="fname_full">...</span> (Father / Mother / Legal Guardian) of <span class="print-value">...</span> (Aadhaar / PAN / EPIC Voter ID / Driving License / Passport) and identity Proof Number <span class="print-value" data-field="aadhaar">...</span> voluntarily give my consent to share his/her Aadhaar Number and demographic information issued by UIDAI with Ministry of Education for the sole purpose of creation of APAAR ID and opening of DIGILOCKER account of my child for the following intents and purposes.</p>
     <p style="font-size: 11px;">I understand that my APAAR ID may be used for limited purposes as may be notified by Ministry of Education from time-to-time for educational and related activities. Further I am also aware that my personal identifiable information (Name, Address, Age, Date of Birth, Gender and Photograph) may be made available to entities engaged in various educational activities such as UDISE+ database, scholarships, maintenance academic records, other stakeholders like Educational Institutions and recruitment agencies.</p>
     <p style="font-size: 11px;">I authorise Ministry of Education to use my Aadhaar number for performing Aadhaar based authentication with UIDAI as per provision of the Aadhaar (Targeted Delivery of Financial and Other Subsidies, Benefits, and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of "Yes" with Ministry of Education upon successful authentication.</p>
     <p style="font-size: 11px;">I understand that the information shared by me shall be kept **Confidential** and shall not be divulged to any third party except as may be required by law.</p>
     <p style="font-size: 11px;">I understand that I can withdraw my consent for all or any of the purposes at any time by and on withdrawal of my consent, the processing of my shared information will stop, however, any personal data already been processed shall remain unaffected on such withdrawal of consent.</p>
 
     <div style="display: flex; justify-content: space-between; margin-top: 30px; font-size: 11px;">
-        <div>Place of Physical Consent: <span class="print-value" style="min-width: 150px;" data-field="district">...</span></div>
+        <div>Place of Physical Consent: <span class="print-value" data-field="district">...</span></div>
         <div>Signature or Parent Guardian: <span class="print-value" style="min-width: 150px;"></span></div>
     </div>
     <div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 11px;">
@@ -504,7 +472,7 @@ Here is the updated and final code with all issues resolved.
     </div>
     
     <p style="text-align: center; margin: 20px 0; font-weight: bold;">********************Consent by Head of the School********************</p>
-    <p style="font-size: 11px;">I **Mohmad Ashraf Rather** as Head of the School or any authorized teacher/staff hereby declare that the Father/Mother/Legal Guardian of <span class="print-value" style="min-width: 200px;" data-field="sname_full">...</span> as mentioned above has given the Consent for Providing AADHAAR to create APAAR ID, opening of DIGILOCKER Account and Identity Verification in UDISE Plus Date:</p>
+    <p style="font-size: 11px;">I **Mohmad Ashraf Rather** as Head of the School or any authorized teacher/staff hereby declare that the Father/Mother/Legal Guardian of <span class="print-value" data-field="sname_full">...</span> as mentioned above has given the Consent for Providing AADHAAR to create APAAR ID, opening of DIGILOCKER Account and Identity Verification in UDISE Plus Date:</p>
 
     <div style="display: flex; justify-content: space-between; margin-top: 30px; font-size: 11px;">
         <div style="padding-top: 5px; min-width: 100px;">Date: <span class="print-value" style="min-width: 100px;"></span></div>
@@ -554,7 +522,7 @@ Here is the updated and final code with all issues resolved.
         return data;
     }
     
-    // --- PDF Template Creation FIX (Issue 2, 3, 5) ---
+    // --- PDF Template Creation FIX (Issue 2, 3, 5, New PDF Formatting Fixes) ---
     function createPrintableContent(elementId, formData) {
         const originalElement = document.getElementById(elementId);
         const clone = originalElement.cloneNode(true);
@@ -567,7 +535,7 @@ Here is the updated and final code with all issues resolved.
             span.textContent = formData[fieldName] || '____________________'; 
         });
 
-        // Issue 3 FIX: Remove field labels (First Name, Middle Name, Last Name) from PDF template
+        // Remove the small labels like "First Name", "Middle Name" from the PDF template
         if (elementId === 'printFormTemplate') {
              const labelsToRemove = clone.querySelectorAll('.print-box > .print-row-group > span');
              labelsToRemove.forEach(span => {
@@ -584,21 +552,25 @@ Here is the updated and final code with all issues resolved.
      * Generates PDF with correct A4 scaling and template selection.
      */
     function generatePDF(elementId, fileName) {
-        // Issue 5 FIX: Use last submitted data if available
-        const formData = lastSubmittedData || extractFormDataForPDF('admissionForm'); 
+        // Issue 5 FIX: Use last submitted data
+        const formData = lastSubmittedData || {}; 
 
         if (elementId !== 'officeUseBox' && Object.keys(formData).length === 0) {
              alert("Error: Please submit the Admission Form first to populate data for this download.");
              return;
         }
-
-        let elementToCapture;
         
-        if (elementId === 'printFormTemplate' || elementId === 'apaarTemplate') {
-            elementToCapture = createPrintableContent(elementId, formData);
-        } else {
-            elementToCapture = document.getElementById(elementId);
-        }
+        // Remove print-exclude elements before capture (Issue 5 FIX: Tabs)
+        const pdfContainer = document.getElementById(elementId);
+        const exclusions = document.querySelectorAll('.print-exclude');
+        exclusions.forEach(el => el.classList.add('hidden-for-print')); // Hide elements
+
+        let elementToCapture = (elementId === 'printFormTemplate' || elementId === 'apaarTemplate') 
+            ? createPrintableContent(elementId, formData) 
+            : document.getElementById(elementId);
+
+        // Adjustments for tighter margins in PDF generation (Issue 4 FIX: Left, Right, Footer margin)
+        const pdfMargin = 5; // mm (5mm left/right padding)
 
         html2canvas(elementToCapture, { 
             scale: 3, 
@@ -606,34 +578,38 @@ Here is the updated and final code with all issues resolved.
             useCORS: true 
         }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
+            // 'p', 'mm', 'a4' default size (210mm x 297mm)
             const pdf = new jsPDF('p', 'mm', 'a4'); 
 
-            const pdfWidth = 210; 
-            const pdfHeight = 297; 
+            const a4Width = 210;
+            const contentWidth = a4Width - (2 * pdfMargin); // 200mm content area
+            const scaleFactor = contentWidth / canvas.width;
             
-            const imgHeight = canvas.height * pdfWidth / canvas.width;
+            const imgHeight = canvas.height * scaleFactor;
             
             let heightLeft = imgHeight;
             let position = 0;
 
             // Add first page
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-            heightLeft -= pdfHeight;
+            pdf.addImage(imgData, 'PNG', pdfMargin, position + pdfMargin, contentWidth, imgHeight);
+            heightLeft -= (297 - pdfMargin); // Account for top margin/padding
+            position -= (297 - pdfMargin); 
 
-            // Handle multi-page content
+            // Handle multi-page content (Issue 4 FIX: Footer margin/page break handling)
             while (heightLeft > 0) {
-                position = heightLeft - imgHeight; 
                 pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-                heightLeft -= pdfHeight;
+                pdf.addImage(imgData, 'PNG', pdfMargin, position, contentWidth, imgHeight);
+                heightLeft -= 297; 
+                position -= 297; 
             }
 
             pdf.save(fileName);
         }).finally(() => {
-            // Clean up the temporary content
+            // Clean up the temporary content and restore hidden elements
             if (elementToCapture && elementToCapture.id.startsWith('tempPdfContent_')) {
                 elementToCapture.remove();
             }
+            exclusions.forEach(el => el.classList.remove('hidden-for-print'));
         });
     }
 
@@ -647,12 +623,11 @@ Here is the updated and final code with all issues resolved.
         // Issue 5 FIX: Store data before clearing the form
         lastSubmittedData = formData;
 
-        // Generate a unique ID for the application
         const appId = Date.now(); 
         
         const date = new Date().toISOString().slice(0, 10);
         const newRecord = {
-            id: appId, // Unique ID
+            id: appId, 
             sno: admittedStudents.filter(r => r.status !== 'Rejected' && r.status !== 'Deleted').length + 1,
             dateOfSubmission: date,
             studentName: formData.sname_full,
@@ -669,7 +644,7 @@ Here is the updated and final code with all issues resolved.
         
         alert(`Admission Form submitted successfully. Student: ${newRecord.studentName} added to the Register for review.\n\nNOTE: Data is now pre-filled for PDF download.`);
         
-        form.reset(); // Clear the form after submission
+        form.reset(); 
     });
 
     // Issue 1 FIX: Open APAAR form button
@@ -683,10 +658,9 @@ Here is the updated and final code with all issues resolved.
             return;
         }
 
-        // Get current data and switch to download view
+        // Get current data
         lastSubmittedData = extractFormDataForPDF('admissionForm');
-        alert("APAAR Consent Form is ready. Please proceed to the download buttons to generate the form for signature and subsequent Submission (via the green Submit button).");
-        showTab('admissionRegisterTab', document.querySelector('.tab-buttons button:nth-child(2)'));
+        alert("APAAR Consent Form is ready. Please proceed to the download buttons below to generate the form. The form data is saved.");
     });
 
     // --- Register Table Logic (Issue 6 FIX: Accept/Reject/Delete) ---
@@ -789,7 +763,7 @@ Here is the updated and final code with all issues resolved.
         generatePDF('apaarTemplate', 'APAAR_Consent_Form.pdf');
     });
 
-    // Globalizing the action function for inline HTML calls (Issue 6)
+    // Globalizing the action function for inline HTML calls
     window.handleRegisterAction = handleRegisterAction; 
 
     // Initialize the Register table and show the default tab
@@ -799,6 +773,5 @@ Here is the updated and final code with all issues resolved.
 </script>
 
 </body>
-</html>
-                                                  if (admittedStudents.length === 0) {
-             
+</html>     
+                            
