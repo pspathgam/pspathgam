@@ -102,7 +102,7 @@
         box-shadow:0px 4px 0px #970617; transition:0.1s; font-size: 16px;
         flex-grow: 1; max-width: 250px;
     }
-    /* --- TEMPLATE STYLES for PDF Print (FIXES) --- */
+    /* --- TEMPLATE STYLES for PDF Print --- */
     .apaar-form-template, .print-form-template {
         max-width: 210mm; 
         margin: 0 auto; 
@@ -114,20 +114,20 @@
     .print-form-template {
         border: 1px solid #000; 
         font-size: 12px;
-        line-height: 1.2; /* Issue 4 FIX: Reduced line height */
+        line-height: 1.2; 
     }
-    /* FIX: PDF Header Styling */
+    /* PDF Header Styling */
     .pdf-header-content {
         display: flex; align-items: center; justify-content: center; 
-        margin-bottom: 2px; /* Issue 7 FIX: Reduced space before title */
+        margin-bottom: 2px; 
         text-align: center; border-bottom: 2px solid #ccc;
-        padding-bottom: 2px; /* Issue 7 FIX: Reduced padding */
-        padding-top: 0; /* Issue 2 FIX: Decreased top margin */
+        padding-bottom: 2px; 
+        padding-top: 0; 
     }
     .pdf-header-content h3 {
         color: #000; 
         margin-bottom: 2px; 
-        font-size: 13px; /* Issue 1 FIX: Further decreased font size */
+        font-size: 13px; 
         white-space: nowrap; 
     }
     .pdf-header-content p {
@@ -135,14 +135,14 @@
         font-size: 9px; 
     }
     .print-form-template h3 {
-        margin-top: 5px; /* Issue 7 FIX: Reduced space between header address and title */
-        margin-bottom: 5px; /* Issue 7 FIX: Reduced space between title and box */
+        margin-top: 5px; 
+        margin-bottom: 5px; 
         font-size: 16px;
     }
     .print-box {
         border: 1px solid #000;
-        padding: 3px 5px; /* Reduced internal padding for compactness */
-        margin-bottom: 3px; /* Issue 4 FIX: Reduced space between boxes */
+        padding: 3px 5px; 
+        margin-bottom: 3px; 
         display: flex;
         flex-wrap: wrap;
     }
@@ -165,7 +165,7 @@
         font-size: 12px;
     }
     .print-row-group {
-        width: 100%; /* Names must take the full width */
+        width: 100%; 
         display: flex;
         justify-content: space-between;
     }
@@ -174,9 +174,6 @@
         page-break-before: always;
     }
     /* Register Table Styles */
-    .register-table th, .register-table td {
-        white-space: nowrap; 
-    }
     .register-table .action-btn {
         padding: 4px 8px;
         margin: 2px;
@@ -217,29 +214,29 @@
         <h3 style="text-align:center;">ADMISSION FORM</h3>
 
         <form id="admissionForm">
-            <label>Students Name</label>
             <div class="form-row">
-                <div class="form-group"><input type="text" name="sname_first" required><label>First Name</label></div>
-                <div class="form-group"><input type="text" name="sname_middle"><label>Middle Name</label></div>
-                <div class="form-group"><input type="text" name="sname_last" required><label>Last Name</label></div>
+                <div class="form-group">
+                    <label>Student's Full Name (First Name Middle Name Last Name)</label>
+                    <input type="text" name="sname_full" required>
+                </div>
             </div>
-            <label>Name As Per Aadhaar</label>
             <div class="form-row">
-                <div class="form-group"><input type="text" name="aname_first"><label>First Name</label></div>
-                <div class="form-group"><input type="text" name="aname_middle"><label>Middle Name</label></div>
-                <div class="form-group"><input type="text" name="aname_last"><label>Last Name</label></div>
+                <div class="form-group">
+                    <label>Full Name As Per Aadhaar</label>
+                    <input type="text" name="aname_full">
+                </div>
             </div>
-            <label>Father's Name</label>
             <div class="form-row">
-                <div class="form-group"><input type="text" name="fname_first" required><label>First Name</label></div>
-                <div class="form-group"><input type="text" name="fname_middle"><label>Middle Name</label></div>
-                <div class="form-group"><input type="text" name="fname_last" required><label>Last Name</label></div>
+                <div class="form-group">
+                    <label>Father's Full Name (First Name Middle Name Last Name)</label>
+                    <input type="text" name="fname_full" required>
+                </div>
             </div>
-            <label>Mother's Name</label>
             <div class="form-row">
-                <div class="form-group"><input type="text" name="mname_first" required><label>First Name</label></div>
-                <div class="form-group"><input type="text" name="mname_middle"><label>Middle Name</label></div>
-                <div class="form-group"><input type="text" name="mname_last" required><label>Last Name</label></div>
+                <div class="form-group">
+                    <label>Mother's Full Name (First Name Middle Name Last Name)</label>
+                    <input type="text" name="mname_full" required>
+                </div>
             </div>
             <div class="form-row">
                 <div class="form-group"><label>Residence</label><input type="text" name="residence" required></div>
@@ -387,7 +384,7 @@
     
     <div class="print-box">
         <div class="print-field" style="width: 100%;">
-            <span class="print-label">Students Name:</span>
+            <span class="print-label">Students Full Name:</span>
             <span class="print-value" data-field="sname_full"></span> 
         </div>
     </div>
@@ -401,14 +398,14 @@
 
     <div class="print-box">
         <div class="print-field" style="width: 100%;">
-            <span class="print-label">Father's Name:</span>
+            <span class="print-label">Father's Full Name:</span>
             <span class="print-value" data-field="fname_full"></span>
         </div>
     </div>
 
     <div class="print-box">
         <div class="print-field" style="width: 100%;">
-            <span class="print-label">Mother's Name:</span>
+            <span class="print-label">Mother's Full Name:</span>
             <span class="print-value" data-field="mname_full"></span>
         </div>
     </div>
@@ -544,7 +541,7 @@
         const elements = form.querySelectorAll('input, select, textarea');
 
         elements.forEach(element => {
-            if (element.name && element.name !== 'agree') {
+            if (element.name) {
                 if (element.type === 'checkbox') {
                     data[element.name] = element.checked ? 'Yes' : 'No';
                 } else if (element.type === 'file') {
@@ -556,15 +553,15 @@
                 }
             }
         });
+        
+        // Ensure 'agree' checkbox is captured correctly
         data['agree'] = form.querySelector('#agree') ? (form.querySelector('#agree').checked ? 'Agreed' : 'Not Agreed') : 'N/A';
         
-        // Issue 3 FIX: Concatenated fields for single line display in PDF template
-        const cleanName = (f, m, l) => `${f || ''} ${m || ''} ${l || ''}`.trim().replace(/\s+/g, ' ');
-
-        data['sname_full'] = cleanName(data.sname_first, data.sname_middle, data.sname_last);
-        data['aname_full'] = cleanName(data.aname_first, data.aname_middle, data.aname_last);
-        data['fname_full'] = cleanName(data.fname_first, data.fname_middle, data.fname_last);
-        data['mname_full'] = cleanName(data.mname_first, data.mname_middle, data.mname_last);
+        // Since input fields are now single line, we directly use their full names.
+        data['sname_full'] = data.sname_full ? data.sname_full.trim().replace(/\s+/g, ' ') : '____________________';
+        data['aname_full'] = data.aname_full ? data.aname_full.trim().replace(/\s+/g, ' ') : '____________________';
+        data['fname_full'] = data.fname_full ? data.fname_full.trim().replace(/\s+/g, ' ') : '____________________';
+        data['mname_full'] = data.mname_full ? data.mname_full.trim().replace(/\s+/g, ' ') : '____________________';
         
         data['class'] = data.class || 'N/A';
 
@@ -584,13 +581,7 @@
             span.textContent = formData[fieldName] || '____________________'; 
         });
 
-        // Remove the small labels (First Name, Middle Name, Last Name) from the PDF template
-        if (elementId === 'printFormTemplate') {
-             const labelsToRemove = clone.querySelectorAll('.print-box > .print-row-group > span');
-             labelsToRemove.forEach(span => {
-                 span.remove();
-             });
-        }
+        // For the compact PDF form, no extra labels need removal since we switched to consolidated fields.
         
         document.body.appendChild(clone);
         return clone;
@@ -616,17 +607,15 @@
             ? createPrintableContent(elementId, formData) 
             : document.getElementById(elementId);
 
-        // Issue 2, 4 FIX: Tighter margins and scaling
-        const pdfMargin = 5; // mm (5mm left/right padding)
+        const pdfMargin = 5; 
         const pdf = new jsPDF('p', 'mm', 'a4'); 
         const a4Width = 210;
-        const contentWidth = a4Width - (2 * pdfMargin); // 200mm content area
+        const contentWidth = a4Width - (2 * pdfMargin); 
 
         html2canvas(elementToCapture, { 
             scale: 3, 
             allowTaint: true,
             useCORS: true,
-            // To ensure the capture doesn't add extra top padding:
             windowHeight: elementToCapture.scrollHeight 
         }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
@@ -638,16 +627,14 @@
             let position = 0;
 
             // Add first page
-            // Position 0 + pdfMargin for top margin/padding (Issue 2 FIX)
             pdf.addImage(imgData, 'PNG', pdfMargin, pdfMargin, contentWidth, imgHeight);
             
-            heightLeft -= (297 - pdfMargin); // Subtract the visible height of the first page
+            heightLeft -= (297 - pdfMargin); 
             position -= (297 - pdfMargin); 
 
-            // Handle multi-page content (Issue 4, 5 FIX: Page break handling)
+            // Handle multi-page content
             while (heightLeft > 0) {
                 pdf.addPage();
-                // Position offset for the multi-page image, starting near the top of the new page
                 pdf.addImage(imgData, 'PNG', pdfMargin, position + pdfMargin, contentWidth, imgHeight); 
                 heightLeft -= 297; 
                 position -= 297; 
@@ -710,7 +697,7 @@
         alert("APAAR Consent Form data is saved. Please proceed to the download buttons below to generate the form for signature and Submission.");
     });
 
-    // --- Register Table Logic (Issue 6 FIX) ---
+    // --- Register Table Logic ---
 
     function handleRegisterAction(id, action) {
         const index = admittedStudents.findIndex(record => record.id === id);
@@ -796,7 +783,8 @@
             }
         }
     }
-     // --- PDF Event Listeners ---
+
+    // --- PDF Event Listeners ---
     document.getElementById("downloadForm").addEventListener("click", function(){
         generatePDF('printFormTemplate', 'Admission_Form_Hard_Copy.pdf');
     });
@@ -820,4 +808,3 @@
 
 </body>
 </html>
-                    
