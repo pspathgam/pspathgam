@@ -106,7 +106,7 @@
     .apaar-form-template, .print-form-template {
         max-width: 210mm; 
         margin: 0 auto; 
-        padding: 5mm; /* FIX: Decreased margin for more space */
+        padding: 5mm; 
         box-sizing: border-box;
         background: white;
         font-family: Arial, sans-serif;
@@ -114,31 +114,60 @@
     .print-form-template {
         border: 1px solid #000; 
         font-size: 12px;
-        line-height: 1.4;
+        line-height: 1.2; /* Issue 4 FIX: Reduced line height */
     }
     /* FIX: PDF Header Styling */
     .pdf-header-content {
         display: flex; align-items: center; justify-content: center; 
-        margin-bottom: 5px; /* FIX: Reduced space before title */
+        margin-bottom: 2px; /* Issue 7 FIX: Reduced space before title */
         text-align: center; border-bottom: 2px solid #ccc;
-        padding-bottom: 5px;
+        padding-bottom: 2px; /* Issue 7 FIX: Reduced padding */
+        padding-top: 0; /* Issue 2 FIX: Decreased top margin */
     }
     .pdf-header-content h3 {
         color: #000; 
-        margin-bottom: 0; 
-        font-size: 14px; /* FIX: Decreased font size for single line */
-        white-space: nowrap; /* Keep header on one line */
+        margin-bottom: 2px; 
+        font-size: 13px; /* Issue 1 FIX: Further decreased font size */
+        white-space: nowrap; 
     }
     .pdf-header-content p {
         margin: 0; 
         font-size: 9px; 
     }
+    .print-form-template h3 {
+        margin-top: 5px; /* Issue 7 FIX: Reduced space between header address and title */
+        margin-bottom: 5px; /* Issue 7 FIX: Reduced space between title and box */
+        font-size: 16px;
+    }
     .print-box {
         border: 1px solid #000;
-        padding: 5px;
-        margin-bottom: 5px;
+        padding: 3px 5px; /* Reduced internal padding for compactness */
+        margin-bottom: 3px; /* Issue 4 FIX: Reduced space between boxes */
         display: flex;
         flex-wrap: wrap;
+    }
+    .print-field {
+        display: flex;
+        align-items: flex-end;
+        padding: 1px 0;
+    }
+    .print-label {
+        font-weight: bold;
+        white-space: nowrap;
+        margin-right: 5px;
+        font-size: 11px;
+    }
+    .print-value {
+        flex-grow: 1;
+        border-bottom: 1px dashed #000;
+        min-width: 50px;
+        padding: 0 5px;
+        font-size: 12px;
+    }
+    .print-row-group {
+        width: 100%; /* Names must take the full width */
+        display: flex;
+        justify-content: space-between;
     }
     /* Page break for printing */
     .page-break {
@@ -159,6 +188,8 @@
     .register-table .accept { background-color: #28a745; color: white; }
     .register-table .reject { background-color: #ffc107; color: black; }
     .register-table .delete { background-color: #dc3545; color: white; }
+    /* Utility class for hiding elements during print */
+    .hidden-for-print { display: none !important; }
 </style>
 
 </head>
@@ -344,78 +375,90 @@
 </div>
 
 <div id="printFormTemplate" class="print-form-template" style="display: none;">
-    <div class="pdf-header-content" style="border-bottom: none; padding-bottom: 5px; margin-top: 0;"> 
+    
+    <div class="pdf-header-content" style="border-bottom: none; padding-bottom: 2px; margin-top: 0;"> 
         <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
-        <div class="header-text" style="text-align: center; padding-top: 5px;">
+        <div class="header-text" style="text-align: center; padding-top: 0;">
             <h3 style="margin-bottom: 2px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
             <p style="font-size: 9px;">Wagoora Babareshi Road Near ZEO Office Wagoora<br> UDISE CODE 01022202207 Email: pspethgam@gmail.com</p>
         </div>
     </div>
-    <h3 style="text-align:center; margin-top:0; font-size: 18px;">ADMISSION FORM</h3>
+    <h3 style="text-align:center; font-size: 16px; margin-top: 5px; margin-bottom: 5px;">ADMISSION FORM</h3>
     
     <div class="print-box">
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-33"><span class="print-label">Students Name:</span><span class="print-value" data-field="sname_first"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="sname_middle"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="sname_last"></span></div>
-        </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-33"><span class="print-label">Name As Per Aadhaar:</span><span class="print-value" data-field="aname_first"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="aname_middle"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="aname_last"></span></div>
-        </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-33"><span class="print-label">Father's Name:</span><span class="print-value" data-field="fname_first"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="fname_middle"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="fname_last"></span></div>
-        </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-33"><span class="print-label">Mother's Name:</span><span class="print-value" data-field="mname_first"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="mname_middle"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="mname_last"></span></div>
+        <div class="print-field" style="width: 100%;">
+            <span class="print-label">Students Name:</span>
+            <span class="print-value" data-field="sname_full"></span> 
         </div>
     </div>
 
     <div class="print-box">
-        <div class="print-row-group" style="margin-bottom: 10px;">
+        <div class="print-field" style="width: 100%;">
+            <span class="print-label">Name As Per Aadhaar:</span>
+            <span class="print-value" data-field="aname_full"></span>
+        </div>
+    </div>
+
+    <div class="print-box">
+        <div class="print-field" style="width: 100%;">
+            <span class="print-label">Father's Name:</span>
+            <span class="print-value" data-field="fname_full"></span>
+        </div>
+    </div>
+
+    <div class="print-box">
+        <div class="print-field" style="width: 100%;">
+            <span class="print-label">Mother's Name:</span>
+            <span class="print-value" data-field="mname_full"></span>
+        </div>
+    </div>
+
+    <div class="print-box">
+        <div class="print-row-group" style="margin-bottom: 0;">
             <div class="print-field print-col-50"><span class="print-label">Residence:</span><span class="print-value" data-field="residence"></span></div>
             <div class="print-field print-col-50"><span class="print-label">District:</span><span class="print-value" data-field="district"></span></div>
         </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-50"><span class="print-label">Father's Contact Number:</span><span class="print-value" data-field="fcontact"></span></div>
-            <div class="print-field print-col-50"><span class="print-label">Mother's Contact Number:</span><span class="print-value" data-field="mcontact"></span></div>
-        </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-50"><span class="print-label">Aadhaar Number:</span><span class="print-value" data-field="aadhaar"></span></div>
-            <div class="print-field print-col-50"><span class="print-label">Date of Birth (in figures):</span><span class="print-value" data-field="dob"></span></div>
-        </div>
-        <div class="print-field" style="width: 100%; margin-bottom: 10px;"><span class="print-label">Date of Birth in Words:</span><span class="print-value" data-field="dob_words"></span></div>
     </div>
 
     <div class="print-box">
-        <div class="print-row-group" style="margin-bottom: 10px;">
+        <div class="print-row-group" style="margin-bottom: 0;">
+            <div class="print-field print-col-50"><span class="print-label">Father's Contact Number:</span><span class="print-value" data-field="fcontact"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Mother's Contact Number:</span><span class="print-value" data-field="mcontact"></span></div>
+        </div>
+    </div>
+
+    <div class="print-box">
+        <div class="print-row-group" style="margin-bottom: 0;">
+            <div class="print-field print-col-50"><span class="print-label">Aadhaar Number:</span><span class="print-value" data-field="aadhaar"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Date of Birth (in figures):</span><span class="print-value" data-field="dob"></span></div>
+        </div>
+        <div class="print-field" style="width: 100%; margin-bottom: 0;"><span class="print-label">Date of Birth in Words:</span><span class="print-value" data-field="dob_words"></span></div>
+    </div>
+
+    <div class="print-box">
+        <div class="print-row-group" style="margin-bottom: 0;">
             <div class="print-field print-col-50"><span class="print-label">Bank Account Number:</span><span class="print-value" data-field="bank_account"></span></div>
             <div class="print-field print-col-50"><span class="print-label">Bank Name:</span><span class="print-value" data-field="bank_name"></span></div>
         </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
+        <div class="print-row-group" style="margin-bottom: 0;">
             <div class="print-field print-col-50"><span class="print-label">Bank Branch:</span><span class="print-value" data-field="bank_branch"></span></div>
             <div class="print-field print-col-50"><span class="print-label">IFSC Code:</span><span class="print-value" data-field="ifsc_code"></span></div>
         </div>
     </div>
 
     <div class="print-box">
-        <div class="print-row-group" style="margin-bottom: 10px;">
+        <div class="print-row-group" style="margin-bottom: 0;">
             <div class="print-field print-col-50"><span class="print-label">Category:</span><span class="print-value" data-field="category" style="width: auto;"></span></div>
             <div class="print-field print-col-50"><span class="print-label">Blood Group:</span><span class="print-value" data-field="bloodgroup" style="width: auto;"></span></div>
         </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
+        <div class="print-row-group" style="margin-bottom: 0;">
             <div class="print-field print-col-50"><span class="print-label">Ration Card Number:</span><span class="print-value" data-field="ration_no"></span></div>
             <div class="print-field print-col-50"><span class="print-label">Ration Card Type:</span><span class="print-value" data-field="ration_type"></span></div>
         </div>
     </div>
     
-    <div class="print-box">
-        <div class="print-row-group" style="margin-bottom: 10px;">
+    <div class="print-box" id="class-joining-box">
+        <div class="print-row-group" style="margin-bottom: 0;">
             <div class="print-field print-col-50"><span class="print-label">Class Joining:</span><span class="print-value" data-field="class"></span></div>
             <div class="print-field print-col-50"><span class="print-label">PEN Number for Transferring Students:</span><span class="print-value" data-field="pen_number"></span></div>
         </div>
@@ -449,7 +492,7 @@
 <div id="apaarTemplate" class="apaar-form-template" style="display: none; border: 1px solid #000;">
     <div class="pdf-header-content" style="border-bottom: none; margin-top: 0;">
         <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
-        <div class="header-text" style="text-align: center; padding-top: 5px;">
+        <div class="header-text" style="text-align: center; padding-top: 0;">
             <h3 style="margin-bottom: 2px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
             <p style="font-size: 9px;">Wagoora Babareshi Road Near ZEO Office Wagoora<br> UDISE CODE 01022202207 Email: pspethgam@gmail.com</p>
         </div>
@@ -484,7 +527,7 @@
 <script>
     const { jsPDF } = window.jspdf;
     let admittedStudents = []; 
-    let lastSubmittedData = null; // Issue 5 FIX: Store last submitted data
+    let lastSubmittedData = null; 
 
     // --- Tab Switching Logic ---
     function showTab(tabId, button) {
@@ -514,15 +557,21 @@
             }
         });
         data['agree'] = form.querySelector('#agree') ? (form.querySelector('#agree').checked ? 'Agreed' : 'Not Agreed') : 'N/A';
-        // Concatenated fields
-        data['sname_full'] = `${data.sname_first || ''} ${data.sname_middle || ''} ${data.sname_last || ''}`.trim().replace(/\s+/g, ' ');
-        data['fname_full'] = `${data.fname_first || ''} ${data.fname_middle || ''} ${data.fname_last || ''}`.trim().replace(/\s+/g, ' ');
+        
+        // Issue 3 FIX: Concatenated fields for single line display in PDF template
+        const cleanName = (f, m, l) => `${f || ''} ${m || ''} ${l || ''}`.trim().replace(/\s+/g, ' ');
+
+        data['sname_full'] = cleanName(data.sname_first, data.sname_middle, data.sname_last);
+        data['aname_full'] = cleanName(data.aname_first, data.aname_middle, data.aname_last);
+        data['fname_full'] = cleanName(data.fname_first, data.fname_middle, data.fname_last);
+        data['mname_full'] = cleanName(data.mname_first, data.mname_middle, data.mname_last);
+        
         data['class'] = data.class || 'N/A';
 
         return data;
     }
     
-    // --- PDF Template Creation FIX (Issue 2, 3, 5, New PDF Formatting Fixes) ---
+    // --- PDF Template Creation FIX ---
     function createPrintableContent(elementId, formData) {
         const originalElement = document.getElementById(elementId);
         const clone = originalElement.cloneNode(true);
@@ -535,7 +584,7 @@
             span.textContent = formData[fieldName] || '____________________'; 
         });
 
-        // Remove the small labels like "First Name", "Middle Name" from the PDF template
+        // Remove the small labels (First Name, Middle Name, Last Name) from the PDF template
         if (elementId === 'printFormTemplate') {
              const labelsToRemove = clone.querySelectorAll('.print-box > .print-row-group > span');
              labelsToRemove.forEach(span => {
@@ -549,10 +598,9 @@
 
 
     /**
-     * Generates PDF with correct A4 scaling and template selection.
+     * Generates PDF with compact A4 scaling and template selection.
      */
     function generatePDF(elementId, fileName) {
-        // Issue 5 FIX: Use last submitted data
         const formData = lastSubmittedData || {}; 
 
         if (elementId !== 'officeUseBox' && Object.keys(formData).length === 0) {
@@ -560,45 +608,47 @@
              return;
         }
         
-        // Remove print-exclude elements before capture (Issue 5 FIX: Tabs)
-        const pdfContainer = document.getElementById(elementId);
+        // Hide print-exclude elements before capture
         const exclusions = document.querySelectorAll('.print-exclude');
-        exclusions.forEach(el => el.classList.add('hidden-for-print')); // Hide elements
+        exclusions.forEach(el => el.classList.add('hidden-for-print')); 
 
         let elementToCapture = (elementId === 'printFormTemplate' || elementId === 'apaarTemplate') 
             ? createPrintableContent(elementId, formData) 
             : document.getElementById(elementId);
 
-        // Adjustments for tighter margins in PDF generation (Issue 4 FIX: Left, Right, Footer margin)
+        // Issue 2, 4 FIX: Tighter margins and scaling
         const pdfMargin = 5; // mm (5mm left/right padding)
+        const pdf = new jsPDF('p', 'mm', 'a4'); 
+        const a4Width = 210;
+        const contentWidth = a4Width - (2 * pdfMargin); // 200mm content area
 
         html2canvas(elementToCapture, { 
             scale: 3, 
             allowTaint: true,
-            useCORS: true 
+            useCORS: true,
+            // To ensure the capture doesn't add extra top padding:
+            windowHeight: elementToCapture.scrollHeight 
         }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
-            // 'p', 'mm', 'a4' default size (210mm x 297mm)
-            const pdf = new jsPDF('p', 'mm', 'a4'); 
-
-            const a4Width = 210;
-            const contentWidth = a4Width - (2 * pdfMargin); // 200mm content area
-            const scaleFactor = contentWidth / canvas.width;
             
+            const scaleFactor = contentWidth / canvas.width;
             const imgHeight = canvas.height * scaleFactor;
             
             let heightLeft = imgHeight;
             let position = 0;
 
             // Add first page
-            pdf.addImage(imgData, 'PNG', pdfMargin, position + pdfMargin, contentWidth, imgHeight);
-            heightLeft -= (297 - pdfMargin); // Account for top margin/padding
+            // Position 0 + pdfMargin for top margin/padding (Issue 2 FIX)
+            pdf.addImage(imgData, 'PNG', pdfMargin, pdfMargin, contentWidth, imgHeight);
+            
+            heightLeft -= (297 - pdfMargin); // Subtract the visible height of the first page
             position -= (297 - pdfMargin); 
 
-            // Handle multi-page content (Issue 4 FIX: Footer margin/page break handling)
+            // Handle multi-page content (Issue 4, 5 FIX: Page break handling)
             while (heightLeft > 0) {
                 pdf.addPage();
-                pdf.addImage(imgData, 'PNG', pdfMargin, position, contentWidth, imgHeight);
+                // Position offset for the multi-page image, starting near the top of the new page
+                pdf.addImage(imgData, 'PNG', pdfMargin, position + pdfMargin, contentWidth, imgHeight); 
                 heightLeft -= 297; 
                 position -= 297; 
             }
@@ -620,7 +670,6 @@
         const form = e.target;
         const formData = extractFormDataForPDF(form.id);
         
-        // Issue 5 FIX: Store data before clearing the form
         lastSubmittedData = formData;
 
         const appId = Date.now(); 
@@ -647,23 +696,21 @@
         form.reset(); 
     });
 
-    // Issue 1 FIX: Open APAAR form button
+    // --- APAAR Button Logic ---
     document.getElementById("openApaarForm").addEventListener("click", function() {
         const form = document.getElementById('admissionForm');
         
-        // Check if form is valid before processing for APAAR
         if (!form.checkValidity()) {
             form.reportValidity();
             alert("Please fill out all required fields before proceeding to the APAAR form.");
             return;
         }
 
-        // Get current data
         lastSubmittedData = extractFormDataForPDF('admissionForm');
-        alert("APAAR Consent Form is ready. Please proceed to the download buttons below to generate the form. The form data is saved.");
+        alert("APAAR Consent Form data is saved. Please proceed to the download buttons below to generate the form for signature and Submission.");
     });
 
-    // --- Register Table Logic (Issue 6 FIX: Accept/Reject/Delete) ---
+    // --- Register Table Logic (Issue 6 FIX) ---
 
     function handleRegisterAction(id, action) {
         const index = admittedStudents.findIndex(record => record.id === id);
@@ -749,8 +796,7 @@
             }
         }
     }
-
-    // --- PDF Event Listeners ---
+     // --- PDF Event Listeners ---
     document.getElementById("downloadForm").addEventListener("click", function(){
         generatePDF('printFormTemplate', 'Admission_Form_Hard_Copy.pdf');
     });
@@ -773,5 +819,5 @@
 </script>
 
 </body>
-</html>     
-                            
+</html>
+                    
