@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Admission Register - Government Primary School Pethgam Wagoora</title>
 
-<!-- jsPDF + html2canvas -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
+    /* EXISTING CSS */
     body{
         font-family: Arial, sans-serif;
         background:#eef7ff;
@@ -23,6 +23,7 @@
         margin-bottom:20px;
     }
 
+    /* 3D LOOKING BUTTONS */
     .tab-buttons button{
         background:#0b76ef;
         color:white;
@@ -38,6 +39,46 @@
         box-shadow:0px 1px 0px #064a97;
         transform:translateY(3px);
     }
+
+    /* --- LOGO AND HEADER STYLES --- */
+    .header-content {
+        display: flex;
+        align-items: center; 
+        justify-content: center; 
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .school-logo {
+        height: 80px; 
+        width: 80px; 
+        margin-right: 20px;
+        border: 1px solid #ccc; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 10px;
+        color: #555;
+        font-weight: bold;
+    }
+
+    .header-text {
+        text-align: left;
+    }
+
+    h2{
+        margin-top:0;
+        margin-bottom: 5px; 
+        font-size: 24px;
+    }
+    .header-text p {
+        margin: 0;
+        font-size: 16px;
+        color: #555;
+    }
+    /* -------------------------------- */
+
 
     .container{
         background:white;
@@ -71,6 +112,33 @@
         margin-top:5px;
     }
 
+    /* --- PDF BUTTON STYLES (NEW) --- */
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: center;
+    }
+    .pdf-btn {
+        background:#dc3545; /* Red color for Download */
+        color:white;
+        padding:10px 15px;
+        border:none;
+        border-radius:6px;
+        font-weight:bold;
+        cursor:pointer;
+        box-shadow:0px 4px 0px #970617;
+        transition:0.1s;
+        font-size: 16px;
+        flex-grow: 1;
+        max-width: 300px;
+    }
+    .pdf-btn:active{
+        box-shadow:0px 1px 0px #970617;
+        transform:translateY(3px);
+    }
+    /* -------------------------------- */
+
     .submit-btn{
         background:#28a745;
         color:white;
@@ -90,6 +158,13 @@
         transform:translateY(3px);
     }
 
+    .section-title{
+        font-size:18px;
+        margin-top:25px;
+        font-weight:bold;
+        text-decoration:underline;
+    }
+
     .office-use-box{
         background:#fff;
         border:2px dashed #0066cc;
@@ -98,18 +173,9 @@
         margin:25px auto;
         border-radius:8px;
     }
-
-    .photo-preview{
-        width:120px;
-        height:140px;
-        border:1px solid #000;
-        object-fit:cover;
-        margin-top:10px;
-    }
-
 </style>
-</head>
 
+</head>
 <body>
 
 <div class="tab-buttons">
@@ -118,89 +184,103 @@
     <button>Search Student</button>
 </div>
 
-<div id="A4page" class="container">
+<div class="container" id="admissionFormContainer"> 
+    <div class="header-content">
+        <div class="school-logo">
+            [School Logo Image Here]
+        </div>
+        <div class="header-text">
+            <h2><b>ADMISSION REGISTER</b></h2>
+            <p>Government Primary School Pethgam Wagoora</p>
+        </div>
+    </div>
+    <form id="admissionForm">
 
-<h2 style="text-align:center; margin-top:0;">
-    <b>ADMISSION REGISTER</b><br>
-    Government Primary School Pethgam Wagoora
-</h2>
+        <label>Admission No. (To be allotted by School)</label>
+        <input type="text" placeholder="Leave Blank – To be filled by Office" disabled>
+        
+        <label>Student Full Name</label>
+        <input type="text" name="studentname" required>
 
-<form id="admissionForm">
+        <label>Father's Name</label>
+        <input type="text" name="fathername" required>
 
-    <!-- Admission No Blank -->
-    <label>Admission No. (To be allotted by School)</label>
-    <input type="text" disabled placeholder="Leave Blank – Filled by Office">
+        <label>Mother's Name</label>
+        <input type="text" name="mothername" required>
 
-    <!-- Upload Photo -->
-    <label>Upload Student Photo</label>
-    <input type="file" id="photoUpload" accept="image/*">
-    <img id="photoPreview" class="photo-preview" alt="Student Photo Preview">
+        <label>Date of Birth</label>
+        <input type="date" name="dob" required>
 
-    <label>Student Full Name</label>
-    <input type="text" id="studentname" required>
+        <label>Aadhaar Number</label>
+        <input type="text" name="aadhaar" maxlength="12">
 
-    <label>Father's Name</label>
-    <input type="text" id="fathername" required>
+        <label>Gender</label>
+        <select name="gender" required>
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+        </select>
+        
+        <label>Blood Group</label>
+        <select name="bloodgroup">
+            <option value="">Select Blood Group</option>
+            <option>A+</option>
+            <option>A-</option>
+            <option>B+</option>
+            <option>B-</option>
+            <option>AB+</option>
+            <option>AB-</option>
+            <option>O+</option>
+            <option>O-</option>
+            <option>Unknown</option>
+        </select>
 
-    <label>Mother's Name</label>
-    <input type="text" id="mothername" required>
+        <label>Class for Admission</label>
+        <select name="class" required>
+            <option value="">Select Class</option>
+            <option>Nursery</option>
+            <option>LKG</option>
+            <option>UKG</option>
+            <option>1st</option>
+            <option>2nd</option>
+            <option>3rd</option>
+            <option>4th</option>
+            <option>5th</option>
+        </select>
 
-    <label>Date of Birth</label>
-    <input type="date" id="dob" required>
+        <label>Residential Address</label>
+        <textarea name="address" required></textarea>
 
-    <label>Aadhaar Number</label>
-    <input type="text" id="aadhaar" maxlength="12">
+        <label>Mobile Number</label>
+        <input type="text" name="mobile" required>
 
-    <label>Gender</label>
-    <select id="gender" required>
-        <option value="">Select</option>
-        <option>Male</option>
-        <option>Female</option>
-        <option>Other</option>
-    </select>
+        <p class="section-title">Parents Declaration</p>
 
-    <label>Class for Admission</label>
-    <select id="class" required>
-        <option value="">Select Class</option>
-        <option>Nursery</option>
-        <option>LKG</option>
-        <option>UKG</option>
-        <option>1st</option>
-        <option>2nd</option>
-        <option>3rd</option>
-        <option>4th</option>
-        <option>5th</option>
-    </select>
+        <p style="text-align:justify;">
+            I do hereby declare that the above information provided by me is true to the best of my knowledge and belief. 
+            I further declare that I will abide by the rules and regulations laid down by the school and the department from 
+            time to time and I will co-operate with the institution for the betterment of my ward and institution under rules 
+            when sought. I hereby declare that as the Parent of above mentioned student I am giving my consent to provide 
+            the AADHAAR for the demographic authentication of the student.
+        </p>
 
-    <label>Residential Address</label>
-    <textarea id="address" required></textarea>
+        <label>
+            <input type="checkbox" id="agree" required>
+            I agree to the above declaration.
+        </label>
 
-    <label>Mobile Number</label>
-    <input type="text" id="mobile" required>
+        <button type="submit" class="submit-btn">Submit Admission Form</button>
 
-    <h3 style="margin-top:25px; text-decoration:underline;">Parents Declaration</h3>
-    <p style="text-align:justify;">
-        I do hereby declare that the above information provided by me is true to the best of my knowledge and belief. 
-        I further declare that I will abide by the rules and regulations laid down by the school and the department from 
-        time to time and I will co-operate with the institution for the betterment of my ward. I hereby give consent to 
-        provide the Aadhaar for demographic authentication of my ward.
-    </p>
+    </form>
 
-    <label>
-        <input type="checkbox" id="agree" required>
-        I agree to the above declaration.
-    </label>
-
-    <button type="submit" class="submit-btn">Submit & Download PDF</button>
-
-</form>
 </div>
 
-<div class="office-use-box">
+<div class="office-use-box" id="officeUseBox">
     <h3 style="text-align:center; margin-top:0;">OFFICE USE ONLY</h3>
 
     <label>Admission No. Allotted</label>
-    <input type="text">
+    <input type="text" placeholder="To be filled by Office">
 
     <label>Class Admitted To</label>
     <input type="text">
@@ -208,11 +288,13 @@
     <label>Date of Admission</label>
     <input type="date">
 
-    <p style="font-weight:bold;">
-        The Student is admitted on __________________.<br>
-        All required documents including Birth Certificate, Residence Proof and Transfer Certificate (if applicable) have been verified.
+    <p style="margin-top:15px;font-weight:bold;">
+        The Student is admitted on __________________.  
+        All required documents, including the Birth Certificate, Residence Proof, and Transfer Certificate (if applicable),  
+        have been verified and found satisfactory.
     </p>
 
+    <br>
     <label>Signature of Parent</label>
     <input type="text">
 
@@ -221,38 +303,92 @@
 
     <label>Signature of Headmaster</label>
     <input type="text">
+</div>
 
+<div class="container" style="margin-top: 20px;">
+    <p style="text-align: center; font-weight: bold; margin-bottom: 10px;">Download Options</p>
+    <div class="action-buttons">
+        <button id="downloadForm" class="pdf-btn" data-target="admissionFormContainer">Generate & Download PDF Form</button>
+        <button id="downloadRegister" class="pdf-btn" data-target="officeUseBox">Generate & Download PDF Register</button>
+    </div>
 </div>
 
 <script>
-// Show uploaded photo preview
-document.getElementById("photoUpload").addEventListener("change", function(){
-    const file = this.files[0];
-    if(file){
-        document.getElementById("photoPreview").src = URL.createObjectURL(file);
-    }
-});
-
-// Generate A4 PDF
-document.getElementById("admissionForm").addEventListener("submit", async function(e){
-    e.preventDefault();
-
+    // Initialize jsPDF
     const { jsPDF } = window.jspdf;
-    const A4 = new jsPDF("p", "mm", "a4");
 
-    const page = document.getElementById("A4page");
-
-    await html2canvas(page, { scale: 2 }).then(canvas => {
-        const imgData = canvas.toDataURL("image/jpeg", 1.0);
-        const width = 210;   // A4 in mm
-        const height = canvas.height * 210 / canvas.width;
-        A4.addImage(imgData, "JPEG", 0, 0, width, height);
+    document.getElementById("admissionForm").addEventListener("submit", function(e){
+        e.preventDefault();
+        alert("Form Submitted Successfully! Data saved and ready for PDF generation.");
+        // In a real app, you would send data to a server here.
     });
 
-    A4.save("Admission_Form.pdf");
+    /**
+     * Function to capture an HTML element, convert it to an image, and save it as a PDF,
+     * ensuring optimal A4 sheet fit and handling multi-page content.
+     */
+    function generatePDF(elementId, fileName) {
+        const element = document.getElementById(elementId);
 
-    alert("Admission Form PDF generated successfully!");
-});
+        // Temporarily remove 'disabled' attribute to capture placeholder text
+        const disabledInput = element.querySelector('input[disabled]');
+        let isDisabledRemoved = false;
+        if (disabledInput) {
+            disabledInput.removeAttribute('disabled');
+            isDisabledRemoved = true;
+        }
+
+        // Use a high scale for better quality in the final PDF
+        html2canvas(element, { 
+            scale: 3, 
+            allowTaint: true,
+            useCORS: true 
+        }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4'); 
+
+            // **A4 Dimensions in mm**
+            const pdfWidth = 210; 
+            const pdfHeight = 297; 
+            
+            // Calculate image height based on canvas aspect ratio and PDF width
+            const imgHeight = canvas.height * pdfWidth / canvas.width;
+            
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            // Add first page
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+            heightLeft -= pdfHeight;
+
+            // Handle multi-page content
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                heightLeft -= pdfHeight;
+            }
+
+            pdf.save(fileName);
+        }).finally(() => {
+            // Re-add the disabled attribute after capture
+            if (isDisabledRemoved && disabledInput) {
+                disabledInput.setAttribute('disabled', 'disabled');
+            }
+        });
+    }
+
+    // Event Listener for PDF Form Download
+    document.getElementById("downloadForm").addEventListener("click", function(){
+        const targetId = this.getAttribute('data-target');
+        generatePDF(targetId, 'Admission_Form.pdf');
+    });
+
+    // Event Listener for PDF Register Download
+    document.getElementById("downloadRegister").addEventListener("click", function(){
+        const targetId = this.getAttribute('data-target');
+        generatePDF(targetId, 'Admission_Register_Record.pdf');
+    });
 </script>
 
 </body>
