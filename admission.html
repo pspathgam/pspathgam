@@ -1,3 +1,6 @@
+That's a comprehensive set of improvements! To address all six points while maintaining the existing code structure, I've made significant refinements to the HTML templates, CSS, and the core JavaScript functions, especially around PDF generation, form handling, and the Admission Register functionality.
+Here is the updated and final code with all issues resolved.
+💻 Complete Code: admissions.html (Final Version with Enhanced Functionality)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -416,243 +419,6 @@
             <div class="print-field print-col-50"><span class="print-label">Mother's Contact Number:</span><span class="print-value" data-field="mcontact"></span></div>
         </div>
         <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-50"</head>
-<body>
-
-<div class="tab-buttons">
-    <button class="active" onclick="showTab('admissionFormTab', this)">Admission Form</button>
-    <button onclick="showTab('admissionRegisterTab', this)">Admission Register</button>
-    <button onclick="alert('Search functionality coming soon!')">Search Student</button>
-</div>
-
-<div id="admissionFormTab" class="tab-content active">
-    
-    <div class="container" id="admissionFormContainer"> 
-        
-        <div class="header-content">
-            <div class="school-logo"> [Logo] </div>
-            <div class="header-text">
-                <h2>GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h2>
-                <p>Wagoora Babareshhi Road Near Zonal Education Office Wagoora<br>
-                **Email ID: psspethgam@gmail.com. UDISECode: 01022202207**</p>
-            </div>
-        </div>
-        
-        <h3 style="text-align:center;">ADMISSION FORM</h3>
-
-        <form id="admissionForm">
-            <label>Students Name</label>
-            <div class="form-row">
-                <div class="form-group"><input type="text" name="sname_first" required><label>First Name</label></div>
-                <div class="form-group"><input type="text" name="sname_middle"><label>Middle Name</label></div>
-                <div class="form-group"><input type="text" name="sname_last" required><label>Last Name</label></div>
-            </div>
-
-            <label>Name As Per Aadhaar</label>
-            <div class="form-row">
-                <div class="form-group"><input type="text" name="aname_first"><label>First Name</label></div>
-                <div class="form-group"><input type="text" name="aname_middle"><label>Middle Name</label></div>
-                <div class="form-group"><input type="text" name="aname_last"><label>Last Name</label></div>
-            </div>
-
-            <label>Father's Name</label>
-            <div class="form-row">
-                <div class="form-group"><input type="text" name="fname_first" required><label>First Name</label></div>
-                <div class="form-group"><input type="text" name="fname_middle"><label>Middle Name</label></div>
-                <div class="form-group"><input type="text" name="fname_last" required><label>Last Name</label></div>
-            </div>
-
-            <label>Mother's Name</label>
-            <div class="form-row">
-                <div class="form-group"><input type="text" name="mname_first" required><label>First Name</label></div>
-                <div class="form-group"><input type="text" name="mname_middle"><label>Middle Name</label></div>
-                <div class="form-group"><input type="text" name="mname_last" required><label>Last Name</label></div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group"><label>Residence</label><input type="text" name="residence" required></div>
-                <div class="form-group"><label>District</label><input type="text" name="district" required></div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group"><label>Father's Contact Number</label><input type="text" name="fcontact" required></div>
-                <div class="form-group"><label>Mother's Contact Number</label><input type="text" name="mcontact"></div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group"><label>Aadhaar Number</label><input type="text" name="aadhaar" maxlength="12"></div>
-                <div class="form-group"><label>Date of Birth (in figures)</label><input type="date" name="dob" required></div>
-            </div>
-            <label>Date of Birth in Words</label>
-            <input type="text" name="dob_words">
-
-            <div class="form-row">
-                <div class="form-group"><label>Bank Account Number</label><input type="text" name="bank_account"></div>
-                <div class="form-group"><label>Bank Name</label><input type="text" name="bank_name"></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>Bank Branch</label><input type="text" name="bank_branch"></div>
-                <div class="form-group"><label>IFSC Code</label><input type="text" name="ifsc_code"></div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Category</label>
-                    <select name="category">
-                        <option>SC</option><option>ST</option><option>OBC</option><option>GENERAL</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Blood Group</label>
-                    <select name="bloodgroup">
-                        <option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                        <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>Ration Card Number</label><input type="text" name="ration_no"></div>
-                <div class="form-group"><label>Ration Card Type</label><input type="text" name="ration_type"></div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Class Joining</label>
-                    <select name="class" required>
-                        <option value="">Select Class</option><option>Nursery</option><option>LKG</option><option>UKG</option>
-                        <option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option>
-                    </select>
-                </div>
-                <div class="form-group"><label>PEN Number for Transferring Students</label><input type="text" name="pen_number"></div>
-            </div>
-
-            <label>Student Photo</label>
-            <input type="file" name="student_photo" accept="image/*">
-            
-            <p class="section-title">Parents Declaration</p>
-            <p style="text-align:justify; font-size:14px;">
-                I do hereby declare that the above information provided by me is true to the best of my knowledge and belief. 
-                I further declare that I will abide by the rules and regulations laid down by the school and the department from 
-                time to time and I will co-operate with the institution for the betterment of my ward and institution under rules 
-                when sought. I hereby declare that as the Parent of above mentioned student I am giving my consent to provide 
-                the AADHAAR for the demographic authentication of the student.
-            </p>
-
-            <label style="margin-top: 15px;">
-                <input type="checkbox" id="agree" required>
-                I agree to the above declaration.
-            </label>
-
-            <button type="submit" class="submit-btn">Submit Admission Form & Proceed to APAAR</button>
-        </form>
-
-        <div class="office-use-box" id="officeUseBox" style="margin-top: 25px;">
-            <h3 style="text-align:center; margin-top:0;">OFFICE USE ONLY</h3>
-            <label>Admission No. Allotted</label>
-            <input type="text" name="allotted_adm_no" placeholder="To be filled by Office">
-
-            <div class="form-row">
-                <div class="form-group"><label>Class Admitted To</label><input type="text" name="admitted_class"></div>
-                <div class="form-group"><label>Date of Admission</label><input type="date" name="admission_date"></div>
-            </div>
-
-            <p style="margin-top:15px;font-weight:bold; font-size:14px;">
-                The Student is admitted to Class <span style="text-decoration: underline;">________</span> under Admission No. <span style="text-decoration: underline;">________</span> on <span style="text-decoration: underline;">________</span>. 
-                All required documents, including the Birth Certificate, Residence Proof, and Transfer Certificate (if applicable), 
-                have been duly verified and found satisfactory.
-            </p>
-
-            <div class="form-row" style="margin-top: 30px;">
-                <div class="form-group"><input type="text"><label>Signature of Parent</label></div>
-                <div class="form-group"><input type="text"><label>Sig. Of Adm. Incharge</label></div>
-                <div class="form-group"><input type="text"><label>Sig. Of Headmaster</label></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container" style="margin-top: 20px;">
-        <p style="text-align: center; font-weight: bold; margin-bottom: 10px;">Download Options (Use after Submission)</p>
-        <div class="action-buttons">
-            <button id="downloadForm" class="pdf-btn" data-target="printFormTemplate">Download Printable Admission Form (Hard Copy)</button>
-            <button id="downloadRegister" class="pdf-btn" data-target="officeUseBox">Download PDF Register Record</button>
-            <button id="downloadApaar" class="pdf-btn">Download APAAR Form</button>
-        </div>
-    </div>
-</div>
-
-<div id="admissionRegisterTab" class="tab-content">
-    <div class="container">
-        <h3 style="text-align:center;">ADMITTED STUDENT REGISTER</h3>
-        <p style="font-weight: bold;">Filter by Status: 
-            <select id="statusFilter" onchange="filterRegister()">
-                <option value="All">All</option><option value="Admitted">Admitted</option>
-                <option value="In Progress">In Progress</option>
-            </select>
-        </p>
-
-        <div style="max-height: 500px; overflow-y: auto;">
-            <table class="register-table">
-                <thead>
-                    <tr>
-                        <th>S.No</th><th>Date of Admission</th><th>Student Name</th><th>DOB</th>
-                        <th>Father's Name</th><th>Mother's Name</th><th>Parents Contact</th>
-                        <th>Parents Profession</th><th>Status of Admission</th><th>Photo</th><th>Remarks</th>
-                    </tr>
-                </thead>
-                <tbody id="registerBody">
-                    </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div id="printFormTemplate" class="print-form-template" style="display: none;">
-    <div class="header-content" style="border-bottom: none; padding-bottom: 5px;">
-        <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
-        <div class="header-text" style="text-align: center;">
-            <h3 style="color: #000; margin-bottom: 0; font-size: 16px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
-            <p style="font-size: 10px;">Wagoora Babareshhi Road Near Zonal Education Office Wagoora. UDISE Code: 01022202207</p>
-        </div>
-    </div>
-    <h3 style="text-align:center; margin-top:0; font-size: 18px;">ADMISSION FORM</h3>
-    
-    <div class="print-box">
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-33"><span class="print-label">Students Name:</span><span class="print-value" data-field="sname_first"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="sname_middle"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="sname_last"></span></div>
-            <span style="width: 100%; display: flex; justify-content: space-around; font-size: 9px; margin-top: 2px;"><span>First Name</span><span>Middle Name</span><span>Last Name</span></span>
-        </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-33"><span class="print-label">Name As Per Aadhaar:</span><span class="print-value" data-field="aname_first"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="aname_middle"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="aname_last"></span></div>
-            <span style="width: 100%; display: flex; justify-content: space-around; font-size: 9px; margin-top: 2px;"><span>First Name</span><span>Middle Name</span><span>Last Name</span></span>
-        </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-33"><span class="print-label">Father's Name:</span><span class="print-value" data-field="fname_first"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="fname_middle"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="fname_last"></span></div>
-            <span style="width: 100%; display: flex; justify-content: space-around; font-size: 9px; margin-top: 2px;"><span>First Name</span><span>Middle Name</span><span>Last Name</span></span>
-        </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-33"><span class="print-label">Mother's Name:</span><span class="print-value" data-field="mname_first"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="mname_middle"></span></div>
-            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="mname_last"></span></div>
-            <span style="width: 100%; display: flex; justify-content: space-around; font-size: 9px; margin-top: 2px;"><span>First Name</span><span>Middle Name</span><span>Last Name</span></span>
-        </div>
-    </div>
-
-    <div class="print-box">
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-50"><span class="print-label">Residence:</span><span class="print-value" data-field="residence"></span></div>
-            <div class="print-field print-col-50"><span class="print-label">District:</span><span class="print-value" data-field="district"></span></div>
-        </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
-            <div class="print-field print-col-50"><span class="print-label">Father's Contact Number:</span><span class="print-value" data-field="fcontact"></span></div>
-            <div class="print-field print-col-50"><span class="print-label">Mother's Contact Number:</span><span class="print-value" data-field="mcontact"></span></div>
-        </div>
-        <div class="print-row-group" style="margin-bottom: 10px;">
             <div class="print-field print-col-50"><span class="print-label">Aadhaar Number:</span><span class="print-value" data-field="aadhaar"></span></div>
             <div class="print-field print-col-50"><span class="print-label">Date of Birth (in figures):</span><span class="print-value" data-field="dob"></span></div>
         </div>
@@ -688,6 +454,8 @@
         </div>
     </div>
 
+    <div class="page-break"></div> 
+
     <h4 style="margin-top: 15px; margin-bottom: 5px; text-decoration: underline;">Parents Declaration</h4>
     <p style="text-align:justify; font-size:11px;">
         I do hereby declare that the above information provided by me is true to the best of my knowledge and belief. 
@@ -712,7 +480,7 @@
 
 
 <div id="apaarTemplate" class="apaar-form-template" style="display: none; border: 1px solid #000;">
-    <div class="header-content" style="border-bottom: none;">
+    <div class="header-content" style="border-bottom: none; margin-top: 0;">
         <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
         <div class="header-text" style="text-align: center;">
             <h3 style="color: #000; margin-bottom: 0; font-size: 14px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
@@ -748,6 +516,7 @@
 <script>
     const { jsPDF } = window.jspdf;
     let admittedStudents = []; 
+    let lastSubmittedData = null; // Issue 5 FIX: Store last submitted data
 
     // --- Tab Switching Logic ---
     function showTab(tabId, button) {
@@ -780,17 +549,17 @@
         // Concatenated fields
         data['sname_full'] = `${data.sname_first || ''} ${data.sname_middle || ''} ${data.sname_last || ''}`.trim().replace(/\s+/g, ' ');
         data['fname_full'] = `${data.fname_first || ''} ${data.fname_middle || ''} ${data.fname_last || ''}`.trim().replace(/\s+/g, ' ');
+        data['class'] = data.class || 'N/A';
 
         return data;
     }
     
-    // --- PDF Template Creation FIX (Issue 2) ---
-    // Creates a static HTML copy that mimics the form layout using static text and borders.
+    // --- PDF Template Creation FIX (Issue 2, 3, 5) ---
     function createPrintableContent(elementId, formData) {
         const originalElement = document.getElementById(elementId);
         const clone = originalElement.cloneNode(true);
         clone.id = 'tempPdfContent_' + elementId;
-        clone.style.display = 'block'; // Ensure it's visible for canvas capture
+        clone.style.display = 'block'; 
 
         // Fill in the static lines with form data
         clone.querySelectorAll('[data-field]').forEach(span => {
@@ -798,6 +567,14 @@
             span.textContent = formData[fieldName] || '____________________'; 
         });
 
+        // Issue 3 FIX: Remove field labels (First Name, Middle Name, Last Name) from PDF template
+        if (elementId === 'printFormTemplate') {
+             const labelsToRemove = clone.querySelectorAll('.print-box > .print-row-group > span');
+             labelsToRemove.forEach(span => {
+                 span.remove();
+             });
+        }
+        
         document.body.appendChild(clone);
         return clone;
     }
@@ -807,19 +584,19 @@
      * Generates PDF with correct A4 scaling and template selection.
      */
     function generatePDF(elementId, fileName) {
-        if (admittedStudents.length === 0) {
-            alert("Error: Please submit the Admission Form first before attempting to download any pre-filled forms.");
-            return;
+        // Issue 5 FIX: Use last submitted data if available
+        const formData = lastSubmittedData || extractFormDataForPDF('admissionForm'); 
+
+        if (elementId !== 'officeUseBox' && Object.keys(formData).length === 0) {
+             alert("Error: Please submit the Admission Form first to populate data for this download.");
+             return;
         }
 
-        const formData = admittedStudents[admittedStudents.length - 1].raw_data;
-        
         let elementToCapture;
         
         if (elementId === 'printFormTemplate' || elementId === 'apaarTemplate') {
             elementToCapture = createPrintableContent(elementId, formData);
         } else {
-            // For Office Use Box/Register Record (original structure is fine)
             elementToCapture = document.getElementById(elementId);
         }
 
@@ -860,44 +637,88 @@
         });
     }
 
-    // --- Submission Logic (Issue 1 FIX: Proceed to Register/Downloads) ---
+    // --- Submission Logic ---
     document.getElementById("admissionForm").addEventListener("submit", function(e){
         e.preventDefault();
         
         const form = e.target;
         const formData = extractFormDataForPDF(form.id);
         
-        // Prepare data for Register 
+        // Issue 5 FIX: Store data before clearing the form
+        lastSubmittedData = formData;
+
+        // Generate a unique ID for the application
+        const appId = Date.now(); 
+        
         const date = new Date().toISOString().slice(0, 10);
         const newRecord = {
-            sno: admittedStudents.length + 1,
-            dateOfAdmission: date,
+            id: appId, // Unique ID
+            sno: admittedStudents.filter(r => r.status !== 'Rejected' && r.status !== 'Deleted').length + 1,
+            dateOfSubmission: date,
             studentName: formData.sname_full,
             dob: formData.dob,
             fatherName: formData.fname_full,
-            motherName: `${formData.mname_first} ${formData.mname_last}`, 
+            classJoining: formData.class,
             parentsContact: formData.fcontact,
-            parentsProfession: 'N/A', 
             status: 'In Progress', 
-            photo: 'placeholder',
-            remarks: 'Submitted waiting for verification.',
             raw_data: formData 
         };
 
         admittedStudents.push(newRecord);
         updateRegisterTable();
         
-        // FIX: Instead of alerting a simulation, switch to the Register tab
-        // and notify the user to use the download buttons.
-        alert(`Admission Form submitted successfully. Student: ${newRecord.studentName} added to the Admission Register.\n\nAPAAR Form is now generated and ready for download via the "Download APAAR Form" button.`);
+        alert(`Admission Form submitted successfully. Student: ${newRecord.studentName} added to the Register for review.\n\nNOTE: Data is now pre-filled for PDF download.`);
         
-        // FIX: Switch to the Admission Register tab after submission
-        showTab('admissionRegisterTab', document.querySelector('.tab-buttons button:nth-child(2)'));
-
-        form.reset();
+        form.reset(); // Clear the form after submission
     });
 
-    // --- Register Table Logic ---
+    // Issue 1 FIX: Open APAAR form button
+    document.getElementById("openApaarForm").addEventListener("click", function() {
+        const form = document.getElementById('admissionForm');
+        
+        // Check if form is valid before processing for APAAR
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            alert("Please fill out all required fields before proceeding to the APAAR form.");
+            return;
+        }
+
+        // Get current data and switch to download view
+        lastSubmittedData = extractFormDataForPDF('admissionForm');
+        alert("APAAR Consent Form is ready. Please proceed to the download buttons to generate the form for signature and subsequent Submission (via the green Submit button).");
+        showTab('admissionRegisterTab', document.querySelector('.tab-buttons button:nth-child(2)'));
+    });
+
+    // --- Register Table Logic (Issue 6 FIX: Accept/Reject/Delete) ---
+
+    function handleRegisterAction(id, action) {
+        const index = admittedStudents.findIndex(record => record.id === id);
+        if (index === -1) return;
+
+        const record = admittedStudents[index];
+
+        switch(action) {
+            case 'accept':
+                if (record.status !== 'Admitted') {
+                    record.status = 'Admitted';
+                    record.dateOfAdmission = new Date().toISOString().slice(0, 10);
+                    alert(`Application for ${record.studentName} **Accepted** and Admitted!`);
+                }
+                break;
+            case 'reject':
+                if (record.status !== 'Rejected') {
+                    record.status = 'Rejected';
+                    alert(`Application for ${record.studentName} **Rejected**!`);
+                }
+                break;
+            case 'delete':
+                admittedStudents.splice(index, 1); // Remove the record
+                alert(`Application for ${record.studentName} **Deleted** permanently.`);
+                break;
+        }
+        updateRegisterTable();
+    }
+
     function updateRegisterTable() {
         const body = document.getElementById('registerBody');
         body.innerHTML = ''; 
@@ -905,34 +726,38 @@
         // Initial Sample Data (Only add samples if the array is empty)
         if (admittedStudents.length === 0) {
              admittedStudents.push({
-                sno: 1, dateOfAdmission: '2025-07-01', studentName: 'Ayesha Bhat', dob: '2019-01-15', fatherName: 'Ghulam Mohd Bhat', motherName: 'Zehra Begum', parentsContact: '9876543210', parentsProfession: 'Teacher', status: 'Admitted', photo: 'placeholder', remarks: 'TC received.', raw_data: {}
+                id: 100, dateOfSubmission: '2025-07-01', studentName: 'Ayesha Bhat', dob: '2019-01-15', fatherName: 'Ghulam Mohd Bhat', classJoining: '3rd', parentsContact: '9876543210', status: 'Admitted', raw_data: {sname_full: 'Ayesha Bhat', fname_full: 'Ghulam Mohd Bhat', dob: '2019-01-15', class: '3rd', fcontact: '9876543210'}
             });
             admittedStudents.push({
-                sno: 2, dateOfAdmission: '', studentName: 'Danish Lone', dob: '2020-05-20', fatherName: 'Abdul Ahad Lone', motherName: 'Fatima Jan', parentsContact: '9988776655', parentsProfession: 'Farmer', status: 'In Progress', photo: 'placeholder', remarks: 'Aadhaar pending.', raw_data: {}
+                id: 101, dateOfSubmission: '2025-07-05', studentName: 'Danish Lone', dob: '2020-05-20', fatherName: 'Abdul Ahad Lone', classJoining: '1st', parentsContact: '9988776655', status: 'In Progress', raw_data: {sname_full: 'Danish Lone', fname_full: 'Abdul Ahad Lone', dob: '2020-05-20', class: '1st', fcontact: '9988776655'}
             });
         }
-
+        
+        let displaySNo = 1;
         admittedStudents.forEach(record => {
+            if (record.status === 'Deleted') return;
+
             const row = body.insertRow();
             row.setAttribute('data-status', record.status);
             
-            row.insertCell().textContent = record.sno;
-            row.insertCell().textContent = record.dateOfAdmission;
+            row.insertCell().textContent = displaySNo++;
+            row.insertCell().textContent = record.dateOfSubmission;
             row.insertCell().textContent = record.studentName;
             row.insertCell().textContent = record.dob;
             row.insertCell().textContent = record.fatherName;
-            row.insertCell().textContent = record.motherName;
+            row.insertCell().textContent = record.classJoining;
             row.insertCell().textContent = record.parentsContact;
-            row.insertCell().textContent = record.parentsProfession;
             
             const statusCell = row.insertCell();
             statusCell.textContent = record.status;
-            statusCell.style.color = record.status === 'Admitted' ? 'green' : 'orange';
+            statusCell.style.color = record.status === 'Admitted' ? 'green' : (record.status === 'Rejected' ? 'red' : 'orange');
 
-            const photoCell = row.insertCell();
-            photoCell.innerHTML = '<img style="width: 24px; height: 24px;" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDExQzE0LjIwOTEgMTQgMTQuOSA5LjggMTUgMTJDLTEuNjY2NjcgMTIgOS4yNDY4NyAxMiAxMiAxM1oiIHN0cm9rZT0iIzMyMzIzMiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI5IiBzdHJva2U9IiMzMjMyMzIiIHN0cm9rZS13aWR0aD0iMS41Ii8+Cjwvc3ZnPgo=" alt="Photo" />';
-
-            row.insertCell().textContent = record.remarks;
+            const actionCell = row.insertCell();
+            actionCell.innerHTML = `
+                <button class="action-btn accept" onclick="handleRegisterAction(${record.id}, 'accept')">Accept</button>
+                <button class="action-btn reject" onclick="handleRegisterAction(${record.id}, 'reject')">Reject</button>
+                <button class="action-btn delete" onclick="handleRegisterAction(${record.id}, 'delete')">Delete</button>
+            `;
         });
         filterRegister();
     }
@@ -951,7 +776,7 @@
         }
     }
 
-    // --- PDF Event Listeners FIX ---
+    // --- PDF Event Listeners ---
     document.getElementById("downloadForm").addEventListener("click", function(){
         generatePDF('printFormTemplate', 'Admission_Form_Hard_Copy.pdf');
     });
@@ -964,6 +789,9 @@
         generatePDF('apaarTemplate', 'APAAR_Consent_Form.pdf');
     });
 
+    // Globalizing the action function for inline HTML calls (Issue 6)
+    window.handleRegisterAction = handleRegisterAction; 
+
     // Initialize the Register table and show the default tab
     updateRegisterTable(); 
     showTab('admissionFormTab', document.querySelector('.tab-buttons button:first-child'));
@@ -972,13 +800,5 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
+                                                  if (admittedStudents.length === 0) {
              
