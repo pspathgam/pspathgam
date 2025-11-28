@@ -102,7 +102,7 @@
         padding:20px;
         border-radius:8px;
         box-shadow:0px 0px 10px #bcd4ff;
-        max-width:850px; /* Increased width for better field layout */
+        max-width:850px; 
         margin:auto;
     }
 
@@ -481,33 +481,7 @@
                     </tr>
                 </thead>
                 <tbody id="registerBody">
-                    <tr data-status="Admitted">
-                        <td>1</td>
-                        <td>2025-07-01</td>
-                        <td>Ayesha Bhat</td>
-                        <td>2019-01-15</td>
-                        <td>Ghulam Mohd Bhat</td>
-                        <td>Zehra Begum</td>
-                        <td>9876543210</td>
-                        <td>Teacher</td>
-                        <td>Admitted</td>
-                        <td>[Image Placeholder]</td>
-                        <td>TC received.</td>
-                    </tr>
-                    <tr data-status="In Progress">
-                        <td>2</td>
-                        <td></td>
-                        <td>Danish Lone</td>
-                        <td>2020-05-20</td>
-                        <td>Abdul Ahad Lone</td>
-                        <td>Fatima Jan</td>
-                        <td>9988776655</td>
-                        <td>Farmer</td>
-                        <td>In Progress</td>
-                        <td>[Image Placeholder]</td>
-                        <td>Aadhaar verification pending.</td>
-                    </tr>
-                </tbody>
+                    </tbody>
             </table>
         </div>
     </div>
@@ -519,16 +493,13 @@
     let admittedStudents = []; // Array to hold submitted form data
 
     function showTab(tabId, button) {
-        // Hide all tab content
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
-        // Remove active class from all buttons
         document.querySelectorAll('.tab-buttons button').forEach(btn => {
             btn.classList.remove('active');
         });
 
-        // Show the selected tab and set button to active
         document.getElementById(tabId).classList.add('active');
         button.classList.add('active');
     }
@@ -544,7 +515,7 @@
                 if (element.type === 'checkbox') {
                     data[element.name] = element.checked ? 'Yes' : 'No';
                 } else if (element.type === 'file') {
-                    // Skip file inputs or handle them if needed, here we skip.
+                    // Skip file inputs
                 } else {
                     data[element.name] = element.value;
                 }
@@ -558,19 +529,214 @@
         const originalElement = document.getElementById(elementId);
         const clone = originalElement.cloneNode(true);
         clone.id = 'tempPdfContent';
-        clone.style.maxWidth = '210mm'; // Ensure PDF content fits max A4 width
+        clone.style.maxWidth = '210mm'; 
         clone.style.padding = '10mm';
         
         // Remove buttons and scripts from the clone
         clone.querySelector('button.submit-btn')?.remove();
-       
+        clone.querySelector('.action-buttons')?.remove();
+        
+        // Handle declaration checkbox display
+        const declarationCheckbox = clone.querySelector('#agree');
+        if(declarationCheckbox) {
+            const labelNode = declarationCheckbox.closest('label');
+            if (labelNode) {
+                labelNode.textContent = `I agree to the above declaration. (Status: ${formData['agree'] ? 'Agreed' : 'Not Agreed'})`;
+            }
+        }
 
-
-
-
-
-
-
-                
+        // Iterate over inputs in the clone and replace them with static text
+        const inputs = clone.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            const name = input.name;
+            const value = formData[name] || (input.tagName === 'SELECT' && input.options[input.selectedIndex] ? input.options[input.selectedIndex].text : '');
             
-                                    0, 
+            // Create a span to hold the text value
+            const textDisplay = document.createElement('span');
+            textDisplay.style.borderBottom = '1px dashed #000';
+            textDisplay.style.padding = '2px 5px';
+            textDisplay.style.display = 'inline-block';
+            textDisplay.style.minWidth = '50px';
+            textDisplay.textContent = value;
+            
+            // Replace the input/select/textarea with the span
+            input.parentNode.insertBefore(textDisplay, input);
+            input.remove();
+        });
+
+        document.body.appendChild(clone);
+        return clone;
+    }
+
+
+    /**
+     * Function to capture an HTML element, convert it to an image, and save it as a PDF,
+     * ensuring optimal A4 sheet fit and handling multi-page content.
+     */
+    function generatePDF(elementId, fileName) {
+        if (elementId === 'admissionFormContainer' && admittedStudents.length === 0) {
+            alert("Error: Please submit the Admission Form first before attempting to download the pre-filled PDF.");
+            return;
+        }
+
+        const formId = 'admissionForm';
+        // Get the latest submitted data for the form PDF
+        const formData = admittedStudents.length > 0 ? admittedStudents[admittedStudents.length - 1].raw_data : extractFormDataForPDF(formId);
+        
+        let elementToCapture;
+        
+        // Determine the content to capture
+        if (elementId === 'admissionFormContainer') {
+            elementToCapture = createPreFilledContent(elementId, formData);
+        } else {
+            // Capture the Office Use Box directly
+            elementToCapture = document.getElementById(elementId);
+        }
+
+        html2canvas(elementToCapture, { 
+            scale: 3, 
+            allowTaint: true,
+            useCORS: true 
+        }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4'); 
+
+            const pdfWidth = 210; 
+            const pdfHeight = 297; 
+            
+            const imgHeight = canvas.height * pdfWidth / canvas.width;
+            
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            // Add first page
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+            heightLeft -= pdfHeight;
+
+            // Handle multi-page content
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                heightLeft -= pdfHeight;
+            }
+
+            pdf.save(fileName);
+        }).finally(() => {
+            // Clean up the temporary content for the pre-filled form
+            if (elementToCapture && elementToCapture.id === 'tempPdfContent') {
+                elementToCapture.remove();
+            }
+        });
+    }
+
+    // --- Submission Logic ---
+    document.getElementById("admissionForm").addEventListener("submit", function(e){
+        e.preventDefault();
+        
+        const form = e.target;
+        const formData = extractFormDataForPDF(form.id);
+
+        // 1. APAAR Form Simulation FIX
+        alert(`Admission Form Submitted. Data temporarily saved.\n\nSimulating Redirection to APAAR ID Generation Consent Form.\n\n***(In a real system, a new window or modal with the APAAR consent form would open here.)***`);
+        
+        // 2. Prepare data for Register 
+        const date = new Date().toISOString().slice(0, 10);
+        const newRecord = {
+            sno: admittedStudents.length + 1,
+            dateOfAdmission: date,
+            studentName: `${formData.sname_first} ${formData.sname_last}`,
+            dob: formData.dob,
+            fatherName: `${formData.fname_first} ${formData.fname_last}`,
+            motherName: `${formData.mname_first} ${formData.mname_last}`,
+            parentsContact: formData.fcontact,
+            parentsProfession: 'N/A', 
+            status: 'In Progress', 
+            photo: 'placeholder',
+            remarks: 'Submitted waiting for document verification.',
+            raw_data: formData
+        };
+
+        admittedStudents.push(newRecord);
+        updateRegisterTable();
+        
+        // 3. Final confirmation
+        alert(`Data saved successfully! Student: ${newRecord.studentName} added to the Register. You can now download the PDF forms.`);
+
+        form.reset();
+    });
+
+    // --- Register Table Logic ---
+    function updateRegisterTable() {
+        const body = document.getElementById('registerBody');
+        body.innerHTML = ''; 
+
+        // Add sample data to the array if it's empty on load (initial display)
+        if (admittedStudents.length === 0) {
+             admittedStudents.push({
+                sno: 1, dateOfAdmission: '2025-07-01', studentName: 'Ayesha Bhat', dob: '2019-01-15', fatherName: 'Ghulam Mohd Bhat', motherName: 'Zehra Begum', parentsContact: '9876543210', parentsProfession: 'Teacher', status: 'Admitted', photo: 'placeholder', remarks: 'TC received.', raw_data: {}
+            });
+            admittedStudents.push({
+                sno: 2, dateOfAdmission: '', studentName: 'Danish Lone', dob: '2020-05-20', fatherName: 'Abdul Ahad Lone', motherName: 'Fatima Jan', parentsContact: '9988776655', parentsProfession: 'Farmer', status: 'In Progress', photo: 'placeholder', remarks: 'Aadhaar verification pending.', raw_data: {}
+            });
+        }
+
+        admittedStudents.forEach(record => {
+            const row = body.insertRow();
+            row.setAttribute('data-status', record.status);
+            
+            row.insertCell().textContent = record.sno;
+            row.insertCell().textContent = record.dateOfAdmission;
+            row.insertCell().textContent = record.studentName;
+            row.insertCell().textContent = record.dob;
+            row.insertCell().textContent = record.fatherName;
+            row.insertCell().textContent = record.motherName;
+            row.insertCell().textContent = record.parentsContact;
+            row.insertCell().textContent = record.parentsProfession;
+            
+            // Status Cell
+            const statusCell = row.insertCell();
+            statusCell.textContent = record.status;
+            statusCell.style.color = record.status === 'Admitted' ? 'green' : 'orange';
+
+            // Photo Cell (Using a small SVG icon placeholder for an image)
+            const photoCell = row.insertCell();
+            photoCell.innerHTML = '<img style="width: 24px; height: 24px;" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDExQzE0LjIwOTEgMTQgMTQuOSA5LjggMTUgMTJDLTEuNjY2NjcgMTIgOS4yNDY4NyAxMiAxMiAxM1oiIHN0cm9rZT0iIzMyMzIzMiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI5IiBzdHJva2U9IiMzMjMyMzIiIHN0cm9rZS13aWR0aD0iMS41Ii8+Cjwvc3ZnPgo=" alt="Photo" />';
+
+            row.insertCell().textContent = record.remarks;
+        });
+        filterRegister();
+    }
+
+    function filterRegister() {
+        const filterValue = document.getElementById('statusFilter').value;
+        const rows = document.getElementById('registerBody').getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            const status = rows[i].getAttribute('data-status');
+            if (filterValue === 'All' || status === filterValue) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+                }
+// --- PDF Event Listeners FIX ---
+    document.getElementById("downloadForm").addEventListener("click", function(){
+        generatePDF('admissionFormContainer', 'Admission_Form_Pre_filled.pdf');
+    });
+
+    document.getElementById("downloadRegister").addEventListener("click", function(){
+        generatePDF('officeUseBox', 'Admission_Register_Record.pdf');
+    });
+    
+    // Initialize
+    updateRegisterTable(); 
+    showTab('admissionFormTab', document.querySelector('.tab-buttons button:first-child'));
+
+</script>
+
+</body>
+</html>
+
+
