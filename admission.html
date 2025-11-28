@@ -78,11 +78,20 @@
         text-decoration:underline; color: #0b76ef;
     }
     /* --- BUTTON STYLES --- */
-    .submit-btn{
+    .submit-btn, #openApaarForm {
         background:#28a745; color:white; padding:12px; border:none; 
-        border-radius:6px; width:100%; font-size:18px; margin-top:20px;
+        border-radius:6px; width:48%; font-size:18px; margin-top:20px;
         cursor:pointer; font-weight:bold; box-shadow:0px 4px 0px #0c6c25;
         transition:0.1s;
+    }
+    #openApaarForm {
+        background:#0b76ef;
+        box-shadow:0px 4px 0px #064a97;
+    }
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
     }
     .action-buttons {
         display: flex; gap: 10px; margin-top: 20px; justify-content: center;
@@ -93,17 +102,17 @@
         box-shadow:0px 4px 0px #970617; transition:0.1s; font-size: 16px;
         flex-grow: 1; max-width: 250px;
     }
-    /* --- TEMPLATE STYLES for PDF Print (Issue 2 FIX) --- */
+    /* --- TEMPLATE STYLES for PDF Print (Issue 2, 3, 4 FIX) --- */
     .apaar-form-template, .print-form-template {
-        max-width: 210mm; /* A4 width standard */
+        max-width: 210mm; 
         margin: 0 auto; 
-        padding: 15mm 10mm; /* Padding for print margins */
+        padding: 5mm 10mm; /* Issue 2 FIX: Decreased margin for more space */
         box-sizing: border-box;
         background: white;
         font-family: Arial, sans-serif;
     }
     .print-form-template {
-        border: 1px solid #000; /* Outer border for document look */
+        border: 1px solid #000; 
         font-size: 12px;
         line-height: 1.4;
     }
@@ -137,18 +146,8 @@
         display: flex;
         justify-content: space-between;
     }
-    .print-col-50 {
-        width: 48%;
-    }
-    .print-col-33 {
-        width: 32%;
-    }
-    .print-col-70 {
-        width: 70%;
-    }
-    .print-col-30 {
-        width: 28%;
-    }
+    .print-col-33 { width: 32%; }
+    .print-col-50 { width: 48%; }
     .signature-area {
         display: flex;
         justify-content: space-between;
@@ -162,9 +161,262 @@
         border-top: 1px solid #000;
         padding-top: 5px;
     }
+    /* Page break for printing */
+    .page-break {
+        page-break-before: always;
+    }
+    /* Register Table Styles */
+    .register-table th, .register-table td {
+        white-space: nowrap; /* Prevent wrapping in register actions */
+    }
+    .register-table .action-btn {
+        padding: 4px 8px;
+        margin: 2px;
+        font-size: 12px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    .register-table .accept { background-color: #28a745; color: white; }
+    .register-table .reject { background-color: #ffc107; color: black; }
+    .register-table .delete { background-color: #dc3545; color: white; }
 </style>
 
 </head>
+<body>
+
+<div class="tab-buttons">
+    <button class="active" onclick="showTab('admissionFormTab', this)">Admission Form</button>
+    <button onclick="showTab('admissionRegisterTab', this)">Admission Register</button>
+    <button onclick="alert('Search functionality coming soon!')">Search Student</button>
+</div>
+
+<div id="admissionFormTab" class="tab-content active">
+    
+    <div class="container" id="admissionFormContainer"> 
+        
+        <div class="header-content" style="margin-top: 5px;"> <div class="school-logo"> [Logo] </div>
+            <div class="header-text">
+                <h2>GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h2>
+                <p>Wagoora Babareshhi Road Near Zonal Education Office Wagoora<br>
+                **Email ID: psspethgam@gmail.com. UDISECode: 01022202207**</p>
+            </div>
+        </div>
+        
+        <h3 style="text-align:center;">ADMISSION FORM</h3>
+
+        <form id="admissionForm">
+            <label>Students Name</label>
+            <div class="form-row">
+                <div class="form-group"><input type="text" name="sname_first" required><label>First Name</label></div>
+                <div class="form-group"><input type="text" name="sname_middle"><label>Middle Name</label></div>
+                <div class="form-group"><input type="text" name="sname_last" required><label>Last Name</label></div>
+            </div>
+            <label>Name As Per Aadhaar</label>
+            <div class="form-row">
+                <div class="form-group"><input type="text" name="aname_first"><label>First Name</label></div>
+                <div class="form-group"><input type="text" name="aname_middle"><label>Middle Name</label></div>
+                <div class="form-group"><input type="text" name="aname_last"><label>Last Name</label></div>
+            </div>
+
+            <label>Father's Name</label>
+            <div class="form-row">
+                <div class="form-group"><input type="text" name="fname_first" required><label>First Name</label></div>
+                <div class="form-group"><input type="text" name="fname_middle"><label>Middle Name</label></div>
+                <div class="form-group"><input type="text" name="fname_last" required><label>Last Name</label></div>
+            </div>
+
+            <label>Mother's Name</label>
+            <div class="form-row">
+                <div class="form-group"><input type="text" name="mname_first" required><label>First Name</label></div>
+                <div class="form-group"><input type="text" name="mname_middle"><label>Middle Name</label></div>
+                <div class="form-group"><input type="text" name="mname_last" required><label>Last Name</label></div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group"><label>Residence</label><input type="text" name="residence" required></div>
+                <div class="form-group"><label>District</label><input type="text" name="district" required></div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group"><label>Father's Contact Number</label><input type="text" name="fcontact" required></div>
+                <div class="form-group"><label>Mother's Contact Number</label><input type="text" name="mcontact"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group"><label>Aadhaar Number</label><input type="text" name="aadhaar" maxlength="12"></div>
+                <div class="form-group"><label>Date of Birth (in figures)</label><input type="date" name="dob" required></div>
+            </div>
+            <label>Date of Birth in Words</label>
+            <input type="text" name="dob_words">
+
+            <div class="form-row">
+                <div class="form-group"><label>Bank Account Number</label><input type="text" name="bank_account"></div>
+                <div class="form-group"><label>Bank Name</label><input type="text" name="bank_name"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Bank Branch</label><input type="text" name="bank_branch"></div>
+                <div class="form-group"><label>IFSC Code</label><input type="text" name="ifsc_code"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category">
+                        <option>SC</option><option>ST</option><option>OBC</option><option>GENERAL</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Blood Group</label>
+                    <select name="bloodgroup">
+                        <option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                        <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Ration Card Number</label><input type="text" name="ration_no"></div>
+                <div class="form-group"><label>Ration Card Type</label><input type="text" name="ration_type"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Class Joining</label>
+                    <select name="class" required>
+                        <option value="">Select Class</option><option>Nursery</option><option>LKG</option><option>UKG</option>
+                        <option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>PEN Number for Transferring Students</label><input type="text" name="pen_number"></div>
+            </div>
+
+            <label>Student Photo</label>
+            <input type="file" name="student_photo" accept="image/*">
+            
+            <p class="section-title">Parents Declaration</p>
+            <p style="text-align:justify; font-size:14px;">
+                I do hereby declare that the above information provided by me is true to the best of my knowledge and belief. 
+                I further declare that I will abide by the rules and regulations laid down by the school and the department from 
+                time to time and I will co-operate with the institution for the betterment of my ward and institution under rules 
+                when sought. I hereby declare that as the Parent of above mentioned student I am giving my consent to provide 
+                the AADHAAR for the demographic authentication of the student.
+            </p>
+
+            <label style="margin-top: 15px;">
+                <input type="checkbox" id="agree" required>
+                I agree to the above declaration.
+            </label>
+
+            <div class="form-actions">
+                <button type="button" id="openApaarForm">Open APAAR Form</button>
+                <button type="submit" class="submit-btn">Submit Admission Form</button>
+            </div>
+        </form>
+
+        <div class="office-use-box" id="officeUseBox" style="margin-top: 25px;">
+            <h3 style="text-align:center; margin-top:0;">OFFICE USE ONLY</h3>
+            <label>Admission No. Allotted</label>
+            <input type="text" name="allotted_adm_no" placeholder="To be filled by Office">
+
+            <div class="form-row">
+                <div class="form-group"><label>Class Admitted To</label><input type="text" name="admitted_class"></div>
+                <div class="form-group"><label>Date of Admission</label><input type="date" name="admission_date"></div>
+            </div>
+
+            <p style="margin-top:15px;font-weight:bold; font-size:14px;">
+                The Student is admitted to Class <span style="text-decoration: underline;">________</span> under Admission No. <span style="text-decoration: underline;">________</span> on <span style="text-decoration: underline;">________</span>. 
+                All required documents, including the Birth Certificate, Residence Proof, and Transfer Certificate (if applicable), 
+                have been duly verified and found satisfactory.
+            </p>
+
+            <div class="form-row" style="margin-top: 30px;">
+                <div class="form-group"><input type="text"><label>Signature of Parent</label></div>
+                <div class="form-group"><input type="text"><label>Sig. Of Adm. Incharge</label></div>
+                <div class="form-group"><input type="text"><label>Sig. Of Headmaster</label></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 20px;">
+        <p style="text-align: center; font-weight: bold; margin-bottom: 10px;">Download Options (Use after successful data submission)</p>
+        <div class="action-buttons">
+            <button id="downloadForm" class="pdf-btn" data-target="printFormTemplate">Download Printable Admission Form (Hard Copy)</button>
+            <button id="downloadRegister" class="pdf-btn" data-target="officeUseBox">Download PDF Register Record</button>
+            <button id="downloadApaar" class="pdf-btn">Download APAAR Consent Form</button>
+        </div>
+    </div>
+</div>
+
+<div id="admissionRegisterTab" class="tab-content">
+    <div class="container">
+        <h3 style="text-align:center;">ADMITTED STUDENT REGISTER</h3>
+        <p style="font-weight: bold;">Filter by Status: 
+            <select id="statusFilter" onchange="filterRegister()">
+                <option value="All">All</option><option value="Admitted">Admitted</option>
+                <option value="In Progress">In Progress</option>
+            </select>
+        </p>
+
+        <div style="max-height: 500px; overflow-y: auto;">
+            <table class="register-table">
+                <thead>
+                    <tr>
+                        <th>S.No</th><th>Date of Submission</th><th>Student Name</th><th>DOB</th>
+                        <th>Father's Name</th><th>Class Joining</th><th>Parents Contact</th>
+                        <th>Status</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="registerBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="printFormTemplate" class="print-form-template" style="display: none;">
+    <div class="header-content" style="border-bottom: none; padding-bottom: 5px; margin-top: 0;"> 
+        <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
+        <div class="header-text" style="text-align: center;">
+            <h3 style="color: #000; margin-bottom: 0; font-size: 16px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
+            <p style="font-size: 10px;">Wagoora Babareshhi Road Near Zonal Education Office Wagoora. UDISE Code: 01022202207</p>
+        </div>
+    </div>
+    <h3 style="text-align:center; margin-top:0; font-size: 18px;">ADMISSION FORM</h3>
+    
+    <div class="print-box">
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-33"><span class="print-label">Students Name:</span><span class="print-value" data-field="sname_first"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="sname_middle"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="sname_last"></span></div>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-33"><span class="print-label">Name As Per Aadhaar:</span><span class="print-value" data-field="aname_first"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="aname_middle"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="aname_last"></span></div>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-33"><span class="print-label">Father's Name:</span><span class="print-value" data-field="fname_first"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="fname_middle"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="fname_last"></span></div>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-33"><span class="print-label">Mother's Name:</span><span class="print-value" data-field="mname_first"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="mname_middle"></span></div>
+            <div class="print-field print-col-33"><span class="print-label"></span><span class="print-value" data-field="mname_last"></span></div>
+        </div>
+    </div>
+
+    <div class="print-box">
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-50"><span class="print-label">Residence:</span><span class="print-value" data-field="residence"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">District:</span><span class="print-value" data-field="district"></span></div>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-50"><span class="print-label">Father's Contact Number:</span><span class="print-value" data-field="fcontact"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Mother's Contact Number:</span><span class="print-value" data-field="mcontact"></span></div>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 10px;">
+            <div class="print-field print-col-50"</head>
 <body>
 
 <div class="tab-buttons">
