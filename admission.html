@@ -9,21 +9,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
+    /* --- GENERAL STYLES --- */
     body{
         font-family: Arial, sans-serif;
         background:#eef7ff;
         margin:0;
         padding:20px;
     }
-
     .tab-buttons{
         display:flex;
         gap:10px;
         margin-bottom:20px;
         justify-content: center;
     }
-
-    /* 3D LOOKING BUTTONS */
     .tab-buttons button{
         background:#0b76ef;
         color:white;
@@ -35,9 +33,6 @@
         box-shadow:0px 4px 0px #064a97;
         transition:0.1s;
     }
-    .tab-buttons button:hover:not(.active) {
-        background: #0066cc;
-    }
     .tab-buttons button.active {
         background: #004d99;
         box-shadow:0px 2px 0px #064a97;
@@ -46,57 +41,8 @@
         box-shadow:0px 1px 0px #064a97;
         transform:translateY(3px);
     }
-
-    /* Tab Content Styling */
-    .tab-content {
-        display: none;
-    }
-    .tab-content.active {
-        display: block;
-    }
-
-    /* --- LOGO AND HEADER STYLES --- */
-    .header-content {
-        display: flex;
-        align-items: center; 
-        justify-content: center; 
-        margin-bottom: 20px;
-        text-align: center;
-        border-bottom: 2px solid #ccc;
-        padding-bottom: 15px;
-    }
-
-    .school-logo {
-        height: 80px; 
-        width: 80px; 
-        margin-right: 20px;
-        border: 1px solid #ccc; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        font-size: 10px;
-        color: #555;
-        font-weight: bold;
-    }
-
-    .header-text {
-        text-align: left;
-    }
-
-    h2{
-        margin-top:0;
-        margin-bottom: 5px; 
-        font-size: 24px;
-        color: #0b76ef;
-    }
-    .header-text p {
-        margin: 0;
-        font-size: 12px;
-        color: #555;
-    }
-    /* -------------------------------- */
-
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
     .container{
         background:white;
         padding:20px;
@@ -105,133 +51,82 @@
         max-width:850px; 
         margin:auto;
     }
-
-    label{
-        display:block;
-        margin-top:10px;
-        font-weight:bold;
+    /* --- HEADER STYLES --- */
+    .header-content {
+        display: flex; align-items: center; justify-content: center; 
+        margin-bottom: 20px; text-align: center; border-bottom: 2px solid #ccc;
+        padding-bottom: 15px;
     }
-
-    /* Grid for multi-part names and contacts */
-    .form-row {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 10px;
+    .school-logo {
+        height: 80px; width: 80px; margin-right: 20px; border: 1px solid #ccc; 
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%; font-size: 10px; color: #555; font-weight: bold;
     }
-    .form-group {
-        flex: 1;
-        min-width: 0;
-    }
-    .form-group label {
-        margin-top: 0;
-        font-size: 14px;
-        font-weight: normal;
-    }
-    
+    h2{ margin-top:0; margin-bottom: 5px; font-size: 24px; color: #0b76ef; }
+    .header-text p { margin: 0; font-size: 12px; color: #555; }
+    /* --- FORM STYLES --- */
+    label{ display:block; margin-top:10px; font-weight:bold; }
+    .form-row { display: flex; gap: 15px; margin-bottom: 10px; }
+    .form-group { flex: 1; min-width: 0; }
+    .form-group label { margin-top: 0; font-size: 14px; font-weight: normal; }
     input, select{
-        width:100%;
-        padding:8px;
-        margin-top:5px;
-        border-radius:4px;
-        border:1px solid #999;
-        box-sizing: border-box;
+        width:100%; padding:8px; margin-top:5px; border-radius:4px;
+        border:1px solid #999; box-sizing: border-box;
     }
-
     textarea{
-        width:100%;
-        height:100px;
-        border-radius:4px;
-        border:1px solid #999;
-        padding:8px;
-        margin-top:5px;
-        box-sizing: border-box;
+        width:100%; height:100px; border-radius:4px; border:1px solid #999;
+        padding:8px; margin-top:5px; box-sizing: border-box;
     }
-
     .section-title{
-        font-size:18px;
-        margin-top:25px;
-        font-weight:bold;
-        text-decoration:underline;
-        color: #0b76ef;
+        font-size:18px; margin-top:25px; font-weight:bold; 
+        text-decoration:underline; color: #0b76ef;
     }
-
-    /* Download/Submit Buttons */
+    /* --- BUTTON STYLES --- */
     .submit-btn{
-        background:#28a745;
-        color:white;
-        padding:12px;
-        border:none;
-        border-radius:6px;
-        width:100%;
-        font-size:18px;
-        margin-top:20px;
-        cursor:pointer;
-        font-weight:bold;
-        box-shadow:0px 4px 0px #0c6c25;
+        background:#28a745; color:white; padding:12px; border:none; 
+        border-radius:6px; width:100%; font-size:18px; margin-top:20px;
+        cursor:pointer; font-weight:bold; box-shadow:0px 4px 0px #0c6c25;
         transition:0.1s;
-    }
-    .submit-btn:active{
-        box-shadow:0px 1px 0px #0c6c25;
-        transform:translateY(3px);
     }
     .action-buttons {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
-        justify-content: center;
+        display: flex; gap: 10px; margin-top: 20px; justify-content: center;
     }
     .pdf-btn {
-        background:#dc3545;
-        color:white;
-        padding:10px 15px;
-        border:none;
-        border-radius:6px;
-        font-weight:bold;
-        cursor:pointer;
-        box-shadow:0px 4px 0px #970617;
-        transition:0.1s;
-        font-size: 16px;
-        flex-grow: 1;
-        max-width: 380px;
+        background:#dc3545; color:white; padding:10px 15px; border:none;
+        border-radius:6px; font-weight:bold; cursor:pointer;
+        box-shadow:0px 4px 0px #970617; transition:0.1s; font-size: 16px;
+        flex-grow: 1; max-width: 250px;
     }
-    .pdf-btn:active{
-        box-shadow:0px 1px 0px #970617;
-        transform:translateY(3px);
+    /* --- PDF TEMPLATE STYLES (Specific to APAAR/Print Layout) --- */
+    .apaar-form-template, .print-form-template {
+        max-width: 210mm; 
+        margin: 0 auto; 
+        padding: 10mm;
+        box-sizing: border-box;
+        background: white;
     }
-
-    /* OFFICE USE BOX */
-    .office-use-box{
-        background:#fff;
-        border:2px dashed #0066cc;
-        padding:20px;
-        max-width:850px;
-        margin:25px auto;
-        border-radius:8px;
+    .apaar-form-template { font-size: 12px; line-height: 1.6; }
+    .apaar-form-template h3 { text-align: center; font-size: 14px; }
+    .signature-line {
+        display: flex; justify-content: space-between; margin-top: 40px;
+        border-top: 1px solid #000; padding-top: 5px;
     }
-
-    /* Register Table Styling */
-    .register-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        font-size: 14px;
+    .fill-in-line {
+        border-bottom: 1px solid #000; display: inline-block; min-width: 200px;
+        padding: 0 5px; text-align: center;
     }
-    .register-table th, .register-table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
+    .fill-static-line {
+        border-bottom: 1px solid #000; display: block; margin-top: 5px; padding: 2px 0;
+        font-weight: bold; font-size: 13px;
     }
-    .register-table th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-        position: sticky;
-        top: 0;
+    .print-form-template .form-row {
+        margin-bottom: 5px; 
     }
-    .register-table img {
-        width: 40px;
-        height: 40px;
-        object-fit: cover;
-        border-radius: 4px;
+    .print-form-template label {
+        margin-top: 5px; font-weight: normal; font-size: 11px;
+    }
+    .print-form-template input, .print-form-template select, .print-form-template textarea {
+        border: 1px solid #ccc; /* Ensure borders are visible for print simulation */
     }
 </style>
 
@@ -249,9 +144,7 @@
     <div class="container" id="admissionFormContainer"> 
         
         <div class="header-content">
-            <div class="school-logo">
-                [Logo]
-            </div>
+            <div class="school-logo"> [Logo] </div>
             <div class="header-text">
                 <h2>GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h2>
                 <p>Wagoora Babareshhi Road Near Zonal Education Office Wagoora<br>
@@ -262,14 +155,12 @@
         <h3 style="text-align:center;">ADMISSION FORM</h3>
 
         <form id="admissionForm">
-
             <label>Students Name</label>
             <div class="form-row">
                 <div class="form-group"><input type="text" name="sname_first" required><label>First Name</label></div>
                 <div class="form-group"><input type="text" name="sname_middle"><label>Middle Name</label></div>
                 <div class="form-group"><input type="text" name="sname_last" required><label>Last Name</label></div>
             </div>
-
             <label>Name As Per Aadhaar</label>
             <div class="form-row">
                 <div class="form-group"><input type="text" name="aname_first"><label>First Name</label></div>
@@ -292,105 +183,60 @@
             </div>
             
             <div class="form-row">
-                <div class="form-group">
-                    <label>Residence</label>
-                    <input type="text" name="residence" required>
-                </div>
-                <div class="form-group">
-                    <label>District</label>
-                    <input type="text" name="district" required>
-                </div>
+                <div class="form-group"><label>Residence</label><input type="text" name="residence" required></div>
+                <div class="form-group"><label>District</label><input type="text" name="district" required></div>
             </div>
             
             <div class="form-row">
-                <div class="form-group">
-                    <label>Father's Contact Number</label>
-                    <input type="text" name="fcontact" required>
-                </div>
-                <div class="form-group">
-                    <label>Mother's Contact Number</label>
-                    <input type="text" name="mcontact">
-                </div>
+                <div class="form-group"><label>Father's Contact Number</label><input type="text" name="fcontact" required></div>
+                <div class="form-group"><label>Mother's Contact Number</label><input type="text" name="mcontact"></div>
             </div>
 
             <div class="form-row">
-                <div class="form-group">
-                    <label>Aadhaar Number</label>
-                    <input type="text" name="aadhaar" maxlength="12">
-                </div>
-                <div class="form-group">
-                    <label>Date of Birth (in figures)</label>
-                    <input type="date" name="dob" required>
-                </div>
+                <div class="form-group"><label>Aadhaar Number</label><input type="text" name="aadhaar" maxlength="12"></div>
+                <div class="form-group"><label>Date of Birth (in figures)</label><input type="date" name="dob" required></div>
             </div>
             <label>Date of Birth in Words</label>
             <input type="text" name="dob_words">
 
             <div class="form-row">
-                <div class="form-group">
-                    <label>Bank Account Number</label>
-                    <input type="text" name="bank_account">
-                </div>
-                <div class="form-group">
-                    <label>Bank Name</label>
-                    <input type="text" name="bank_name">
-                </div>
+                <div class="form-group"><label>Bank Account Number</label><input type="text" name="bank_account"></div>
+                <div class="form-group"><label>Bank Name</label><input type="text" name="bank_name"></div>
             </div>
             <div class="form-row">
-                <div class="form-group">
-                    <label>Bank Branch</label>
-                    <input type="text" name="bank_branch">
-                </div>
-                <div class="form-group">
-                    <label>IFSC Code</label>
-                    <input type="text" name="ifsc_code">
-                </div>
+                <div class="form-group"><label>Bank Branch</label><input type="text" name="bank_branch"></div>
+                <div class="form-group"><label>IFSC Code</label><input type="text" name="ifsc_code"></div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>Category</label>
                     <select name="category">
-                        <option>SC</option>
-                        <option>ST</option>
-                        <option>OBC</option>
-                        <option>GENERAL</option>
+                        <option>SC</option><option>ST</option><option>OBC</option><option>GENERAL</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Blood Group</label>
                     <select name="bloodgroup">
-                        <option value="">Select</option>
-                        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                        <option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option>
                         <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
                     </select>
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group">
-                    <label>Ration Card Number</label>
-                    <input type="text" name="ration_no">
-                </div>
-                <div class="form-group">
-                    <label>Ration Card Type</label>
-                    <input type="text" name="ration_type">
-                </div>
+                <div class="form-group"><label>Ration Card Number</label><input type="text" name="ration_no"></div>
+                <div class="form-group"><label>Ration Card Type</label><input type="text" name="ration_type"></div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>Class Joining</label>
                     <select name="class" required>
-                        <option value="">Select Class</option>
-                        <option>Nursery</option><option>LKG</option><option>UKG</option>
-                        <option>1st</option><option>2nd</option><option>3rd</option>
-                        <option>4th</option><option>5th</option>
+                        <option value="">Select Class</option><option>Nursery</option><option>LKG</option><option>UKG</option>
+                        <option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>PEN Number for Transferring Students</label>
-                    <input type="text" name="pen_number">
-                </div>
+                <div class="form-group"><label>PEN Number for Transferring Students</label><input type="text" name="pen_number"></div>
             </div>
 
             <label>Student Photo</label>
@@ -419,14 +265,8 @@
             <input type="text" name="allotted_adm_no" placeholder="To be filled by Office">
 
             <div class="form-row">
-                <div class="form-group">
-                    <label>Class Admitted To</label>
-                    <input type="text" name="admitted_class">
-                </div>
-                <div class="form-group">
-                    <label>Date of Admission</label>
-                    <input type="date" name="admission_date">
-                </div>
+                <div class="form-group"><label>Class Admitted To</label><input type="text" name="admitted_class"></div>
+                <div class="form-group"><label>Date of Admission</label><input type="date" name="admission_date"></div>
             </div>
 
             <p style="margin-top:15px;font-weight:bold; font-size:14px;">
@@ -446,8 +286,9 @@
     <div class="container" style="margin-top: 20px;">
         <p style="text-align: center; font-weight: bold; margin-bottom: 10px;">Download Options (Use after Submission)</p>
         <div class="action-buttons">
-            <button id="downloadForm" class="pdf-btn" data-target="admissionFormContainer">Generate & Download PDF Admission Form (Pre-filled)</button>
-            <button id="downloadRegister" class="pdf-btn" data-target="officeUseBox">Generate & Download PDF Register Record</button>
+            <button id="downloadForm" class="pdf-btn" data-target="admissionFormContainer">Download PDF Form</button>
+            <button id="downloadRegister" class="pdf-btn" data-target="officeUseBox">Download PDF Register Record</button>
+            <button id="downloadApaar" class="pdf-btn">Download APAAR Form</button>
         </div>
     </div>
 </div>
@@ -457,8 +298,7 @@
         <h3 style="text-align:center;">ADMITTED STUDENT REGISTER</h3>
         <p style="font-weight: bold;">Filter by Status: 
             <select id="statusFilter" onchange="filterRegister()">
-                <option value="All">All</option>
-                <option value="Admitted">Admitted</option>
+                <option value="All">All</option><option value="Admitted">Admitted</option>
                 <option value="In Progress">In Progress</option>
             </select>
         </p>
@@ -467,17 +307,9 @@
             <table class="register-table">
                 <thead>
                     <tr>
-                        <th>S.No</th>
-                        <th>Date of Admission</th>
-                        <th>Student Name</th>
-                        <th>DOB</th>
-                        <th>Father's Name</th>
-                        <th>Mother's Name</th>
-                        <th>Parents Contact</th>
-                        <th>Parents Profession</th>
-                        <th>Status of Admission</th>
-                        <th>Photo</th>
-                        <th>Remarks</th>
+                        <th>S.No</th><th>Date of Admission</th><th>Student Name</th><th>DOB</th>
+                        <th>Father's Name</th><th>Mother's Name</th><th>Parents Contact</th>
+                        <th>Parents Profession</th><th>Status of Admission</th><th>Photo</th><th>Remarks</th>
                     </tr>
                 </thead>
                 <tbody id="registerBody">
@@ -487,25 +319,57 @@
     </div>
 </div>
 
+<div id="apaarTemplate" class="apaar-form-template" style="display: none;">
+    <div class="header-content" style="border-bottom: none;">
+        <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
+        <div class="header-text" style="text-align: center;">
+            <h3 style="color: #000; margin-bottom: 0;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
+            <p style="font-size: 10px;">Wagoora Babareshhi Road Near Zonal Education Office Wagoora. UDISE Code: 01022202207</p>
+        </div>
+    </div>
+    <h3 style="margin-top: 10px;">Consent by Father/Mother/Legal Guardian of Student for APAAR ID Generation</h3>
+    <p>Consent by Father/Mother/Legal Guardian of <span class="fill-in-line" data-field="sname_full">...</span> as the <span class="fill-in-line" data-field="fname_full">...</span> (Father / Mother / Legal Guardian) of <span class="fill-in-line" data-field="aadhaar">...</span> (Aadhaar / PAN / EPIC Voter ID / Driving License / Passport) and identity Proof Number <span class="fill-in-line" data-field="aadhaar">...</span> voluntarily give my consent to share his/her Aadhaar Number and demographic information issued by UIDAI with Ministry of Education for the sole purpose of creation of APAAR ID and opening of DIGILOCKER account of my child for the following intents and purposes.</p>
+    <p>I understand that my APAAR ID may be used for limited purposes as may be notified by Ministry of Education from time-to-time for educational and related activities. Further I am also aware that my personal identifiable information (Name, Address, Age, Date of Birth, Gender and Photograph) may be made available to entities engaged in various educational activities such as UDISE+ database, scholarships, maintenance academic records, other stakeholders like Educational Institutions and recruitment agencies.</p>
+    <p>I authorise Ministry of Education to use my Aadhaar number for performing Aadhaar based authentication with UIDAI as per provision of the Aadhaar (Targeted Delivery of Financial and Other Subsidies, Benefits, and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of "Yes" with Ministry of Education upon successful authentication.</p>
+    <p>I understand that the information shared by me shall be kept **Confidential** and shall not be divulged to any third party except as may be required by law.</p>
+    <p>I understand that I can withdraw my consent for all or any of the purposes at any time by and on withdrawal of my consent, the processing of my shared information will stop, however, any personal data already been processed shall remain unaffected on such withdrawal of consent.</p>
+
+    <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <div>Place of Physical Consent: <span class="fill-in-line" data-field="district">...</span></div>
+        <div>Signature or Parent Guardian: <span class="fill-in-line" style="min-width: 150px;"></span></div>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+        <div>Date of Physical Consent: <span class="fill-in-line">...</span></div>
+        <div></div>
+    </div>
+    
+    <p style="text-align: center; margin: 20px 0; font-weight: bold;">********************Consent by Head of the School********************</p>
+    <p>I **Mohmad Ashraf Rather** as Head of the School or any authorized teacher/staff hereby declare that the Father/Mother/Legal Guardian of <span class="fill-in-line" data-field="sname_full">...</span> as mentioned above has given the Consent for Providing AADHAAR to create APAAR ID, opening of DIGILOCKER Account and Identity Verification in UDISE Plus Date:</p>
+
+    <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <div style="border-bottom: 1px solid #000; padding-top: 5px; min-width: 100px;"></div>
+        <div style="border-bottom: 1px solid #000; padding-top: 5px; min-width: 150px;">Signature of HoI</div>
+    </div>
+    <div style="display: flex; justify-content: space-between; font-size: 10px;">
+        <div>Date</div>
+        <div></div>
+    </div>
+</div>
+
 
 <script>
     const { jsPDF } = window.jspdf;
-    let admittedStudents = []; // Array to hold submitted form data
+    let admittedStudents = []; 
 
     // --- Tab Switching Logic ---
     function showTab(tabId, button) {
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-        });
-        document.querySelectorAll('.tab-buttons button').forEach(btn => {
-            btn.classList.remove('active');
-        });
-
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.querySelectorAll('.tab-buttons button').forEach(btn => btn.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         button.classList.add('active');
     }
 
-    // --- Data Extraction for PDF ---
+    // --- Data Extraction ---
     function extractFormDataForPDF(formId) {
         const form = document.getElementById(formId);
         const data = {};
@@ -516,67 +380,83 @@
                 if (element.type === 'checkbox') {
                     data[element.name] = element.checked ? 'Yes' : 'No';
                 } else if (element.type === 'file') {
-                    // Skip file inputs
+                    data[element.name] = 'File uploaded'; // Placeholder
+                } else if (element.tagName === 'SELECT' && element.options[element.selectedIndex]) {
+                    data[element.name] = element.options[element.selectedIndex].text;
                 } else {
                     data[element.name] = element.value;
                 }
             }
         });
-        // Include the declaration checkbox status manually if not captured above
         data['agree'] = form.querySelector('#agree') ? form.querySelector('#agree').checked : false;
+        // Concatenated fields for easy APAAR filling
+        data['sname_full'] = `${data.sname_first} ${data.sname_middle || ''} ${data.sname_last}`.trim().replace(/\s+/g, ' ');
+        data['fname_full'] = `${data.fname_first} ${data.fname_middle || ''} ${data.fname_last}`.trim().replace(/\s+/g, ' ');
+
         return data;
     }
     
-    // --- Temporary Content Creation for PDF (Pre-filled data) ---
-    function createPreFilledContent(elementId, formData) {
+    // --- PDF Template Creation FIX ---
+    // Creates a static HTML copy that looks like the original form for A4 print.
+    function createPrintableContent(elementId, formData, isForm) {
         const originalElement = document.getElementById(elementId);
-        const clone = originalElement.cloneNode(true);
-        clone.id = 'tempPdfContent';
-        clone.style.maxWidth = '210mm'; 
-        clone.style.padding = '10mm';
-        
-        // Remove interactive elements
-        clone.querySelector('button.submit-btn')?.remove();
-        clone.querySelector('.action-buttons')?.remove();
-        
-        // Handle declaration checkbox display
-        const declarationCheckbox = clone.querySelector('#agree');
-        if(declarationCheckbox) {
-            const labelNode = declarationCheckbox.closest('label');
-            if (labelNode) {
-                labelNode.textContent = `I agree to the above declaration. (Status: ${formData['agree'] ? 'Agreed' : 'Not Agreed'})`;
-            }
+        let clone;
+
+        if (isForm) {
+            // FIX 1: Clone and remove interactive elements for clean print copy
+            clone = originalElement.cloneNode(true);
+            clone.id = 'tempPdfContent';
+            
+            // Remove interactive parts from the clone
+            clone.querySelector('button.submit-btn')?.remove();
+            clone.querySelector('.action-buttons')?.remove();
+            clone.querySelector('input[type="file"]')?.remove();
+            
+            // Populate data into the input fields of the clone (which will be visible in PDF)
+            const inputs = clone.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                const name = input.name;
+                const value = formData[name] || '';
+
+                if (input.tagName === 'SELECT') {
+                    // Set the selected option text
+                    input.value = Object.keys(input.options).find(key => input.options[key].text === value) || value;
+                    input.style.backgroundColor = '#f0f0f0'; // Visual cue for filled data
+                } else if (input.type === 'checkbox') {
+                    input.checked = formData.agree;
+                    input.disabled = true;
+                } else {
+                    input.value = value;
+                    input.readOnly = true;
+                    input.style.backgroundColor = '#f0f0f0';
+                }
+            });
+
+            document.body.appendChild(clone);
+            return clone;
+
+        } else if (elementId === 'apaarTemplate') {
+            // FIX 2: APAAR template filling
+            clone = originalElement.cloneNode(true);
+            clone.id = 'tempApaarContent';
+            
+            // Fill in the static lines with form data
+            clone.querySelectorAll('[data-field]').forEach(span => {
+                const fieldName = span.getAttribute('data-field');
+                span.textContent = formData[fieldName] || 'N/A';
+            });
+            document.body.appendChild(clone);
+            return clone;
+
+        } else {
+            // For Office Use Box (Register Record)
+            return originalElement;
         }
-
-        // Replace inputs/selects/textareas with their static values
-        const inputs = clone.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            const name = input.name;
-            let value = formData[name] || '';
-            
-            // For selects, display the text of the selected option if available
-            if (input.tagName === 'SELECT' && input.options[input.selectedIndex]) {
-                value = input.options[input.selectedIndex].text;
-            }
-
-            const textDisplay = document.createElement('span');
-            textDisplay.style.borderBottom = '1px dashed #000';
-            textDisplay.style.padding = '2px 5px';
-            textDisplay.style.display = 'inline-block';
-            textDisplay.style.minWidth = '50px';
-            textDisplay.textContent = value;
-            
-            input.parentNode.insertBefore(textDisplay, input);
-            input.remove();
-        });
-
-        document.body.appendChild(clone);
-        return clone;
     }
 
 
     /**
-     * FIX: Generates PDF, ensuring A4 size and checking for submission data.
+     * FIX: Generates PDF with correct A4 scaling and template selection.
      */
     function generatePDF(elementId, fileName) {
         if (elementId === 'admissionFormContainer' && admittedStudents.length === 0) {
@@ -585,14 +465,19 @@
         }
 
         const formId = 'admissionForm';
-        // Use the latest submitted data for the form PDF
         const formData = admittedStudents.length > 0 ? admittedStudents[admittedStudents.length - 1].raw_data : extractFormDataForPDF(formId);
         
         let elementToCapture;
         
         if (elementId === 'admissionFormContainer') {
-            elementToCapture = createPreFilledContent(elementId, formData);
-        } else {
+            // FIX 3: Use the printable clone for the admission form
+            elementToCapture = createPrintableContent(elementId, formData, true);
+        } else if (elementId === 'apaarTemplate') {
+            // FIX 4: Use the filled APAAR template
+            elementToCapture = createPrintableContent(elementId, formData, false);
+        }
+         else {
+            // Office Use Box/Register Record
             elementToCapture = document.getElementById(elementId);
         }
 
@@ -602,9 +487,9 @@
             useCORS: true 
         }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
+            // FIX 5: A4 Dimensions confirmed
             const pdf = new jsPDF('p', 'mm', 'a4'); 
 
-            // A4 Dimensions in mm (FIXED for Print)
             const pdfWidth = 210; 
             const pdfHeight = 297; 
             
@@ -619,7 +504,7 @@
 
             // Handle multi-page content
             while (heightLeft >= 0) {
-                position = heightLeft - imgHeight;
+                position = heightLeft - pdfHeight; // Corrected calculation for next page position
                 pdf.addPage();
                 pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
                 heightLeft -= pdfHeight;
@@ -628,44 +513,43 @@
             pdf.save(fileName);
         }).finally(() => {
             // Clean up the temporary content
-            if (elementToCapture && elementToCapture.id === 'tempPdfContent') {
+            if (elementToCapture && (elementToCapture.id === 'tempPdfContent' || elementToCapture.id === 'tempApaarContent')) {
                 elementToCapture.remove();
             }
         });
     }
 
-    // --- Submission Logic (FIX: Ensures submitted form appears in Register) ---
+    // --- Submission Logic ---
     document.getElementById("admissionForm").addEventListener("submit", function(e){
         e.preventDefault();
         
         const form = e.target;
         const formData = extractFormDataForPDF(form.id);
 
-        // APAAR Form Simulation
-        alert(`Admission Form Submitted. Data temporarily saved.\n\nSimulating Redirection to APAAR ID Generation Consent Form.\n\n***(In a real system, a new window or modal with the APAAR consent form would open here.)***`);
+        // APAAR Form Simulation FIX
+        alert(`Admission Form Submitted. Data temporarily saved.\n\nSimulating Redirection to APAAR ID Generation Consent Form.\n\n***(The APAAR Form is now available for download via the dedicated button.)***`);
         
-        // FIX: Prepare data for Register, including the submitted form data
+        // Prepare data for Register 
         const date = new Date().toISOString().slice(0, 10);
         const newRecord = {
             sno: admittedStudents.length + 1,
             dateOfAdmission: date,
-            // Concatenate name parts for display
-            studentName: `${formData.sname_first} ${formData.sname_middle ? formData.sname_middle + ' ' : ''}${formData.sname_last}`,
+            studentName: formData.sname_full,
             dob: formData.dob,
-            fatherName: `${formData.fname_first} ${formData.fname_last}`,
-            motherName: `${formData.mname_first} ${formData.mname_last}`,
+            fatherName: formData.fname_full,
+            motherName: `${formData.mname_first} ${formData.mname_last}`, // Re-used for brevity in register
             parentsContact: formData.fcontact,
             parentsProfession: 'N/A', 
             status: 'In Progress', 
             photo: 'placeholder',
-            remarks: 'Submitted waiting for document verification.',
-            raw_data: formData // Store original data for PDF generation
+            remarks: 'Submitted waiting for verification.',
+            raw_data: formData 
         };
 
         admittedStudents.push(newRecord);
-        updateRegisterTable(); // Refresh the table view immediately
+        updateRegisterTable();
         
-        alert(`Data saved successfully! Student: ${newRecord.studentName} added to the Admission Register. You can now download the PDF forms.`);
+        alert(`Data saved successfully! Student: ${newRecord.studentName} added to the Admission Register. You can now download all PDF forms.`);
 
         form.reset();
     });
@@ -681,7 +565,7 @@
                 sno: 1, dateOfAdmission: '2025-07-01', studentName: 'Ayesha Bhat', dob: '2019-01-15', fatherName: 'Ghulam Mohd Bhat', motherName: 'Zehra Begum', parentsContact: '9876543210', parentsProfession: 'Teacher', status: 'Admitted', photo: 'placeholder', remarks: 'TC received.', raw_data: {}
             });
             admittedStudents.push({
-                sno: 2, dateOfAdmission: '', studentName: 'Danish Lone', dob: '2020-05-20', fatherName: 'Abdul Ahad Lone', motherName: 'Fatima Jan', parentsContact: '9988776655', parentsProfession: 'Farmer', status: 'In Progress', photo: 'placeholder', remarks: 'Aadhaar verification pending.', raw_data: {}
+                sno: 2, dateOfAdmission: '', studentName: 'Danish Lone', dob: '2020-05-20', fatherName: 'Abdul Ahad Lone', motherName: 'Fatima Jan', parentsContact: '9988776655', parentsProfession: 'Farmer', status: 'In Progress', photo: 'placeholder', remarks: 'Aadhaar pending.', raw_data: {}
             });
         }
 
@@ -724,15 +608,24 @@
         }
     }
 
-    // --- PDF Event Listeners ---
+    // --- PDF Event Listeners FIX ---
     document.getElementById("downloadForm").addEventListener("click", function(){
-        generatePDF('admissionFormContainer', 'Admission_Form_Pre_filled.pdf');
+        generatePDF('admissionFormContainer', 'Admission_Form_Printable.pdf');
     });
 
     document.getElementById("downloadRegister").addEventListener("click", function(){
         generatePDF('officeUseBox', 'Admission_Register_Record.pdf');
     });
     
+    // FIX 6: New APAAR Download Button Handler
+    document.getElementById("downloadApaar").addEventListener("click", function(){
+        if (admittedStudents.length === 0) {
+            alert("Error: Please submit the Admission Form first before downloading the APAAR consent form.");
+            return;
+        }
+        generatePDF('apaarTemplate', 'APAAR_Consent_Form.pdf');
+    });
+
     // Initialize the Register table and show the default tab
     updateRegisterTable(); 
     showTab('admissionFormTab', document.querySelector('.tab-buttons button:first-child'));
@@ -741,5 +634,4 @@
 
 </body>
 </html>
-
-            
+                                      
