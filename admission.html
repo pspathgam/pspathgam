@@ -113,10 +113,11 @@
     }
     .print-form-template {
         border: 1px solid #000; 
-        font-size: 12px;
-        line-height: 1.2; 
+        /* Base font size increased from 12px to 14px */
+        font-size: 14px; 
+        line-height: 1.3; /* Increased line height for better spacing */
     }
-    /* PDF Header Styling FIX */
+    /* PDF Header Styling - REMAINING UNCHANGED */
     .pdf-header-content {
         display: flex; 
         align-items: center; 
@@ -129,18 +130,17 @@
     }
     .pdf-header-content .header-text {
         text-align: center;
-        line-height: 1.1; /* Tighter line height for two lines */
+        line-height: 1.1; 
     }
     .pdf-header-content h3 {
         color: #000; 
-        margin: 0; /* Remove default margins */
-        /* Adjusted font size for two-line fit */
-        font-size: 11px; 
+        margin: 0; 
+        font-size: 11px; /* UNCHANGED */
         white-space: normal; 
     }
     .pdf-header-content p {
         margin: 0; 
-        font-size: 9px; 
+        font-size: 9px; /* UNCHANGED */
     }
     .print-form-template h3 {
         margin-top: 5px; 
@@ -149,29 +149,29 @@
     }
     .print-box {
         border: 1px solid #000;
-        padding: 3px 5px; 
-        margin-bottom: 3px; 
+        /* Increased padding for larger box size */
+        padding: 5px 8px; 
+        margin-bottom: 5px; /* Increased margin */
         display: flex;
         flex-wrap: wrap;
     }
     .print-field {
         display: flex;
         align-items: flex-end;
-        padding: 1px 0;
+        padding: 2px 0; /* Increased padding */
     }
     .print-label {
         font-weight: bold;
         white-space: nowrap;
-        margin-right: 5px;
-        font-size: 11px;
+        margin-right: 8px; /* Increased margin */
+        font-size: 13px; /* Increased label font size */
     }
     .print-value {
         flex-grow: 1;
         border-bottom: 1px dashed #000;
         min-width: 50px;
-        padding: 0 5px;
-        font-size: 12px;
-        /* FIX: Prevent wrapping of long names and force single line display */
+        padding: 0 8px; /* Increased padding */
+        font-size: 14px; /* Increased value font size */
         white-space: nowrap; 
         overflow: hidden;
         text-overflow: ellipsis;
@@ -185,17 +185,24 @@
     .page-break {
         page-break-before: always;
     }
-    /* Signature Area Styling FIX */
+    /* Declaration and Office Use Sections - REMAINING UNCHANGED */
+    .print-form-template h4 {
+        font-size: 13px; /* UNCHANGED */
+    }
+    .print-form-template p {
+        font-size: 11px; /* UNCHANGED */
+    }
+    /* Signature Area Styling - REMAINING UNCHANGED */
     .signature-area {
         display: flex;
         justify-content: space-around;
-        margin-top: 20px; 
+        margin-top: 30px; 
         font-size: 11px;
     }
     .signature-box {
         flex: 1;
         text-align: center;
-        padding-top: 20px; /* Space for signature */
+        padding-top: 20px; 
         border-top: 1px solid #000;
         margin: 0 10px;
     }
@@ -458,11 +465,13 @@
         </div>
         <div class="print-field" style="width: 100%; margin-bottom: 0;"><span class="print-label">Date of Birth in Words:</span><span class="print-value" data-field="dob_words"></span></div>
     </div>
-
-    <div class="print-box">
+<div class="print-box">
         <div class="print-row-group" style="margin-bottom: 0;">
             <div class="print-field print-col-50"><span class="print-label">Bank Account Number:</span><span class="print-value" data-field="bank_account"></span></div>
-            <div class="print-field print-col-50"><span class="print-label">Bank Name:</span><span class="print-value" data-field="bank_branch"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Bank Name:</span><span class="print-value" data-field="bank_name"></span></div>
+        </div>
+        <div class="print-row-group" style="margin-bottom: 0;">
+            <div class="print-field print-col-50"><span class="print-label">Bank Branch:</span><span class="print-value" data-field="bank_branch"></span></div>
             <div class="print-field print-col-50"><span class="print-label">IFSC Code:</span><span class="print-value" data-field="ifsc_code"></span></div>
         </div>
     </div>
@@ -841,4 +850,4 @@
 </script>
 
 </body>
-</html>      
+</html>                   
