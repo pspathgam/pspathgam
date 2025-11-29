@@ -116,7 +116,7 @@
         font-size: 12px;
         line-height: 1.2; 
     }
-    /* PDF Header Styling */
+    /* PDF Header Styling FIX */
     .pdf-header-content {
         display: flex; align-items: center; justify-content: center; 
         margin-bottom: 2px; 
@@ -127,7 +127,8 @@
     .pdf-header-content h3 {
         color: #000; 
         margin-bottom: 2px; 
-        font-size: 13px; 
+        /* Decreased font size for better fit on A4 margin */
+        font-size: 12px; 
         white-space: nowrap; 
     }
     .pdf-header-content p {
@@ -163,6 +164,10 @@
         min-width: 50px;
         padding: 0 5px;
         font-size: 12px;
+        /* FIX: Prevent wrapping of long names and force single line display */
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .print-row-group {
         width: 100%; 
@@ -647,7 +652,8 @@
             exclusions.forEach(el => el.classList.remove('hidden-for-print'));
         });
     }
- // --- Submission Logic ---
+
+    // --- Submission Logic ---
     document.getElementById("admissionForm").addEventListener("submit", function(e){
         e.preventDefault();
         
@@ -804,17 +810,4 @@
 </script>
 
 </body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-    
-            
+    </html>
