@@ -564,6 +564,7 @@
         
         // Using the single-line input values directly for the PDF template fields
         // This ensures the full name is captured as one string
+        // The .trim().replace(/\s+/g, ' ') ensures cleaner data
         data['sname_full'] = data.sname_full ? data.sname_full.trim().replace(/\s+/g, ' ') : '____________________';
         data['aname_full'] = data.aname_full ? data.aname_full.trim().replace(/\s+/g, ' ') : '____________________';
         data['fname_full'] = data.fname_full ? data.fname_full.trim().replace(/\s+/g, ' ') : '____________________';
@@ -577,9 +578,15 @@
     // --- PDF Template Creation FIX ---
     function createPrintableContent(elementId, formData) {
         const originalElement = document.getElementById(elementId);
+        // Clone the element from the hidden template
         const clone = originalElement.cloneNode(true);
         clone.id = 'tempPdfContent_' + elementId;
+        
+        // Temporarily make the clone visible for html2canvas to render
         clone.style.display = 'block'; 
+        clone.style.position = 'absolute'; // Position off-screen to prevent visual flash on the page
+        clone.style.top = '-9999px'; 
+        clone.style.left = '-9999px'; 
 
         // Fill in the static lines with form data
         clone.querySelectorAll('[data-field]').forEach(span => {
@@ -596,10 +603,10 @@
      * Generates PDF with compact A4 scaling and template selection.
      */
     function generatePDF(elementId, fileName) {
-        const formData = lastSubmittedData || {}; 
+        const formData = lastSubmittedData; 
 
-        if (elementId !== 'officeUseBox' && Object.keys(formData).length === 0) {
-             alert("Error: Please submit the Admission Form first to populate data for this download.");
+        if (!formData || Object.keys(formData).length === 0) {
+             alert("Error: Please submit the Admission Form first to populate data for this download. You must fill out and submit the form successfully before downloading.");
              return;
         }
         
@@ -646,7 +653,7 @@
 
             pdf.save(fileName);
         }).finally(() => {
-            // Clean up the temporary content and restore hidden elements
+            // IMPORTANT: Clean up the temporary content and restore hidden elements
             if (elementToCapture && elementToCapture.id.startsWith('tempPdfContent_')) {
                 elementToCapture.remove();
             }
@@ -656,7 +663,8 @@
 
     // --- Submission Logic ---
     document.getElementById("admissionForm").addEventListener("submit", function(e){
-        e.preventDefault();
+        // PREVENT DEFAULT: This is the critical line that stops the page reload/disappearing preview
+        e.preventDefault(); 
         
         const form = e.target;
         const formData = extractFormDataForPDF(form.id);
@@ -682,9 +690,10 @@
         admittedStudents.push(newRecord);
         updateRegisterTable();
         
-        alert(`Admission Form submitted successfully. Student: ${newRecord.studentName} added to the Register for review.\n\nNOTE: Data is now pre-filled for PDF download.`);
+        alert(`Admission Form submitted successfully. Student: ${newRecord.studentName} added to the Register for review.\n\nNOTE: The form data is now available for PDF download.`);
         
-        form.reset(); 
+        // Optional: Clear form fields after successful submission
+        // form.reset(); 
     });
 
     // --- APAAR Button Logic ---
@@ -697,8 +706,9 @@
             return;
         }
 
+        // Capture data without submitting
         lastSubmittedData = extractFormDataForPDF('admissionForm');
-        alert("APAAR Consent Form data is saved. Please proceed to the download buttons below to generate the form for signature and Submission.");
+        alert("APAAR Consent Form data is successfully loaded. Please click 'Download APAAR Consent Form' below to generate the PDF.");
     });
 
     // --- Register Table Logic ---
@@ -812,4 +822,19 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+            
+
+                    
+
+    // --- APAAR Button Logic ---
     
