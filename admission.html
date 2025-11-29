@@ -557,7 +557,7 @@
         // Ensure 'agree' checkbox is captured correctly
         data['agree'] = form.querySelector('#agree') ? (form.querySelector('#agree').checked ? 'Agreed' : 'Not Agreed') : 'N/A';
         
-        // Since input fields are now single line, we directly use their full names.
+        // Using the single-line input values directly for the PDF template fields
         data['sname_full'] = data.sname_full ? data.sname_full.trim().replace(/\s+/g, ' ') : '____________________';
         data['aname_full'] = data.aname_full ? data.aname_full.trim().replace(/\s+/g, ' ') : '____________________';
         data['fname_full'] = data.fname_full ? data.fname_full.trim().replace(/\s+/g, ' ') : '____________________';
@@ -581,8 +581,6 @@
             span.textContent = formData[fieldName] || '____________________'; 
         });
 
-        // For the compact PDF form, no extra labels need removal since we switched to consolidated fields.
-        
         document.body.appendChild(clone);
         return clone;
     }
@@ -649,8 +647,7 @@
             exclusions.forEach(el => el.classList.remove('hidden-for-print'));
         });
     }
-
-    // --- Submission Logic ---
+ // --- Submission Logic ---
     document.getElementById("admissionForm").addEventListener("submit", function(e){
         e.preventDefault();
         
@@ -808,3 +805,16 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+    
+            
