@@ -118,18 +118,25 @@
     }
     /* PDF Header Styling FIX */
     .pdf-header-content {
-        display: flex; align-items: center; justify-content: center; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
         margin-bottom: 2px; 
-        text-align: center; border-bottom: 2px solid #ccc;
+        text-align: center; 
+        border-bottom: 2px solid #ccc;
         padding-bottom: 2px; 
         padding-top: 0; 
     }
+    .pdf-header-content .header-text {
+        text-align: center;
+        line-height: 1.1; /* Tighter line height for two lines */
+    }
     .pdf-header-content h3 {
         color: #000; 
-        margin-bottom: 2px; 
-        /* FIX: Decreased font size for better fit on A4 margin */
-        font-size: 12px; 
-        white-space: nowrap; 
+        margin: 0; /* Remove default margins */
+        /* Adjusted font size for two-line fit */
+        font-size: 11px; 
+        white-space: normal; 
     }
     .pdf-header-content p {
         margin: 0; 
@@ -177,6 +184,20 @@
     /* Page break for printing */
     .page-break {
         page-break-before: always;
+    }
+    /* Signature Area Styling FIX */
+    .signature-area {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px; 
+        font-size: 11px;
+    }
+    .signature-box {
+        flex: 1;
+        text-align: center;
+        padding-top: 20px; /* Space for signature */
+        border-top: 1px solid #000;
+        margin: 0 10px;
     }
     /* Register Table Styles */
     .register-table .action-btn {
@@ -248,8 +269,8 @@
                 <div class="form-group"><label>District</label><input type="text" name="district" required></div>
             </div>
             <div class="form-row">
-                <div class="form-group"><label>Father's Contact Number</label><input type="text" name="fcontact" required></div>
-                <div class="form-group"><label>Mother's Contact Number</label><input type="text" name="mcontact"></div>
+                <div class="form-group"><label>Father's Cell No.</label><input type="text" name="fcontact" required></div>
+                <div class="form-group"><label>Mother's Cell No.</label><input type="text" name="mcontact"></div>
             </div>
             <div class="form-row">
                 <div class="form-group"><label>Aadhaar Number</label><input type="text" name="aadhaar" maxlength="12"></div>
@@ -381,7 +402,8 @@
     <div class="pdf-header-content" style="border-bottom: none; padding-bottom: 2px; margin-top: 0;"> 
         <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
         <div class="header-text" style="text-align: center; padding-top: 0;">
-            <h3 style="margin-bottom: 2px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
+            <h3>GOVERNMENT PRIMARY SCHOOL</h3>
+            <h3 style="margin-top: 0;">PETHGAM WAGOORA</h3>
             <p style="font-size: 9px;">Wagoora Babareshi Road Near ZEO Office Wagoora<br> UDISE CODE 01022202207 Email: pspethgam@gmail.com</p>
         </div>
     </div>
@@ -424,8 +446,8 @@
 
     <div class="print-box">
         <div class="print-row-group" style="margin-bottom: 0;">
-            <div class="print-field print-col-50"><span class="print-label">Father's Contact Number:</span><span class="print-value" data-field="fcontact"></span></div>
-            <div class="print-field print-col-50"><span class="print-label">Mother's Contact Number:</span><span class="print-value" data-field="mcontact"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Father's Cell No.:</span><span class="print-value" data-field="fcontact"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Mother's Cell No.:</span><span class="print-value" data-field="mcontact"></span></div>
         </div>
     </div>
 
@@ -440,10 +462,7 @@
     <div class="print-box">
         <div class="print-row-group" style="margin-bottom: 0;">
             <div class="print-field print-col-50"><span class="print-label">Bank Account Number:</span><span class="print-value" data-field="bank_account"></span></div>
-            <div class="print-field print-col-50"><span class="print-label">Bank Name:</span><span class="print-value" data-field="bank_name"></span></div>
-        </div>
-        <div class="print-row-group" style="margin-bottom: 0;">
-            <div class="print-field print-col-50"><span class="print-label">Bank Branch:</span><span class="print-value" data-field="bank_branch"></span></div>
+            <div class="print-field print-col-50"><span class="print-label">Bank Name:</span><span class="print-value" data-field="bank_branch"></span></div>
             <div class="print-field print-col-50"><span class="print-label">IFSC Code:</span><span class="print-value" data-field="ifsc_code"></span></div>
         </div>
     </div>
@@ -483,9 +502,9 @@
 
 
     <div class="signature-area">
-        <div class="signature-box">Signature of Parent</div>
-        <div class="signature-box">Sig. Of Adm. Incharge</div>
-        <div class="signature-box">Sig. Of Headmaster</div>
+        <div class="signature-box">Sign. of Parent</div>
+        <div class="signature-box">Sign. of Adm. Incharge</div>
+        <div class="signature-box">Sign. of HoI</div>
     </div>
 
 </div>
@@ -495,7 +514,8 @@
     <div class="pdf-header-content" style="border-bottom: none; margin-top: 0;">
         <div class="school-logo" style="height: 50px; width: 50px;"> [Logo] </div>
         <div class="header-text" style="text-align: center; padding-top: 0;">
-            <h3 style="margin-bottom: 2px;">GOVERNMENT PRIMARY SCHOOL PETHGAM WAGOORA</h3>
+            <h3>GOVERNMENT PRIMARY SCHOOL</h3>
+            <h3 style="margin-top: 0;">PETHGAM WAGOORA</h3>
             <p style="font-size: 9px;">Wagoora Babareshi Road Near ZEO Office Wagoora<br> UDISE CODE 01022202207 Email: pspethgam@gmail.com</p>
         </div>
     </div>
@@ -821,20 +841,4 @@
 </script>
 
 </body>
-</html>
-
-
-
-
-
-
-
-
-
-
-            
-
-                    
-
-    // --- APAAR Button Logic ---
-    
+</html>      
