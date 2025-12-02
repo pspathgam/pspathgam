@@ -1,6 +1,922 @@
-PS Pethgam Wagoora — Website package
+Winter Assignment Portal Wagoora — Website package
 Files:
-- index.html    (homepage)
+- index.html    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pethgam Wagoora Winter Assignment Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Tailwind Configuration & Global Styles */
+        :root {
+            --color-admin: #EF4444; /* Red-600 */
+            --color-teacher: #F59E0B; /* Amber-500 */
+            --color-student: #3B82F6; /* Blue-500 */
+        }
+
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-header-admin { border-left: 8px solid var(--color-admin); }
+        .dashboard-header-teacher { border-left: 8px solid var(--color-teacher); }
+        .dashboard-header-student { border-left: 8px solid var(--color-student); }
+        
+        /* Ensure marquee is visible and scrolls */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        /* Utility for quick element hiding */
+        .hidden { display: none !important; }
+
+        /* Custom scrollbar for dark mode */
+        body::-webkit-scrollbar { width: 8px; }
+        body::-webkit-scrollbar-track { background: #1f2937; }
+        body::-webkit-scrollbar-thumb { background: #6b7280; border-radius: 4px; }
+        
+        /* Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-100 min-h-screen p-4 sm:p-8">
+
+    <div id="app-container" class="max-w-6xl mx-auto">
+
+        <div id="notification-bar" class="marquee-container bg-gray-800 p-2 mb-6 rounded-lg shadow-xl hidden">
+            <p id="notification-text" class="text-sm text-yellow-400 font-semibold" style="animation: marquee 15s linear infinite;"></p>
+        </div>
+
+        <div id="auth-view" class="max-w-md mx-auto p-6 glass-card rounded-xl">
+            <h1 class="text-3xl font-bold text-center text-yellow-400 mb-6">🔑 Portal Access – Zone Wagoora</h1>
+
+            <div id="login-form">
+                <p class="text-center mb-4 text-sm">Use **admin\_pethgam** / **0000** for Admin test.</p>
+                <input id="login-username" type="text" placeholder="Username (Case-Insensitive)" class="w-full p-3 mb-4 rounded-lg bg-gray-800 border-2 border-gray-700 focus:ring-blue-500 focus:border-blue-500">
+                <input id="login-pin" type="password" placeholder="4-6 Digit PIN" maxlength="6" class="w-full p-3 mb-4 rounded-lg bg-gray-800 border-2 border-gray-700 focus:ring-blue-500 focus:border-blue-500">
+                
+                <p id="auth-message" class="text-center mb-4 p-2 text-sm text-red-400 hidden"></p>
+
+                <button onclick="handleLogin()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 font-bold rounded-lg shadow-lg transition duration-200">Login</button>
+                <button onclick="showSignup()" class="w-full mt-4 py-2 bg-gray-600 hover:bg-gray-700 text-sm rounded-lg transition duration-200">Need an Account? Sign Up</button>
+            </div>
+
+            <div id="signup-form" class="hidden">
+                <h2 class="text-2xl font-bold text-center text-yellow-400 mb-4">✍️ New User Registration</h2>
+                <input id="signup-username" type="text" placeholder="Desired Username" class="w-full p-3 mb-4 rounded-lg bg-gray-800 border-2 border-gray-700 focus:ring-blue-500 focus:border-blue-500">
+                <input id="signup-pin" type="password" placeholder="4-6 Digit PIN" maxlength="6" class="w-full p-3 mb-4 rounded-lg bg-gray-800 border-2 border-gray-700 focus:ring-blue-500 focus:border-blue-500">
+                
+                <select id="signup-role" class="w-full p-3 mb-4 rounded-lg bg-gray-800 border-2 border-gray-700 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="" disabled selected>Select Role</option>
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
+                </select>
+
+                <select id="signup-school" class="w-full p-3 mb-4 rounded-lg bg-gray-800 border-2 border-gray-700 focus:ring-blue-500 focus:border-blue-500"></select>
+
+                <button onclick="handleSignup()" class="w-full py-3 bg-green-600 hover:bg-green-700 font-bold rounded-lg shadow-lg transition duration-200">Register</button>
+                <button onclick="showLogin()" class="w-full mt-4 py-2 bg-gray-600 hover:bg-gray-700 text-sm rounded-lg transition duration-200">Back to Login</button>
+            </div>
+        </div>
+
+        <div id="dashboard-view" class="hidden">
+            
+            <header class="flex justify-between items-center p-4 mb-6 glass-card rounded-xl">
+                <h1 id="welcome-message" class="text-2xl font-extrabold">Welcome, <span class="text-yellow-400">User!</span></h1>
+                <button onclick="logoutUser()" class="py-2 px-4 bg-red-600 hover:bg-red-700 font-semibold rounded-lg transition duration-200">Logout</button>
+            </header>
+
+            <nav id="role-nav" class="mb-8 p-4 glass-card rounded-xl shadow-xl flex flex-wrap gap-4"></nav>
+
+            <div id="content-area">
+
+                <div id="admin-dashboard" class="role-dashboard hidden">
+                    <h2 class="text-3xl font-bold mb-6 p-4 bg-red-800/20 rounded-lg dashboard-header-admin">🛡️ Admin Control Panel</h2>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                        <div class="p-5 glass-card rounded-xl border-red-500 border-l-4">
+                            <h3 class="text-xl font-semibold mb-3 text-red-400">User Approvals (Pending)</h3>
+                            <div id="pending-users-list" class="space-y-3">
+                                <p>Loading pending signups...</p>
+                            </div>
+                        </div>
+                        <div class="p-5 glass-card rounded-xl border-yellow-500 border-l-4">
+                            <h3 class="text-xl font-semibold mb-3 text-yellow-400">System Limits</h3>
+                            <p>Teachers: <span id="teacher-count" class="font-bold">0</span>/10</p>
+                            <p>Students: <span id="student-count" class="font-bold">0</span>/560</p>
+                            <p>Per Class: <span class="font-bold">70</span> max</p>
+                        </div>
+                        <div class="p-5 glass-card rounded-xl border-green-500 border-l-4">
+                            <h3 class="text-xl font-semibold mb-3 text-green-400">Publish Notification</h3>
+                            <textarea id="admin-notification-input" placeholder="Type announcement here..." rows="3" class="w-full p-2 rounded-lg bg-gray-700 focus:ring-green-500 focus:border-green-500 mb-2"></textarea>
+                            <button onclick="publishNotification()" class="w-full py-2 bg-green-600 hover:bg-green-700 font-bold rounded-lg">Publish Live</button>
+                        </div>
+                    </div>
+
+                    <div class="p-6 glass-card rounded-xl mb-8">
+                        <h3 class="text-2xl font-bold mb-4 text-purple-400">🏫 Edit School Names</h3>
+                        <div id="school-edit-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            <p>Loading 80 schools...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="teacher-dashboard" class="role-dashboard hidden">
+                    <h2 class="text-3xl font-bold mb-6 p-4 bg-amber-800/20 rounded-lg dashboard-header-teacher">👨‍🏫 Teacher: MCQ Management</h2>
+
+                    <div class="p-6 glass-card rounded-xl mb-8">
+                        <h3 class="text-2xl font-bold mb-4 text-amber-400">➕ Add New MCQ (Daily Limit: 20)</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <select id="mcq-class" class="p-3 rounded-lg bg-gray-700">
+                                <option value="" disabled selected>Select Class (1st-8th)</option>
+                                <option value="1">Class 1</option><option value="2">Class 2</option>
+                                <option value="3">Class 3</option><option value="4">Class 4</option>
+                                <option value="5">Class 5</option><option value="6">Class 6</option>
+                                <option value="7">Class 7</option><option value="8">Class 8</option>
+                            </select>
+                            <select id="mcq-subject" class="p-3 rounded-lg bg-gray-700">
+                                <option value="" disabled selected>Select Subject</option>
+                                <option value="Math">Math</option><option value="English">English</option>
+                                <option value="EVS">EVS</option><option value="Urdu">Urdu</option>
+                                <option value="Kashmiri">Kashmiri</option><option value="SST">SST</option>
+                            </select>
+                        </div>
+
+                        <input id="mcq-question" type="text" placeholder="Question Text" class="w-full p-3 mb-3 rounded-lg bg-gray-700">
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <input data-option="1" type="text" placeholder="Option A" class="mcq-option p-3 rounded-lg bg-gray-700">
+                            <input data-option="2" type="text" placeholder="Option B" class="mcq-option p-3 rounded-lg bg-gray-700">
+                            <input data-option="3" type="text" placeholder="Option C" class="mcq-option p-3 rounded-lg bg-gray-700">
+                            <input data-option="4" type="text" placeholder="Option D" class="mcq-option p-3 rounded-lg bg-gray-700">
+                        </div>
+
+                        <select id="mcq-correct" class="w-full p-3 my-4 rounded-lg bg-gray-700">
+                            <option value="" disabled selected>Mark Correct Option (A, B, C or D)</option>
+                            <option value="1">Option A</option><option value="2">Option B</option>
+                            <option value="3">Option C</option><option value="4">Option D</option>
+                        </select>
+
+                        <p id="mcq-add-message" class="text-center mb-2 text-red-400 hidden"></p>
+                        <button onclick="addMCQ()" class="w-full py-3 bg-amber-600 hover:bg-amber-700 font-bold rounded-lg">Save MCQ</button>
+                    </div>
+
+                    <div class="p-6 glass-card rounded-xl">
+                        <h3 class="text-2xl font-bold mb-4 text-amber-400">📋 Manage Your Questions</h3>
+                        <div id="teacher-mcq-list" class="space-y-4">
+                            <p>Load questions based on selected Class/Subject...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="student-dashboard" class="role-dashboard hidden">
+                    <h2 class="text-3xl font-bold mb-6 p-4 bg-blue-800/20 rounded-lg dashboard-header-student">👦 Student: Quiz & Progress</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="p-5 glass-card rounded-xl text-center border-blue-500 border-l-4">
+                            <h3 class="text-xl font-semibold text-blue-400">Total Coins 💰</h3>
+                            <p id="student-coins" class="text-4xl font-bold mt-2">0</p>
+                        </div>
+                        <div class="p-5 glass-card rounded-xl text-center border-yellow-500 border-l-4">
+                            <h3 class="text-xl font-semibold text-yellow-400">Current Trophy 🏆</h3>
+                            <p id="student-trophy" class="text-4xl font-bold mt-2">None</p>
+                        </div>
+                        <div class="p-5 glass-card rounded-xl text-center border-green-500 border-l-4">
+                            <h3 class="text-xl font-semibold text-green-400">MCQs Attempted</h3>
+                            <p id="student-mcqs-attempted" class="text-4xl font-bold mt-2">0</p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 glass-card rounded-xl mb-8">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-400">▶️ Start Quiz</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <select id="quiz-class" class="p-3 rounded-lg bg-gray-700">
+                                <option value="" disabled selected>Select Class</option>
+                                </select>
+                            <select id="quiz-subject" class="p-3 rounded-lg bg-gray-700">
+                                <option value="" disabled selected>Select Subject</option>
+                                </select>
+                        </div>
+                        <button onclick="startQuiz()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 font-bold rounded-lg">Load Quiz</button>
+                        
+                        <div id="mcq-quiz-container" class="mt-6 hidden">
+                            <p id="quiz-status" class="text-center text-lg font-semibold mb-4"></p>
+                            <div id="current-mcq" class="p-4 glass-card rounded-xl">
+                                <p id="mcq-question-text" class="text-xl font-bold mb-4">Question will appear here...</p>
+                                <div id="mcq-options" class="space-y-3">
+                                    </div>
+                                <div id="mcq-feedback" class="text-center text-lg font-bold p-3 mt-4 rounded-lg hidden"></div>
+                                <button onclick="submitAnswer()" class="w-full py-2 mt-4 bg-green-600 hover:bg-green-700 font-bold rounded-lg">Submit Answer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="leaderboard-view" class="role-dashboard hidden">
+                    <h2 class="text-3xl font-bold mb-6 p-4 bg-gray-800/20 rounded-lg dashboard-header-student">📊 Global Leaderboards</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <button onclick="loadLeaderboard('overall')" class="py-3 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-lg">Overall Rank</button>
+                        
+                        <select id="lb-class-select" onchange="loadLeaderboard('class')" class="py-3 px-4 rounded-lg bg-gray-700 font-bold">
+                            <option value="class-default" disabled selected>Class-Wise Rank</option>
+                            </select>
+                        
+                        <div class="flex gap-2">
+                            <select id="lb-subject-class-select" class="py-3 px-2 rounded-lg bg-gray-700 font-bold w-1/2">
+                                <option value="" disabled selected>Class</option>
+                                </select>
+                            <select id="lb-subject-select" onchange="loadLeaderboard('subject')" class="py-3 px-2 rounded-lg bg-gray-700 font-bold w-1/2">
+                                <option value="" disabled selected>Subject-Wise Rank</option>
+                                </select>
+                        </div>
+                    </div>
+
+                    <div class="p-6 glass-card rounded-xl">
+                        <h3 id="leaderboard-title" class="text-2xl font-bold mb-4 text-pink-400">Overall Top 10 Students</h3>
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-700">
+                                <tr>
+                                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Rank</th>
+                                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Student Name</th>
+                                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Class</th>
+                                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider hidden sm:table-cell">School</th>
+                                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Trophy</th>
+                                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Coins 💰</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboard-body" class="divide-y divide-gray-800">
+                                <tr><td colspan="6" class="p-4 text-center">Select a leaderboard view to begin.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        // ----------------------------------------------------
+        // 1. FIREBASE CONFIGURATION & IMPORTS
+        // ----------------------------------------------------
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, onSnapshot, query, where, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // !!! REPLACE WITH YOUR ACTUAL CONFIG !!!
+        const firebaseConfig = {
+            apiKey: "your-api-key",
+            authDomain: "your-project-id.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project-id.appspot.com",
+            messagingSenderId: "your-sender-id",
+            appId: "your-app-id", // Used for artifacts path
+            databaseURL: "https://your-project-id-default-rtdb.firebaseio.com", // for RTDB
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const APP_ID = firebaseConfig.appId;
+
+        // Base path for Firestore collections
+        const ARTIFACTS_PATH = `artifacts/${APP_ID}`;
+
+        // ----------------------------------------------------
+        // 2. GLOBAL STATE & UTILS
+        // ----------------------------------------------------
+        let currentUser = null;
+        let currentRole = null;
+        let userDocRef = null;
+        let quizMCQs = [];
+        let currentQuizIndex = 0;
+
+        const USERS = {}; // Local cache for all user data
+
+        const CLASSES = [1, 2, 3, 4, 5, 6, 7, 8];
+        const SUBJECTS = ['Math', 'English', 'EVS', 'Urdu', 'Kashmiri', 'SST'];
+        const TROPHY_LEVELS = {
+            Bronze: 2500,
+            Silver: 5000,
+            Gold: 7500
+        };
+        const TROPHY_ICONS = {
+            None: '⚪', Bronze: '🥉', Silver: '🥈', Gold: '🥇'
+        };
+
+        const schoolList = {}; // To store actual school names
+
+        // DOM elements
+        const authView = document.getElementById('auth-view');
+        const dashboardView = document.getElementById('dashboard-view');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const authMessage = document.getElementById('auth-message');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const roleNav = document.getElementById('role-nav');
+        const notificationBar = document.getElementById('notification-bar');
+        const notificationText = document.getElementById('notification-text');
+        const dashboards = document.querySelectorAll('.role-dashboard');
+
+        // Initial setup for school list dropdowns
+        for (let i = 1; i <= 80; i++) {
+            const schoolId = `School ${i}`;
+            schoolList[schoolId] = schoolId;
+            const option = `<option value="${schoolId}">${schoolId}</option>`;
+            document.getElementById('signup-school').insertAdjacentHTML('beforeend', option);
+        }
+
+        // Initial setup for leaderboard class/subject selectors
+        CLASSES.forEach(cls => {
+            const option = `<option value="${cls}">Class ${cls}</option>`;
+            document.getElementById('lb-class-select').insertAdjacentHTML('beforeend', option);
+            document.getElementById('lb-subject-class-select').insertAdjacentHTML('beforeend', option);
+            document.getElementById('quiz-class').insertAdjacentHTML('beforeend', option);
+        });
+        SUBJECTS.forEach(sub => {
+            const option = `<option value="${sub}">${sub}</option>`;
+            document.getElementById('lb-subject-select').insertAdjacentHTML('beforeend', option);
+            document.getElementById('quiz-subject').insertAdjacentHTML('beforeend', option);
+        });
+
+        // ----------------------------------------------------
+        // 3. AUTHENTICATION & UI NAVIGATION
+        // ----------------------------------------------------
+function showMessage(element, message, isError = true) {
+            element.innerHTML = message;
+            element.className = `text-center mb-4 p-2 text-sm ${isError ? 'text-red-400 bg-red-800/20' : 'text-green-400 bg-green-800/20'} rounded-lg`;
+            element.style.display = 'block';
+        }
+
+        function showLogin() {
+            loginForm.classList.remove('hidden');
+            signupForm.classList.add('hidden');
+            authMessage.classList.add('hidden');
+        }
+
+        function showSignup() {
+            loginForm.classList.add('hidden');
+            signupForm.classList.remove('hidden');
+            authMessage.classList.add('hidden');
+        }
+
+        async function handleLogin() {
+            const username = document.getElementById('login-username').value.trim().toLowerCase();
+            const pin = document.getElementById('login-pin').value;
+            authMessage.classList.add('hidden');
+
+            if (!username || pin.length < 4 || pin.length > 6) {
+                showMessage(authMessage, "Please enter a valid username and 4-6 digit PIN.");
+                return;
+            }
+
+            // SIMULATING ADMIN LOGIN FOR TESTING
+            if (username === 'admin_pethgam' && pin === '0000') {
+                 currentUser = { 
+                    username: 'Admin Pethgam',
+                    role: 'Admin',
+                    status: 'Approved',
+                    coins: 0,
+                    trophy: 'Gold',
+                    mcqsAttempted: 100,
+                    school: 'PS Pethgam Wagoora'
+                };
+                currentRole = 'Admin';
+                userDocRef = { id: 'admin_pethgam_doc_id' };
+                await transitionToDashboard();
+                return;
+            }
+            // END SIMULATION
+try {
+                // 1. Query Firestore for the user document
+                const usersCol = collection(db, `${ARTIFACTS_PATH}/users`);
+                const q = query(usersCol, where('username_lower', '==', username));
+                // const snapshot = await getDocs(q); // Uncomment in live environment
+                
+                // SIMULATED Firestore Check:
+                const simulatedUser = (username === 'test_student' && pin === '1234') ? 
+                    { username: 'Test Student', role: 'Student', status: 'Approved', coins: 1500, trophy: 'None', mcqsAttempted: 50, school: 'School 1' } :
+                    (username === 'test_teacher' && pin === '5678') ? 
+                    { username: 'Test Teacher', role: 'Teacher', status: 'Approved', coins: 0, trophy: 'None', mcqsAttempted: 0, school: 'School 20' } :
+                    (username === 'pending_user' && pin === '9090') ?
+                    { username: 'Pending User', role: 'Student', status: 'Pending', coins: 0, trophy: 'None', mcqsAttempted: 0, school: 'School 1' } :
+                    null;
+                
+                if (!simulatedUser) {
+                    showMessage(authMessage, "Invalid Username or PIN.");
+                    return;
+                }
+
+                // 2. Validate PIN (already done implicitly in simulation above)
+
+                // 3. Check Approval Status
+                if (simulatedUser.status === 'Pending') {
+                    showMessage(authMessage, "Your account is **pending Admin approval**.", false);
+                    return;
+                }
+
+                // 4. Successful Login
+                currentUser = simulatedUser;
+                currentRole = simulatedUser.role;
+                userDocRef = { id: `doc_${username}` }; // Simulated Doc Ref
+
+                await transitionToDashboard();
+
+            } catch (error) {
+                console.error("Login Error:", error);
+                showMessage(authMessage, "An unexpected error occurred during login.");
+            }
+        }
+
+        async function handleSignup() {
+            const username = document.getElementById('signup-username').value.trim();
+            const pin = document.getElementById('signup-pin').value;
+            const role = document.getElementById('signup-role').value;
+            const school = document.getElementById('signup-school').value;
+            authMessage.classList.add('hidden');
+
+            if (!username || pin.length < 4 || pin.length > 6 || !role || !school) {
+                showMessage(authMessage, "Please fill out all fields correctly (PIN must be 4-6 digits).");
+                return;
+            }
+
+            // SIMULATED LIMIT CHECKS
+            // In a real app, query and check limits here.
+            
+            // Add new user to Firestore (Simulated)
+            console.log("[Signup Simulated] User registered, pending approval:", {
+                username: username,
+                role: role,
+                school: school
+            });
+            // await addDoc(collection(db, `${ARTIFACTS_PATH}/users`), {...}); // Uncomment in live environment
+
+            showMessage(authMessage, "✅ Registration successful! Your account is now pending Admin approval.", false);
+            showLogin();
+        }
+
+        async function transitionToDashboard() {
+            // 1. Setup UI
+            authView.classList.add('hidden');
+            dashboardView.classList.remove('hidden');
+            
+            // 2. Load Role-Specific UI
+            setupRoleDashboard();
+
+            // 3. Start Realtime Listeners (Simulated)
+            startLiveListeners();
+
+            // 4. Update welcome message
+            welcomeMessage.innerHTML = `Welcome, <span class="text-yellow-400">${currentUser.username}</span>!`;
+        }
+        
+        function logoutUser() {
+            // Clear state and revert to login screen
+            currentUser = null;
+            currentRole = null;
+            userDocRef = null;
+            
+            dashboardView.classList.add('hidden');
+            authView.classList.remove('hidden');
+            
+            // Clear inputs and messages
+            document.getElementById('login-form').reset();
+            authMessage.classList.add('hidden');
+            
+            // Stop listeners (In a real app, this is crucial)
+            // if (unsubscribeNotifications) unsubscribeNotifications();
+            document.body.classList.remove('flex', 'items-center', 'justify-center');
+        }
+
+        // ----------------------------------------------------
+        // 4. REALTIME LISTENERS (Notifications)
+        // ----------------------------------------------------
+
+        let unsubscribeNotifications = null;
+
+        function startLiveListeners() {
+            // SIMULATED Notification Listener
+            const notificationDoc = { message: "📢 **Urgent:** Winter assignments are due next Monday! Complete your quizzes now!", timestamp: Date.now() }; // Simulated data
+
+            if (notificationDoc && notificationDoc.message) {
+                notificationText.textContent = notificationDoc.message.replace(/\*\*/g, ''); // Simple bold stripping for marquee
+                notificationBar.classList.remove('hidden');
+            } else {
+                notificationBar.classList.add('hidden');
+            }
+            
+            // Realtime setup:
+            // const notificationRef = doc(db, `${ARTIFACTS_PATH}/notifications/latest`);
+            // unsubscribeNotifications = onSnapshot(notificationRef, (...) => {...});
+        }
+        
+        // ----------------------------------------------------
+        // 5. DASHBOARD SETUP & ROLE MANAGEMENT
+        // ----------------------------------------------------
+
+        function setupRoleDashboard() {
+            // 1. Reset
+            roleNav.innerHTML = '';
+            dashboards.forEach(d => d.classList.add('hidden'));
+
+            // 2. Define Nav Links
+            let navLinks = [
+                { id: 'student-dashboard', label: 'My Progress', roles: ['Student'] },
+                { id: 'leaderboard-view', label: 'Leaderboards 🏆', roles: ['Admin', 'Teacher', 'Student'] },
+                { id: 'teacher-dashboard', label: 'MCQ Builder 📝', roles: ['Teacher'] },
+                { id: 'admin-dashboard', label: 'Admin Panel ⚙️', roles: ['Admin'] },
+            ];
+
+            // 3. Build Navigation
+            navLinks.filter(link => link.roles.includes(currentRole)).forEach(link => {
+                const button = document.createElement('button');
+                button.textContent = link.label;
+                button.className = 'py-2 px-4 rounded-lg font-semibold transition duration-200 bg-gray-700 hover:bg-gray-600';
+                button.onclick = () => showDashboardSection(link.id);
+                roleNav.appendChild(button);
+            });
+
+            // 4. Show default dashboard
+            const defaultId = (currentRole === 'Admin') ? 'admin-dashboard' : 
+                              (currentRole === 'Teacher') ? 'teacher-dashboard' : 'student-dashboard';
+            showDashboardSection(defaultId);
+        }
+
+        function showDashboardSection(id) {
+            // Hide all
+            dashboards.forEach(d => d.classList.add('hidden'));
+            
+            // Show target
+            const target = document.getElementById(id);
+            if (target) {
+                target.classList.remove('hidden');
+                
+                // Load data for specific section
+                if (id === 'admin-dashboard') loadAdminData();
+                if (id === 'student-dashboard') loadStudentProgress();
+                if (id === 'teacher-dashboard') loadTeacherData();
+                if (id === 'leaderboard-view') loadLeaderboard('overall'); // Default leaderboard view
+            }
+        }
+        
+        // ----------------------------------------------------
+        // 6. ADMIN FEATURE LOGIC
+        // ----------------------------------------------------
+
+        async function loadAdminData() {
+            // SIMULATED DATA
+            const simulatedUsers = [
+                { id: 'p1', username: 'Pending New Student', role: 'Student', status: 'Pending', coins: 0 },
+                { id: 'p2', username: 'Pending Teacher R', role: 'Teacher', status: 'Pending', coins: 0 },
+                { id: 'a1', username: 'Approved Student A', role: 'Student', status: 'Approved', coins: 500 },
+                { id: 't1', username: 'Approved Teacher X', role: 'Teacher', status: 'Approved', coins: 0 }
+            ];
+            
+            let pendingHtml = '';
+            let teacherCount = 0;
+            let studentCount = 0;
+
+            simulatedUsers.forEach(user => {
+                USERS[user.id] = user;
+
+                if (user.role === 'Teacher' && user.status === 'Approved') teacherCount++;
+                if (user.role === 'Student' && user.status === 'Approved') studentCount++;
+
+                if (user.status === 'Pending') {
+                    pendingHtml += `
+                        <div class="flex justify-between items-center p-2 bg-gray-700 rounded-lg">
+                            <p class="text-sm">${user.username} (${user.role})</p>
+                            <div>
+                                <button onclick="approveUser('${user.id}')" class="text-green-400 hover:text-green-300 text-xs font-bold mr-2">Approve</button>
+                                <button onclick="deleteUser('${user.id}')" class="text-red-400 hover:text-red-300 text-xs font-bold">Reject</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            document.getElementById('teacher-count').textContent = teacherCount;
+            document.getElementById('student-count').textContent = studentCount;
+            document.getElementById('pending-users-list').innerHTML = pendingHtml || '<p class="text-sm text-gray-400">No pending approvals.</p>';
+
+            await loadSchoolDataForAdmin();
+        }
+
+        async function loadSchoolDataForAdmin() {
+            // SIMULATED SCHOOL DATA
+            let currentSchools = {
+                'School 1': 'Govt. Primary School, Zone A',
+                'School 2': 'Zone B High School',
+                // ... rest of 80 schools
+            };
+            for (let i = 3; i <= 80; i++) {
+                currentSchools[`School ${i}`] = `School ${i}`;
+            }
+
+            const schoolEditList = document.getElementById('school-edit-list');
+            schoolEditList.innerHTML = '';
+
+            Object.keys(currentSchools).forEach(defaultName => {
+                schoolEditList.insertAdjacentHTML('beforeend', `
+                    <div class="flex items-center space-x-2">
+                        <label class="text-sm w-1/3">${defaultName}:</label>
+                        <input id="school-${defaultName.replace(' ', '-')}" type="text" value="${currentSchools[defaultName]}" 
+                            onchange="saveSchoolName('${defaultName}', this.value)"
+                            class="w-2/3 p-2 rounded-lg bg-gray-700 text-sm focus:ring-purple-500 focus:border-purple-500">
+                    </div>
+                `);
+            });
+        }
+
+        function saveSchoolName(defaultName, newName) {
+            console.log(`[Admin Action] Saving school name: ${defaultName} -> ${newName}`);
+            // Firestore: updateDoc(doc(db, `${ARTIFACTS_PATH}/schools/list`), { [defaultName]: newName });
+            alert(`School ${defaultName} updated to ${newName} (Simulated Firestore Update)`);
+        }
+
+        function approveUser(userId) {
+            console.log(`[Admin Action] Approving user: ${USERS[userId].username}`);
+            // Firestore: updateDoc(doc(db, `${ARTIFACTS_PATH}/users/${userId}`), { status: 'Approved' });
+            alert(`User ${USERS[userId].username} Approved! (Simulated Firestore Update)`);
+            loadAdminData(); // Refresh list
+        }
+        
+        function deleteUser(userId) {
+            console.log(`[Admin Action] Deleting user: ${USERS[userId].username}`);
+            // Firestore: deleteDoc(doc(db, `${ARTIFACTS_PATH}/users/${userId}`));
+            alert(`User ${USERS[userId].username} Rejected/Deleted! (Simulated Firestore Delete)`);
+            loadAdminData(); // Refresh list
+        }
+
+        function publishNotification() {
+            const message = document.getElementById('admin-notification-input').value.trim();
+            if (!message) {
+                alert("Please enter a message.");
+                return;
+            }
+            console.log(`[Admin Action] Publishing notification: ${message}`);
+            // Firestore: setDoc(doc(db, `${ARTIFACTS_PATH}/notifications/latest`), { message: message, timestamp: Date.now() });
+            alert("Notification published live! (Simulated Firestore Update)");
+            document.getElementById('admin-notification-input').value = '';
+        }
+
+        // ----------------------------------------------------
+        // 7. TEACHER FEATURE LOGIC
+        // ----------------------------------------------------
+        
+        function loadTeacherData() {
+            document.getElementById('teacher-mcq-list').innerHTML = '<p class="text-gray-400">Select a Class and Subject above to view/manage your MCQs.</p>';
+        }
+
+        function addMCQ() {
+            const cls = document.getElementById('mcq-class').value;
+            const subject = document.getElementById('mcq-subject').value;
+            const question = document.getElementById('mcq-question').value.trim();
+            const correct = document.getElementById('mcq-correct').value;
+            const options = Array.from(document.querySelectorAll('.mcq-option')).map(input => input.value.trim());
+            const messageEl = document.getElementById('mcq-add-message');
+            messageEl.classList.add('hidden');
+
+            if (!cls || !subject || !question || !correct || options.some(opt => !opt)) {
+                showMessage(messageEl, "Please fill all fields.", true);
+                return;
+            }
+
+            const newMCQ = {
+                class: parseInt(cls),
+                subject: subject,
+                teacherId: userDocRef.id,
+                createdAt: Date.now()
+            };
+
+            console.log("[Teacher Action] Attempting to add MCQ to path:", `${ARTIFACTS_PATH}/mcqs/${cls}/${subject}`);
+            
+            // Firestore: addDoc(collection(db, `${ARTIFACTS_PATH}/mcqs/${cls}/${subject}`), newMCQ)
+            showMessage(messageEl, "✅ MCQ saved successfully! (Simulated Firestore Add)", false);
+            document.getElementById('teacher-dashboard').querySelector('form').reset();
+        }
+
+        // ----------------------------------------------------
+        // 8. STUDENT FEATURE LOGIC
+        // ----------------------------------------------------
+
+        async function loadStudentProgress() {
+            // SIMULATED: Update student progress from current user state
+            const data = currentUser; 
+            
+            document.getElementById('student-coins').textContent = data.coins;
+            document.getElementById('student-mcqs-attempted').textContent = data.mcqsAttempted;
+            document.getElementById('student-trophy').textContent = `${TROPHY_ICONS[data.trophy] || TROPHY_ICONS.None} ${data.trophy}`;
+            
+            // Realtime setup:
+            // const docSnap = await getDoc(userDocRef);
+        }
+
+        async function startQuiz() {
+            const cls = document.getElementById('quiz-class').value;
+            const subject = document.getElementById('quiz-subject').value;
+            const quizContainer = document.getElementById('mcq-quiz-container');
+            const statusEl = document.getElementById('quiz-status');
+            quizContainer.classList.add('hidden');
+
+            if (!cls || !subject) {
+                alert("Please select both a Class and a Subject.");
+                return;
+            }
+
+            statusEl.textContent = "Loading questions...";
+
+            // SIMULATED MCQ DATA
+            quizMCQs = [
+                { question: "What is the capital of J&K (Summer)?", options: ["Srinagar", "Jammu", "Leh", "Poonch"], correctIndex: 0 },
+                { question: "Which subject deals with number systems?", options: ["English", "Math", "EVS", "SST"], correctIndex: 1 },
+                { question: "How many planets are in our solar system?", options: ["7", "8", "9", "10"], correctIndex: 1 }
+            ];
+            
+            if (quizMCQs.length === 0) {
+                statusEl.textContent = `No MCQs found for Class ${cls}, Subject ${subject}.`;
+                return;
+            }
+
+            quizMCQs.sort(() => Math.random() - 0.5);
+            currentQuizIndex = 0;
+            
+            quizContainer.classList.remove('hidden');
+            loadNextMCQ();
+        }
+
+        function loadNextMCQ() {
+            const statusEl = document.getElementById('quiz-status');
+            const mcqOptionsEl = document.getElementById('mcq-options');
+            const feedbackEl = document.getElementById('mcq-feedback');
+            const submitBtn = document.querySelector('#current-mcq button');
+            const currentMcqCard = document.getElementById('current-mcq');
+
+            if (currentQuizIndex >= quizMCQs.length) {
+                statusEl.textContent = "Quiz Finished! Check your updated score.";
+                currentMcqCard.classList.add('hidden');
+                return;
+            }
+
+            const mcq = quizMCQs[currentQuizIndex];
+            currentMcqCard.classList.remove('hidden');
+            
+            statusEl.textContent = `Question ${currentQuizIndex + 1} of ${quizMCQs.length}`;
+            document.getElementById('mcq-question-text').textContent = mcq.question;
+            feedbackEl.classList.add('hidden');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Answer';
+            
+            mcqOptionsEl.innerHTML = mcq.options.map((option, index) => `
+                <button data-index="${index}" onclick="selectOption(this)" 
+                    class="w-full text-left p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-150">
+                    ${String.fromCharCode(65 + index)}. ${option}
+                </button>
+            `).join('');
+        }
+
+        let selectedOptionIndex = -1;
+
+        function selectOption(button) {
+            selectedOptionIndex = parseInt(button.dataset.index);
+            // Highlight selected option
+            document.querySelectorAll('#mcq-options button').forEach(btn => btn.classList.remove('bg-blue-600', 'text-white'));
+            button.classList.add('bg-blue-600', 'text-white');
+        }
+
+        async function submitAnswer() {
+            const feedbackEl = document.getElementById('mcq-feedback');
+            const submitBtn = document.querySelector('#current-mcq button');
+
+            if (selectedOptionIndex === -1) {
+                showMessage(feedbackEl, "Please select an answer.", true);
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            const mcq = quizMCQs[currentQuizIndex];
+            const isCorrect = (selectedOptionIndex === mcq.correctIndex);
+
+            // 1. Provide Feedback
+            if (isCorrect) {
+                showMessage(feedbackEl, "🥳 Wow! You are doing wonders! **(+5 coins)**", false);
+                document.querySelector(`[data-index="${selectedOptionIndex}"]`).classList.add('bg-green-600');
+            } else {
+                showMessage(feedbackEl, `😥 No problem, try next time! Correct answer is **${String.fromCharCode(65 + mcq.correctIndex)}**`, true);
+                document.querySelector(`[data-index="${selectedOptionIndex}"]`).classList.add('bg-red-6
+document.querySelector(`[data-index="${selectedOptionIndex}"]`).classList.add('bg-red-600');
+                document.querySelector(`[data-index="${mcq.correctIndex}"]`).classList.add('bg-green-600');
+            }
+
+            // 2. Update User Stats (Simulated Transaction)
+            // runTransaction(db, async (transaction) => {...})
+            currentUser.coins += (isCorrect ? 5 : 0);
+            currentUser.mcqsAttempted += 1;
+            
+            if (currentUser.coins >= TROPHY_LEVELS.Gold) currentUser.trophy = 'Gold';
+            else if (currentUser.coins >= TROPHY_LEVELS.Silver) currentUser.trophy = 'Silver';
+            else if (currentUser.coins >= TROPHY_LEVELS.Bronze) currentUser.trophy = 'Bronze';
+
+            console.log(`[Student Action] Score Updated. New Coins: ${currentUser.coins}, New Trophy: ${currentUser.trophy}`);
+
+            // 3. Prepare for next question
+            currentQuizIndex++;
+            selectedOptionIndex = -1;
+            
+            setTimeout(() => {
+                loadStudentProgress(); // Update UI stats
+                loadNextMCQ();
+            }, 3000);
+        }
+
+        // ----------------------------------------------------
+        // 9. LEADERBOARD LOGIC
+        // ----------------------------------------------------
+
+        async function loadLeaderboard(type) {
+            const leaderboardTitle = document.getElementById('leaderboard-title');
+            const leaderboardBody = document.getElementById('leaderboard-body');
+            leaderboardBody.innerHTML = '<tr><td colspan="6" class="p-4 text-center">Loading leaderboard...</td></tr>';
+            
+            // SIMULATED STUDENT DATA FOR LEADERBOARD
+            const simulatedStudents = [
+                { username: 'Star Performer', class: 5, school: 'Govt. Primary School, Zone A', coins: 8000, trophy: 'Gold' },
+                { username: 'Top Student', class: 5, school: 'Zone B High School', coins: 6000, trophy: 'Silver' },
+                { username: 'High Achiever', class: 8, school: 'School 50', coins: 3000, trophy: 'Bronze' },
+                { username: 'Average Student', class: 5, school: 'Govt. Primary School, Zone A', coins: 1000, trophy: 'None' },
+                { username: 'New Learner', class: 8, school: 'School 50', coins: 50, trophy: 'None' },
+            ];
+
+            let students = simulatedStudents;
+
+            if (type === 'overall') {
+                leaderboardTitle.textContent = "Overall Top Performers (All Students)";
+            } else if (type === 'class') {
+                const cls = document.getElementById('lb-class-select').value;
+                if (cls === 'class-default') return;
+                leaderboardTitle.textContent = `Top Performers - Class ${cls}`;
+                students = students.filter(s => s.class === parseInt(cls));
+            } else if (type === 'subject') {
+                const cls = document.getElementById('lb-subject-class-select').value;
+                const subject = document.getElementById('lb-subject-select').value;
+                if (!cls || !subject) return;
+                leaderboardTitle.textContent = `Top Performers - Class ${cls}, Subject ${subject}`;
+                students = students.filter(s => s.class === parseInt(cls));
+                // Subject filtering would require querying subject-specific coin fields in a real system.
+            }
+            
+            // Sort: Trophy Level (Gold > Silver > Bronze > None) then by Coins
+            students.sort((a, b) => {
+                const trophyA = TROPHY_LEVELS[a.trophy] || 0;
+                const trophyB = TROPHY_LEVELS[b.trophy] || 0;
+                if (trophyA !== trophyB) return trophyB - trophyA;
+                return b.coins - a.coins;
+            });
+            
+            renderLeaderboard(students.slice(0, 50));
+        }
+
+        function renderLeaderboard(students) {
+            const leaderboardBody = document.getElementById('leaderboard-body');
+            leaderboardBody.innerHTML = '';
+
+            if (students.length === 0) {
+                leaderboardBody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-400">No students found for this filter.</td></tr>';
+                return;
+            }
+
+            students.forEach((student, index) => {
+                const rank = index + 1;
+                const trophyIcon = TROPHY_ICONS[student.trophy] || TROPHY_ICONS.None;
+                
+                leaderboardBody.insertAdjacentHTML('beforeend', `
+                    <tr class="${index < 3 ? 'bg-yellow-900/40 font-bold' : 'hover:bg-gray-800'} transition duration-150">
+                        <td class="px-3 py-3 whitespace-nowrap text-sm text-gray-300">${rank}</td>
+                        <td class="px-3 py-3 whitespace-nowrap text-sm text-yellow-400">${student.username}</td>
+                        <td class="px-3 py-3 whitespace-nowrap text-sm text-gray-300">${student.class || '-'}</td>
+                        <td class="px-3 py-3 whitespace-nowrap text-sm text-gray-400 hidden sm:table-cell">${student.school || 'N/A'}</td>
+                        <td class="px-3 py-3 whitespace-nowrap text-sm">${trophyIcon} <span class="hidden sm:inline">${student.trophy}</span></td>
+                        <td class="px-3 py-3 whitespace-nowrap text-sm text-green-400">${student.coins}</td>
+                    </tr>
+                `);
+            });
+        }
+</script>
+</body>
+</html>
 - css/style.css
 - js/main.js
 - images/*      (placeholders: logo, hero images, gallery, staff photos)
