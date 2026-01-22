@@ -793,52 +793,58 @@ try {
             button.classList.add('bg-blue-600', 'text-white');
         }
 
-        async function submitAnswer() {
-            const feedbackEl = document.getElementById('mcq-feedback');
-            const submitBtn = document.querySelector('#current-mcq button');
+        // ... inside your <script type="module">
 
-            if (selectedOptionIndex === -1) {
-                showMessage(feedbackEl, "Please select an answer.", true);
-                return;
-            }
+async function submitAnswer() {
+    const feedbackEl = document.getElementById('mcq-feedback');
+    const submitBtn = document.querySelector('#current-mcq button');
 
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
-            
-            const mcq = quizMCQs[currentQuizIndex];
-            const isCorrect = (selectedOptionIndex === mcq.correctIndex);
+    if (selectedOptionIndex === -1) {
+        showMessage(feedbackEl, "Please select an answer.", true);
+        return;
+    }
 
-            // 1. Provide Feedback
-            if (isCorrect) {
-                showMessage(feedbackEl, "🥳 Wow! You are doing wonders! **(+5 coins)**", false);
-                document.querySelector(`[data-index="${selectedOptionIndex}"]`).classList.add('bg-green-600');
-            } else {
-                showMessage(feedbackEl, `😥 No problem, try next time! Correct answer is **${String.fromCharCode(65 + mcq.correctIndex)}**`, true);
-                document.querySelector(`[data-index="${selectedOptionIndex}"]`).classList.add('bg-red-6
-document.querySelector(`[data-index="${selectedOptionIndex}"]`).classList.add('bg-red-600');
-                document.querySelector(`[data-index="${mcq.correctIndex}"]`).classList.add('bg-green-600');
-            }
+    submitBtn.disabled = true;
+    const mcq = quizMCQs[currentQuizIndex];
+    const isCorrect = (selectedOptionIndex === mcq.correctIndex);
 
-            // 2. Update User Stats (Simulated Transaction)
-            // runTransaction(db, async (transaction) => {...})
-            currentUser.coins += (isCorrect ? 5 : 0);
-            currentUser.mcqsAttempted += 1;
-            
-            if (currentUser.coins >= TROPHY_LEVELS.Gold) currentUser.trophy = 'Gold';
-            else if (currentUser.coins >= TROPHY_LEVELS.Silver) currentUser.trophy = 'Silver';
-            else if (currentUser.coins >= TROPHY_LEVELS.Bronze) currentUser.trophy = 'Bronze';
+    if (isCorrect) {
+        showMessage(feedbackEl, "🥳 Wow! You are doing wonders! **(+5 coins)**", false);
+        document.querySelector(`[data-index="${selectedOptionIndex}"]`).classList.add('bg-green-600');
+    } else {
+        showMessage(feedbackEl, `😥 Correct answer is **${String.fromCharCode(65 + mcq.correctIndex)}**`, true);
+        document.querySelector(`[data-index="${selectedOptionIndex}"]`).classList.add('bg-red-600');
+        document.querySelector(`[data-index="${mcq.correctIndex}"]`).classList.add('bg-green-600');
+    }
 
-            console.log(`[Student Action] Score Updated. New Coins: ${currentUser.coins}, New Trophy: ${currentUser.trophy}`);
+    // Update Local State (In production, use Firestore increment)
+    currentUser.coins += (isCorrect ? 5 : 0);
+    currentUser.mcqsAttempted += 1;
+    
+    currentQuizIndex++;
+    selectedOptionIndex = -1;
+    
+    setTimeout(() => {
+        loadStudentProgress(); 
+        loadNextMCQ();
+    }, 2500);
+}
 
-            // 3. Prepare for next question
-            currentQuizIndex++;
-            selectedOptionIndex = -1;
-            
-            setTimeout(() => {
-                loadStudentProgress(); // Update UI stats
-                loadNextMCQ();
-            }, 3000);
-        }
+// CRITICAL: Bind functions to window for HTML onclick access
+window.handleLogin = handleLogin;
+window.handleSignup = handleSignup;
+window.showSignup = showSignup;
+window.showLogin = showLogin;
+window.logoutUser = logoutUser;
+window.startQuiz = startQuiz;
+window.selectOption = selectOption;
+window.submitAnswer = submitAnswer;
+window.addMCQ = addMCQ;
+window.loadLeaderboard = loadLeaderboard;
+window.publishNotification = publishNotification;
+window.approveUser = approveUser;
+window.deleteUser = deleteUser;
+window.saveSchoolName = saveSchoolName;
 
         // ----------------------------------------------------
         // 9. LEADERBOARD LOGIC
